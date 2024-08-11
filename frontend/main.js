@@ -22,8 +22,12 @@ const loader = new GLTFLoader();
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-const light = new THREE.AmbientLight(0x404040, 100);
-scene.add(light);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(10, -5, 0);
+const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight2.position.set(-10, -5, 0);
+scene.add(directionalLight);
+scene.add(directionalLight2);
 
 window.addEventListener("resize", onWindowResize, false);
 function onWindowResize() {
@@ -53,6 +57,12 @@ loader.load(
 
     guitar.position.set(0, -5, 0);
 
+    guitar.traverse((node) => {
+      if (node.isMesh) {
+        node.material.color.setHex(0xff0000);
+      }
+    });
+
     scene.add(gltf.scene);
   },
   undefined,
@@ -60,3 +70,5 @@ loader.load(
     console.error(error);
   }
 );
+const axesHelper = new THREE.AxesHelper(5);
+scene.add(axesHelper);
