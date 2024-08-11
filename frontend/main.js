@@ -2,7 +2,6 @@ import * as THREE from "three";
 import "./style.css";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
@@ -17,6 +16,9 @@ camera.position.set(-10, 2, 0);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
 
 const loader = new GLTFLoader();
 
@@ -45,6 +47,26 @@ function animate() {
   render();
 }
 
+window.addEventListener(
+  "click",
+  (event) => {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(scene.children, true);
+
+    if (intersects.length > 0) {
+      const intersectedObject = intersects[0].object;
+      const colorInput = document.querySelector("#color-picker");
+      console.log(colorInput.value);
+      intersectedObject.material.color.set(colorInput.value);
+    }
+  },
+  false
+);
+
 function render() {
   renderer.setClearColor(0x2b2b2b, 1);
   renderer.render(scene, camera);
@@ -59,7 +81,7 @@ loader.load(
 
     guitar.traverse((node) => {
       if (node.isMesh) {
-        node.material.color.setHex(0xff0000);
+        // node.material.color.setHex(0xff0000);
       }
     });
 
