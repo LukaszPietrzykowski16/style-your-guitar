@@ -76,18 +76,23 @@ loader.load(
   "public/guitar.gltf",
   (gltf) => {
     const guitar = gltf.scene;
+    const guitarBody = "GUITAR";
 
     guitar.position.set(0, -5, 0);
 
     guitar.traverse((node) => {
-      if (node.isMesh && node.name === "GUITAR") {
-        node.material.map = null; // Remove texture map
-
+      if (node.isMesh && node.name === guitarBody) {
+        node.material.map = null;
         node.material.color.setHex(0xff0000);
       }
     });
 
     scene.add(gltf.scene);
+
+    const targetPart = gltf.scene.getObjectByName(guitarBody);
+    if (targetPart) {
+      camera.lookAt(targetPart.getWorldPosition(new THREE.Vector3()));
+    }
   },
   undefined,
   function (error) {
