@@ -60,7 +60,7 @@ window.addEventListener(
     if (intersects.length > 0) {
       const intersectedObject = intersects[0].object;
       const colorInput = document.querySelector("#color-picker");
-      console.log(colorInput.value);
+      console.log(intersectedObject);
       intersectedObject.material.color.set(colorInput.value);
     }
   },
@@ -80,8 +80,10 @@ loader.load(
     guitar.position.set(0, -5, 0);
 
     guitar.traverse((node) => {
-      if (node.isMesh) {
-        // node.material.color.setHex(0xff0000);
+      if (node.isMesh && node.name === "GUITAR") {
+        node.material.map = null; // Remove texture map
+
+        node.material.color.setHex(0xff0000);
       }
     });
 
