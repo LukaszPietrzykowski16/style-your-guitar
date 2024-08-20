@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import "./style.css";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { gsap } from "gsap";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 const scene = new THREE.Scene();
 
@@ -10,6 +11,9 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
+
+const guitarBody = document.querySelector("#guitar-body");
+const preview = document.querySelector("#preview");
 
 camera.position.set(-10, 2, 0);
 
@@ -101,3 +105,33 @@ loader.load(
 );
 const axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper);
+
+function updateCameraposition(x, y, z, zoom) {
+  gsap.to(camera.position, {
+    x,
+    y,
+    z,
+    duration: 2,
+    ease: "power2.inOut",
+    onUpdate: () => {
+      camera.updateProjectionMatrix();
+    },
+  });
+
+  gsap.to(camera, {
+    zoom,
+    duration: 2,
+    ease: "power2.inOut",
+    onUpdate: () => {
+      camera.updateProjectionMatrix();
+    },
+  });
+}
+
+guitarBody.addEventListener("click", () => {
+  updateCameraposition(-5, -11, 0, 2);
+});
+
+preview.addEventListener("click", () => {
+  updateCameraposition(-10, 2, 0, 1);
+});
