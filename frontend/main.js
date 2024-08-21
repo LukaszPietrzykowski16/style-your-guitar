@@ -14,6 +14,10 @@ const camera = new THREE.PerspectiveCamera(
 
 const guitarBody = document.querySelector("#guitar-body");
 const preview = document.querySelector("#preview");
+const pickGuard = document.querySelector("#pick-guard");
+const pickups = document.querySelector("#pickups");
+const neck = document.querySelector("#neck");
+const head = document.querySelector("#head");
 
 camera.position.set(-10, 2, 0);
 
@@ -134,4 +138,12 @@ guitarBody.addEventListener("click", () => {
 
 preview.addEventListener("click", () => {
   updateCameraposition(-10, 2, 0, 1);
+});
+
+pickGuard.addEventListener("click", () => {
+  updateCameraposition(-5, -8, 7, 3);
+});
+
+pickups.addEventListener("click", () => {
+  updateCameraposition(-1, -6.5, 0, 3);
 });
