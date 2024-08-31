@@ -4,19 +4,14 @@ import { cameraControls } from "./camera-controls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Camera } from "./camera";
 import { Helpers } from "./helpers";
+import { Renderer } from "./renderer";
 const scene = new THREE.Scene();
 
 const camera = Camera();
-const renderer = new THREE.WebGLRenderer();
+const renderer = Renderer();
 const helpers = Helpers(camera, renderer);
 
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-const loader = new GLTFLoader();
+cameraControls(camera);
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(10, -5, 0);
@@ -25,15 +20,21 @@ directionalLight2.position.set(-10, -5, 0);
 scene.add(directionalLight);
 scene.add(directionalLight2);
 
-window.addEventListener("resize", onWindowResize, false);
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  render();
-}
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
 
-cameraControls(camera);
+const loader = new GLTFLoader();
+
+window.addEventListener(
+  "resize",
+  () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    render();
+  },
+  false
+);
 
 function animate() {
   requestAnimationFrame(animate);
