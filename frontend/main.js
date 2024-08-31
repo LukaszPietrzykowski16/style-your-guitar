@@ -1,27 +1,15 @@
 import * as THREE from "three";
 import "./style.css";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { gsap } from "gsap";
+import { cameraControls } from "./camera-controls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { Camera } from "./camera";
+import { Helpers } from "./helpers";
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
-
-const guitarBody = document.querySelector("#guitar-body");
-const preview = document.querySelector("#preview");
-const pickGuard = document.querySelector("#pick-guard");
-const pickups = document.querySelector("#pickups");
-const neck = document.querySelector("#neck");
-const head = document.querySelector("#head");
-
-camera.position.set(-10, 2, 0);
-
+const camera = Camera();
 const renderer = new THREE.WebGLRenderer();
+const helpers = Helpers(camera, renderer);
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
@@ -29,8 +17,6 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 const loader = new GLTFLoader();
-
-const controls = new OrbitControls(camera, renderer.domElement);
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(10, -5, 0);
@@ -47,10 +33,12 @@ function onWindowResize() {
   render();
 }
 
+cameraControls(camera);
+
 function animate() {
   requestAnimationFrame(animate);
 
-  controls.update();
+  helpers.controls.update();
 
   render();
 }
@@ -79,7 +67,9 @@ function render() {
   renderer.setClearColor(0x2b2b2b, 1);
   renderer.render(scene, camera);
 }
+
 animate();
+
 loader.load(
   "public/guitar.gltf",
   (gltf) => {
@@ -107,51 +97,5 @@ loader.load(
     console.error(error);
   }
 );
-const axesHelper = new THREE.AxesHelper(5);
-scene.add(axesHelper);
 
-function updateCameraposition(x, y, z, zoom) {
-  gsap.to(camera.position, {
-    x,
-    y,
-    z,
-    duration: 2,
-    ease: "power2.inOut",
-    onUpdate: () => {
-      camera.updateProjectionMatrix();
-    },
-  });
-
-  gsap.to(camera, {
-    zoom,
-    duration: 2,
-    ease: "power2.inOut",
-    onUpdate: () => {
-      camera.updateProjectionMatrix();
-    },
-  });
-}
-
-guitarBody.addEventListener("click", () => {
-  updateCameraposition(-5, -11, 0, 2);
-});
-
-preview.addEventListener("click", () => {
-  updateCameraposition(-10, 2, 0, 1);
-});
-
-pickGuard.addEventListener("click", () => {
-  updateCameraposition(-5, -8, 7, 3);
-});
-
-pickups.addEventListener("click", () => {
-  updateCameraposition(-1, -6.5, 0, 3);
-});
-
-neck.addEventListener("click", () => {
-  updateCameraposition(-10, 10, 0, 3);
-});
-
-head.addEventListener("click", () => {
-  updateCameraposition(-2, 10, 0, 3);
-});
+scene.add(helpers.axesHelper);
