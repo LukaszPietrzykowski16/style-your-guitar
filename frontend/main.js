@@ -147,3 +147,11 @@ pickGuard.addEventListener("click", () => {
 pickups.addEventListener("click", () => {
   updateCameraposition(-1, -6.5, 0, 3);
 });
+
+neck.addEventListener("click", () => {
+  updateCameraposition(-10, 10, 0, 3);
+});
+
+head.addEventListener("click", () => {
+  updateCameraposition(-2, 10, 0, 3);
+});
