@@ -5,11 +5,17 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Camera } from "./camera";
 import { Helpers } from "./helpers";
 import { Renderer } from "./renderer";
+
 const scene = new THREE.Scene();
 
 const camera = Camera();
 const renderer = Renderer();
 const helpers = Helpers(camera, renderer);
+
+const roughness = document.querySelector("#roughness");
+const metalness = document.querySelector("#metalness");
+
+let intersectedObject = {};
 
 cameraControls(camera);
 
@@ -44,6 +50,14 @@ function animate() {
   render();
 }
 
+roughness.addEventListener("input", () => {
+  intersectedObject.material.roughness = roughness.value;
+});
+
+metalness.addEventListener("input", () => {
+  intersectedObject.material.metalness = metalness.value;
+});
+
 window.addEventListener(
   "click",
   (event) => {
@@ -55,10 +69,13 @@ window.addEventListener(
     const intersects = raycaster.intersectObjects(scene.children, true);
 
     if (intersects.length > 0) {
-      const intersectedObject = intersects[0].object;
+      intersectedObject = { ...intersectedObject, ...intersects[0].object };
       const colorInput = document.querySelector("#color-picker");
       console.log(intersectedObject);
       intersectedObject.material.color.set(colorInput.value);
+      intersectedObject.material.metalness = 0;
+      intersectedObject.material.roughness = 1;
+      intersectedObject.material;
     }
   },
   false
