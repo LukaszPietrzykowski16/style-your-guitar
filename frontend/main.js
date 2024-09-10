@@ -5,6 +5,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Camera } from "./camera";
 import { Helpers } from "./helpers";
 import { Renderer } from "./renderer";
+import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
 
 const scene = new THREE.Scene();
 
@@ -16,6 +17,9 @@ const roughness = document.querySelector("#roughness");
 const metalness = document.querySelector("#metalness");
 
 let intersectedObject = {};
+
+const textureLoader = new THREE.TextureLoader();
+const stickerTexture = textureLoader.load("public/stop.jpg");
 
 cameraControls(camera);
 
@@ -71,11 +75,11 @@ window.addEventListener(
     if (intersects.length > 0) {
       intersectedObject = { ...intersectedObject, ...intersects[0].object };
       const colorInput = document.querySelector("#color-picker");
-      console.log(intersectedObject);
       intersectedObject.material.color.set(colorInput.value);
-      intersectedObject.material.metalness = 0;
-      intersectedObject.material.roughness = 1;
-      intersectedObject.material;
+
+      const position = intersects[0].point;
+
+      applySticker(position, intersects[0].face.normal, intersectedObject);
     }
   },
   false
@@ -84,6 +88,27 @@ window.addEventListener(
 function render() {
   renderer.setClearColor(0x2b2b2b, 1);
   renderer.render(scene, camera);
+}
+
+function applySticker(position, normal, object) {
+  const decalMaterial = new THREE.MeshStandardMaterial({
+    map: stickerTexture,
+    transparent: true,
+    depthTest: true,
+    depthWrite: false,
+  });
+
+  const decalGeometry = new DecalGeometry(
+    intersectedObject,
+    position,
+    normal,
+    new THREE.Vector3(0.5, 0.5, 0.5)
+  );
+
+  console.log(decalMaterial, decalGeometry);
+
+  const decalMesh = new THREE.Mesh(decalGeometry, decalMaterial);
+  scene.add(decalMesh);
 }
 
 animate();
@@ -100,6 +125,7 @@ loader.load(
       if (node.isMesh && node.name === guitarBody) {
         node.material.map = null;
         node.material.color.setHex(0xff0000);
+        node.geometry.computeVertexNormals();
       }
     });
 
