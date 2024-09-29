@@ -6,6 +6,7 @@ import { Camera } from "./camera";
 import { Helpers } from "./helpers";
 import { Renderer } from "./renderer";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
+import { displayTooltipOnTheScreen } from "./tooltip";
 
 const scene = new THREE.Scene();
 
@@ -54,13 +55,13 @@ function animate() {
   render();
 }
 
-roughness.addEventListener("input", () => {
-  intersectedObject.material.roughness = roughness.value;
-});
+// roughness.addEventListener("input", () => {
+//   intersectedObject.material.roughness = roughness.value;
+// });
 
-metalness.addEventListener("input", () => {
-  intersectedObject.material.metalness = metalness.value;
-});
+// metalness.addEventListener("input", () => {
+//   intersectedObject.material.metalness = metalness.value;
+// });
 
 window.addEventListener(
   "click",
@@ -74,10 +75,17 @@ window.addEventListener(
 
     if (intersects.length > 0) {
       intersectedObject = { ...intersectedObject, ...intersects[0].object };
-      const colorInput = document.querySelector("#color-picker");
-      intersectedObject.material.color.set(colorInput.value);
 
       const position = intersects[0].point;
+
+      const currentColor = intersectedObject.material.color.getHexString();
+
+      const newColor = displayTooltipOnTheScreen(
+        event.clientX,
+        event.clientY,
+        currentColor
+      );
+      intersectedObject.material.color.set(newColor);
 
       applySticker(position, intersects[0].face.normal, intersectedObject);
     }
@@ -104,8 +112,6 @@ function applySticker(position, normal, object) {
     normal,
     new THREE.Vector3(0.5, 0.5, 0.5)
   );
-
-  console.log(decalMaterial, decalGeometry);
 
   const decalMesh = new THREE.Mesh(decalGeometry, decalMaterial);
   scene.add(decalMesh);
