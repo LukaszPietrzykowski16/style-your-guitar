@@ -1,7 +1,8 @@
+import { updateColor } from "./main";
+
 export function displayTooltipOnTheScreen(clickX, clickY, color) {
-  console.log(color);
   const tooltipTemplate = `
-	<div style="background-color: #333; color: white;  position: absolute; top:${clickY}px; left: ${clickX}px;">
+	<div style="background-color: #333; color: white;  position: absolute; top:${clickY}px; left: ${clickX}px; z-index: 1000" id="tooltip">
       <p>Current color:</p>
       <input
         type="color"
@@ -35,6 +36,15 @@ export function displayTooltipOnTheScreen(clickX, clickY, color) {
   div.innerHTML = tooltipTemplate;
   document.body.appendChild(div);
   const colorInput = document.querySelector("#color-picker");
+
   const saveButton = document.querySelector("#save-button");
-  return colorInput.value;
+
+  saveButton.addEventListener("click", () => {
+    removeTooltip();
+    updateColor(colorInput.value);
+  });
+}
+
+export function removeTooltip() {
+  document.querySelector("#tooltip").remove();
 }

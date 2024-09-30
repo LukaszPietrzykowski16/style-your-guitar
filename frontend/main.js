@@ -6,7 +6,7 @@ import { Camera } from "./camera";
 import { Helpers } from "./helpers";
 import { Renderer } from "./renderer";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
-import { displayTooltipOnTheScreen } from "./tooltip";
+import { displayTooltipOnTheScreen, removeTooltip } from "./tooltip";
 
 const scene = new THREE.Scene();
 
@@ -63,9 +63,12 @@ function animate() {
 //   intersectedObject.material.metalness = metalness.value;
 // });
 
-window.addEventListener(
+const canvas = document.querySelector("canvas");
+canvas.addEventListener(
   "click",
   (event) => {
+    const tooltip = document.querySelector("#tooltip");
+
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -74,20 +77,18 @@ window.addEventListener(
     const intersects = raycaster.intersectObjects(scene.children, true);
 
     if (intersects.length > 0) {
+      if (tooltip) {
+        removeTooltip();
+        return;
+      }
       intersectedObject = { ...intersectedObject, ...intersects[0].object };
 
       const position = intersects[0].point;
-
       const currentColor = intersectedObject.material.color.getHexString();
 
-      const newColor = displayTooltipOnTheScreen(
-        event.clientX,
-        event.clientY,
-        currentColor
-      );
-      intersectedObject.material.color.set(newColor);
+      displayTooltipOnTheScreen(event.clientX, event.clientY, currentColor);
 
-      applySticker(position, intersects[0].face.normal, intersectedObject);
+      // applySticker(position, intersects[0].face.normal, intersectedObject);
     }
   },
   false
@@ -96,6 +97,13 @@ window.addEventListener(
 function render() {
   renderer.setClearColor(0x2b2b2b, 1);
   renderer.render(scene, camera);
+}
+
+export function updateColor(updatedColor) {
+  const intersects = raycaster.intersectObjects(scene.children, true);
+  intersectedObject = { ...intersectedObject, ...intersects[0].object };
+
+  intersectedObject.material.color.set(updatedColor);
 }
 
 function applySticker(position, normal, object) {
