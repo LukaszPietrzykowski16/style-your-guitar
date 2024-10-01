@@ -1,6 +1,14 @@
-import { updateColor } from "./main";
+import { updateColor, updateRoughness, updateMetalness } from "./main";
 
-export function displayTooltipOnTheScreen(clickX, clickY, color) {
+export function displayTooltipOnTheScreen(
+  clickX,
+  clickY,
+  color,
+  roughness,
+  metalness
+) {
+  console.log(roughness, metalness);
+
   const tooltipTemplate = `
 	<div style="background-color: #333; color: white;  position: absolute; top:${clickY}px; left: ${clickX}px; z-index: 1000" id="tooltip">
       <p>Current color:</p>
@@ -13,19 +21,19 @@ export function displayTooltipOnTheScreen(clickX, clickY, color) {
       <p>Roughness</p>
       <input
         type="range"
-        min="0.1"
-        max="1"
+        min="0"
+        max="2"
         step="0.01"
-        value="0.5"
+        value="${roughness}"
         id="roughness"
       />
       <p>Metalness</p>
       <input
         type="range"
-        min="0.1"
-        max="1"
+        min="0"
+        max="2"
         step="0.01"
-        value="0.5"
+        value="${metalness}"
         id="metalness"
       />
 	  <button id="save-button"> Save </button>
@@ -36,12 +44,16 @@ export function displayTooltipOnTheScreen(clickX, clickY, color) {
   div.innerHTML = tooltipTemplate;
   document.body.appendChild(div);
   const colorInput = document.querySelector("#color-picker");
+  const roughnessInput = document.querySelector("#roughness");
+  const metalnessInput = document.querySelector("#metalness");
 
   const saveButton = document.querySelector("#save-button");
 
   saveButton.addEventListener("click", () => {
     removeTooltip();
     updateColor(colorInput.value);
+    updateRoughness(roughnessInput.value);
+    updateMetalness(metalnessInput.value);
   });
 }
 

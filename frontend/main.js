@@ -55,14 +55,6 @@ function animate() {
   render();
 }
 
-// roughness.addEventListener("input", () => {
-//   intersectedObject.material.roughness = roughness.value;
-// });
-
-// metalness.addEventListener("input", () => {
-//   intersectedObject.material.metalness = metalness.value;
-// });
-
 const canvas = document.querySelector("canvas");
 canvas.addEventListener(
   "click",
@@ -85,8 +77,16 @@ canvas.addEventListener(
 
       const position = intersects[0].point;
       const currentColor = intersectedObject.material.color.getHexString();
+      const currentRoughness = intersectedObject.material.roughness;
+      const currentMetalness = intersectedObject.material.metalness;
 
-      displayTooltipOnTheScreen(event.clientX, event.clientY, currentColor);
+      displayTooltipOnTheScreen(
+        event.clientX,
+        event.clientY,
+        currentColor,
+        currentRoughness,
+        currentMetalness
+      );
 
       // applySticker(position, intersects[0].face.normal, intersectedObject);
     }
@@ -104,6 +104,20 @@ export function updateColor(updatedColor) {
   intersectedObject = { ...intersectedObject, ...intersects[0].object };
 
   intersectedObject.material.color.set(updatedColor);
+}
+
+export function updateRoughness(roughness) {
+  const intersects = raycaster.intersectObjects(scene.children, true);
+  intersectedObject = { ...intersectedObject, ...intersects[0].object };
+
+  intersectedObject.material.roughness = roughness;
+}
+
+export function updateMetalness(metalness) {
+  const intersects = raycaster.intersectObjects(scene.children, true);
+  intersectedObject = { ...intersectedObject, ...intersects[0].object };
+
+  intersectedObject.material.metalness = metalness;
 }
 
 function applySticker(position, normal, object) {
