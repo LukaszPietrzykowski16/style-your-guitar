@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import "./style.css";
-import { cameraControls } from "./camera-controls";
+// import { cameraControls } from "./camera-controls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Camera } from "./camera";
 import { Helpers } from "./helpers";
@@ -22,7 +22,7 @@ let intersectedObject = {};
 const textureLoader = new THREE.TextureLoader();
 const stickerTexture = textureLoader.load("public/stop.jpg");
 
-cameraControls(camera);
+// cameraControls(camera);
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(10, -5, 0);
@@ -87,6 +87,8 @@ canvas.addEventListener(
         currentRoughness,
         currentMetalness
       );
+
+      updateActiveElement(intersectedObject.name);
 
       // applySticker(position, intersects[0].face.normal, intersectedObject);
     }
@@ -171,3 +173,18 @@ loader.load(
 );
 
 scene.add(helpers.axesHelper);
+
+const guitarElements = document.querySelectorAll("#guitar-elements");
+
+guitarElements.forEach((guitarElement) => {
+  guitarElement.addEventListener("click", (element) => {
+    const searchedelement = scene.getObjectByName(element.target.id);
+    intersectedObject = { ...intersectedObject, ...searchedelement };
+    updateActiveElement(intersectedObject.name);
+  });
+});
+
+function updateActiveElement(elementName) {
+  const activeElement = document.querySelector("#active-element");
+  activeElement.innerHTML = `Active element: ${elementName}`;
+}

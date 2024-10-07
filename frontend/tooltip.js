@@ -7,10 +7,8 @@ export function displayTooltipOnTheScreen(
   roughness,
   metalness
 ) {
-  console.log(roughness, metalness);
-
   const tooltipTemplate = `
-	<div style="background-color: #333; color: white;  position: absolute; top:${clickY}px; left: ${clickX}px; z-index: 1000" id="tooltip">
+	<div id="tooltip">
       <p>Current color:</p>
       <input
         type="color"
@@ -40,9 +38,11 @@ export function displayTooltipOnTheScreen(
 	</div>
 	`;
 
+  const tooltipContainer = document.querySelector("#tooltip-container");
   const div = document.createElement("div");
   div.innerHTML = tooltipTemplate;
-  document.body.appendChild(div);
+
+  tooltipContainer.appendChild(div);
   const colorInput = document.querySelector("#color-picker");
   const roughnessInput = document.querySelector("#roughness");
   const metalnessInput = document.querySelector("#metalness");
