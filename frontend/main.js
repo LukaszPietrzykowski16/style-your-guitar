@@ -65,10 +65,12 @@ canvas.addEventListener(
 
     const intersects = raycaster.intersectObjects(scene.children, true);
 
+    const position = intersects[0].point;
+
     intersectedObject = { ...intersectedObject, ...intersects[0].object };
     updateActiveElement();
 
-    // applySticker(position, intersects[0].face.normal, intersectedObject);
+    applySticker(position, intersects[0].face.normal, intersectedObject);
   },
   false
 );
