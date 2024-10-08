@@ -80,15 +80,17 @@ canvas.addEventListener(
       const currentRoughness = intersectedObject.material.roughness;
       const currentMetalness = intersectedObject.material.metalness;
 
-      displayTooltipOnTheScreen(
-        event.clientX,
-        event.clientY,
-        currentColor,
-        currentRoughness,
-        currentMetalness
-      );
+      // displayTooltipOnTheScreen(
+      //   event.clientX,
+      //   event.clientY,
+      //   currentColor,
+      //   currentRoughness,
+      //   currentMetalness
+      // );
 
       updateActiveElement(intersectedObject.name);
+
+      updateActiveElement();
 
       // applySticker(position, intersects[0].face.normal, intersectedObject);
     }
@@ -184,7 +186,32 @@ guitarElements.forEach((guitarElement) => {
   });
 });
 
-function updateActiveElement(elementName) {
+function updateActiveElement() {
   const activeElement = document.querySelector("#active-element");
-  activeElement.innerHTML = `Active element: ${elementName}`;
+  const colorInput = document.querySelector("#color-picker");
+  const roughnessInput = document.querySelector("#roughness");
+  const metalnessInput = document.querySelector("#metalness");
+
+  colorInput.value = `#${intersectedObject.material.color.getHexString()}`;
+
+  roughnessInput.value = intersectedObject.material.roughness;
+  metalnessInput.value = intersectedObject.material.metalness;
+
+  activeElement.innerHTML = `Active element: ${intersectedObject.name}`;
 }
+
+const colorInput = document.getElementById("color-picker");
+colorInput.addEventListener("input", function (event) {
+  intersectedObject.material.color.set(event.target.value);
+});
+
+const roughnessInput = document.querySelector("#roughness");
+roughnessInput.addEventListener("input", function (event) {
+  console.log(intersectedObject.material);
+  intersectedObject.material.roughness = event.target.value;
+});
+
+const metalnessInput = document.querySelector("#metalness");
+metalnessInput.addEventListener("input", function (event) {
+  intersectedObject.material.metalness = event.target.value;
+});
