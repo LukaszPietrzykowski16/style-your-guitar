@@ -6,7 +6,6 @@ import { Camera } from "./camera";
 import { Helpers } from "./helpers";
 import { Renderer } from "./renderer";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
-import { displayTooltipOnTheScreen, removeTooltip } from "./tooltip";
 
 const scene = new THREE.Scene();
 
@@ -59,8 +58,6 @@ const canvas = document.querySelector("canvas");
 canvas.addEventListener(
   "click",
   (event) => {
-    const tooltip = document.querySelector("#tooltip");
-
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -68,32 +65,10 @@ canvas.addEventListener(
 
     const intersects = raycaster.intersectObjects(scene.children, true);
 
-    if (intersects.length > 0) {
-      if (tooltip) {
-        removeTooltip();
-        return;
-      }
-      intersectedObject = { ...intersectedObject, ...intersects[0].object };
+    intersectedObject = { ...intersectedObject, ...intersects[0].object };
+    updateActiveElement();
 
-      const position = intersects[0].point;
-      const currentColor = intersectedObject.material.color.getHexString();
-      const currentRoughness = intersectedObject.material.roughness;
-      const currentMetalness = intersectedObject.material.metalness;
-
-      // displayTooltipOnTheScreen(
-      //   event.clientX,
-      //   event.clientY,
-      //   currentColor,
-      //   currentRoughness,
-      //   currentMetalness
-      // );
-
-      updateActiveElement(intersectedObject.name);
-
-      updateActiveElement();
-
-      // applySticker(position, intersects[0].face.normal, intersectedObject);
-    }
+    // applySticker(position, intersects[0].face.normal, intersectedObject);
   },
   false
 );
@@ -101,27 +76,6 @@ canvas.addEventListener(
 function render() {
   renderer.setClearColor(0x2b2b2b, 1);
   renderer.render(scene, camera);
-}
-
-export function updateColor(updatedColor) {
-  const intersects = raycaster.intersectObjects(scene.children, true);
-  intersectedObject = { ...intersectedObject, ...intersects[0].object };
-
-  intersectedObject.material.color.set(updatedColor);
-}
-
-export function updateRoughness(roughness) {
-  const intersects = raycaster.intersectObjects(scene.children, true);
-  intersectedObject = { ...intersectedObject, ...intersects[0].object };
-
-  intersectedObject.material.roughness = roughness;
-}
-
-export function updateMetalness(metalness) {
-  const intersects = raycaster.intersectObjects(scene.children, true);
-  intersectedObject = { ...intersectedObject, ...intersects[0].object };
-
-  intersectedObject.material.metalness = metalness;
 }
 
 function applySticker(position, normal, object) {
@@ -207,7 +161,6 @@ colorInput.addEventListener("input", function (event) {
 
 const roughnessInput = document.querySelector("#roughness");
 roughnessInput.addEventListener("input", function (event) {
-  console.log(intersectedObject.material);
   intersectedObject.material.roughness = event.target.value;
 });
 
