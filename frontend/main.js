@@ -32,7 +32,7 @@ scene.add(directionalLight2);
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-
+const helper = new THREE.Object3D();
 const loader = new GLTFLoader();
 
 window.addEventListener(
@@ -67,6 +67,13 @@ canvas.addEventListener(
 
     const position = intersects[0].point;
 
+    let n = intersects[0].face.normal.clone();
+
+    n.add(intersects[0].point);
+
+    helper.position.copy(intersects[0].point);
+    helper.lookAt(n);
+
     intersectedObject = { ...intersectedObject, ...intersects[0].object };
     updateActiveElement();
 
@@ -81,17 +88,18 @@ function render() {
 }
 
 function applySticker(position, normal, object) {
-  const decalMaterial = new THREE.MeshStandardMaterial({
-    map: stickerTexture,
-    transparent: true,
-    depthTest: true,
+  const decalMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
     depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -4,
+    map: stickerTexture,
   });
 
   const decalGeometry = new DecalGeometry(
     intersectedObject,
     position,
-    normal,
+    helper.rotation,
     new THREE.Vector3(0.5, 0.5, 0.5)
   );
 
