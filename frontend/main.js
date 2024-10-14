@@ -19,7 +19,7 @@ const metalness = document.querySelector("#metalness");
 let intersectedObject = {};
 
 const textureLoader = new THREE.TextureLoader();
-const stickerTexture = textureLoader.load("public/stop.jpg");
+const stickerTexture = textureLoader.load("public/texture4.jpg");
 
 // cameraControls(camera);
 
@@ -77,7 +77,8 @@ canvas.addEventListener(
     intersectedObject = { ...intersectedObject, ...intersects[0].object };
     updateActiveElement();
 
-    applySticker(position, intersects[0].face.normal, intersectedObject);
+    // to do: implement apply sticker and normal object
+    // applySticker(position, intersects[0].face.normal, intersectedObject);
   },
   false
 );
@@ -88,12 +89,16 @@ function render() {
 }
 
 function applySticker(position, normal, object) {
-  const decalMaterial = new THREE.MeshBasicMaterial({
+  const decalMaterial = new THREE.MeshPhongMaterial({
     color: 0xffffff,
     depthWrite: false,
+    depthTest: true,
     polygonOffset: true,
-    polygonOffsetFactor: -4,
+    polygonOffsetFactor: -1,
+    transparent: true,
     map: stickerTexture,
+    specular: 0x444444,
+    wireframe: false,
   });
 
   const decalGeometry = new DecalGeometry(
@@ -119,8 +124,8 @@ loader.load(
 
     guitar.traverse((node) => {
       if (node.isMesh && node.name === guitarBody) {
-        node.material.map = null;
-        node.material.color.setHex(0xff0000);
+        node.material.map = stickerTexture;
+        // node.material.color.setHex(0xff0000);
         node.geometry.computeVertexNormals();
       }
     });
