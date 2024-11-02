@@ -19,7 +19,7 @@ const metalness = document.querySelector("#metalness");
 let intersectedObject = {};
 
 const textureLoader = new THREE.TextureLoader();
-const stickerTexture = textureLoader.load("public/texture4.jpg");
+const stickerTexture = textureLoader.load("public/texture2.PNG");
 
 // cameraControls(camera);
 
