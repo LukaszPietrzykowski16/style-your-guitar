@@ -77,6 +77,8 @@ canvas.addEventListener(
     intersectedObject = { ...intersectedObject, ...intersects[0].object };
     updateActiveElement();
 
+    appereanceControl.style.opacity = "0.9";
+
     // to do: implement apply sticker and normal object
     // applySticker(position, intersects[0].face.normal, intersectedObject);
   },
@@ -183,3 +185,5 @@ const metalnessInput = document.querySelector("#metalness");
 metalnessInput.addEventListener("input", function (event) {
   intersectedObject.material.metalness = event.target.value;
 });
+
+const appereanceControl = document.querySelector("#appearence-control");
