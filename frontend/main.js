@@ -19,7 +19,7 @@ const metalness = document.querySelector("#metalness");
 let intersectedObject = {};
 
 const textureLoader = new THREE.TextureLoader();
-const stickerTexture = textureLoader.load("public/texture2.PNG");
+const stickerTexture = textureLoader.load("public/texture-default.png");
 
 // cameraControls(camera);
 
@@ -187,3 +187,12 @@ metalnessInput.addEventListener("input", function (event) {
 });
 
 const appereanceControl = document.querySelector("#appearence-control");
+
+const colorsContainer = document.querySelector(".colors-container");
+
+colorsContainer.childNodes.forEach((colorContainer) => {
+  colorContainer.addEventListener("click", function (event) {
+    const selectedColor = event.target.getAttribute("value");
+    intersectedObject.material.color.set(selectedColor);
+  });
+});
