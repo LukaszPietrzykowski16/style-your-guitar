@@ -172,3 +172,29 @@ canvas {
   background-color: rgb(12, 12, 12);
   border: 1px black solid;
 }
+
+.texture-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+  gap: 8px;
+}
+
+.texture-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 calc(50% - 5px);
+  height: 80px;
+  width: 120px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 18px;
+  background-size: cover;
+  background-repeat: repeat;
+  background-position: center;
+}
+
+.texture-card span {
+  font-weight: bold;
+  mix-blend-mode: difference;
+}

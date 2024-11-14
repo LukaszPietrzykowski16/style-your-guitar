@@ -44,13 +44,24 @@
         color: white;
         text-align: center;
         display: flex;
-        justify-content: center;
+        justify-content: space-evenly;
         align-items: center;
         border-radius: 16px;
         opacity: 0;
       "
       id="appearence-control"
     >
+      <div id="active-element" style="display: none"></div>
+      <h1
+        style="
+          font-size: 18px;
+          text-align: left;
+          width: 100%;
+          padding-left: 16px;
+        "
+      >
+        Change Color
+      </h1>
       <div class="colors-container">
         <span class="color-dot-red" value="red"></span>
         <span class="color-dot-blue" value="blue"></span>
@@ -59,12 +70,52 @@
         <span class="color-dot-purple" value="purple"></span>
         <span class="color-dot-white" value="white"></span>
         <span class="color-dot-black" value="black"></span>
+        <input type="color" id="color-picker" name="color-picker" value="" />
       </div>
-      <button>Change colors</button>
-      <div id="active-element"></div>
-      <div id="tooltip-container"></div>
-      <p>Current color:</p>
-      <input type="color" id="color-picker" name="color-picker" value="" />
+      <h1
+        style="
+          font-size: 18px;
+          text-align: left;
+          width: 100%;
+          padding-left: 16px;
+        "
+      >
+        Change Texture
+      </h1>
+
+      <div class="texture-container">
+        <div class="texture-card">
+          <span> Default </span>
+        </div>
+        <div class="texture-card">
+          <span> Custom </span>
+        </div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/texture0.PNG')"
+        >
+          <span> Pastel </span>
+        </div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/texture1.jpg')"
+        >
+          <span>Rusty</span>
+        </div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/texture2.PNG')"
+        >
+          <span>Chaotic</span>
+        </div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/texture4.jpg')"
+        >
+          <span> Scratches</span>
+        </div>
+      </div>
+
       <p>Roughness</p>
       <input type="range" min="0" max="2" step="0.01" value="" id="roughness" />
       <p>Metalness</p>
