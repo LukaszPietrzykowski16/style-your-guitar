@@ -207,7 +207,6 @@ texturesContainer.childNodes.forEach((textureContainer) => {
     const urlMatch = backgroundImage.match(
       /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
     );
-    console.log(urlMatch[2]);
     if (urlMatch[2]) {
       const clickedTexture = textureLoader.load(urlMatch[2]);
       intersectedObject.material.map = clickedTexture;
