@@ -191,8 +191,26 @@ const appereanceControl = document.querySelector("#appearence-control");
 const colorsContainer = document.querySelector(".colors-container");
 
 colorsContainer.childNodes.forEach((colorContainer) => {
-  colorContainer.addEventListener("click", function (event) {
+  colorContainer.addEventListener("click", (event) => {
     const selectedColor = event.target.getAttribute("value");
     intersectedObject.material.color.set(selectedColor);
+  });
+});
+
+const texturesContainer = document.querySelector(".texture-container");
+
+texturesContainer.childNodes.forEach((textureContainer) => {
+  textureContainer.addEventListener("click", (event) => {
+    const clickedElement = event.target;
+    const style = window.getComputedStyle(clickedElement);
+    const backgroundImage = style.backgroundImage;
+    const urlMatch = backgroundImage.match(
+      /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
+    );
+    console.log(urlMatch[2]);
+    if (urlMatch[2]) {
+      const clickedTexture = textureLoader.load(urlMatch[2]);
+      intersectedObject.material.map = clickedTexture;
+    }
   });
 });
