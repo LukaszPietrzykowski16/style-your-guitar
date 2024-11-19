@@ -16,6 +16,7 @@ const helpers = Helpers(camera, renderer);
 const roughness = document.querySelector("#roughness");
 const metalness = document.querySelector("#metalness");
 
+let isMenuOpen = false;
 let intersectedObject = {};
 
 const textureLoader = new THREE.TextureLoader();
@@ -213,3 +214,26 @@ texturesContainer.childNodes.forEach((textureContainer) => {
     }
   });
 });
+
+const closeIcon = document.querySelector(".close-icon");
+const appereanceControlIcon = document.querySelector(
+  ".appearence-control-icon"
+);
+
+closeIcon.addEventListener("click", () => {
+  hideApperenaceControlMenu();
+});
+
+appereanceControlIcon.addEventListener("click", () => {
+  showApperenaceControlMenu();
+});
+
+function hideApperenaceControlMenu() {
+  appereanceControl.style.opacity = "0";
+  appereanceControlIcon.style.opacity = "0.9";
+}
+
+function showApperenaceControlMenu() {
+  appereanceControl.style.opacity = "0.9";
+  appereanceControlIcon.style.opacity = "0";
+}

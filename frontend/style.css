@@ -198,3 +198,15 @@ canvas {
   font-weight: bold;
   mix-blend-mode: difference;
 }
+
+.close-icon {
+  position: absolute;
+  top: 0;
+  right: 8px;
+}
+
+.appearence-control-icon {
+  position: absolute;
+  right: 0;
+  opacity: 1;
+}
