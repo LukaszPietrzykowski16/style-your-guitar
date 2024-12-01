@@ -44,25 +44,7 @@
       <i data-feather="pen-tool"></i>
       <p>CUSTOMIZATION</p>
     </div>
-    <div
-      style="
-        height: 60%;
-        display: flex;
-        width: 300px;
-        flex-direction: column;
-        position: absolute;
-        right: 20px;
-        background-color: #7c7c7c;
-        color: white;
-        text-align: center;
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        border-radius: 16px;
-        opacity: 0;
-      "
-      id="appearence-control"
-    >
+    <div id="appearence-control">
       <div id="active-element" style="display: none"></div>
       <h1
         style="
@@ -97,7 +79,10 @@
       </h1>
 
       <div class="texture-container">
-        <div class="texture-card">
+        <div
+          class="texture-card"
+          style="background-image: url('/public/texture-default.png')"
+        >
           <span> Default </span>
         </div>
         <div class="texture-card">

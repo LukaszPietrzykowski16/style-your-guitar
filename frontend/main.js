@@ -76,9 +76,10 @@ canvas.addEventListener(
     helper.lookAt(n);
 
     intersectedObject = { ...intersectedObject, ...intersects[0].object };
-    updateActiveElement();
 
-    appereanceControl.style.opacity = "0.9";
+    appereanceControlIcon.style.display = "none";
+    showApperenaceControlMenu();
+    updateActiveElement();
 
     // to do: implement apply sticker and normal object
     // applySticker(position, intersects[0].face.normal, intersectedObject);
@@ -229,11 +230,11 @@ appereanceControlIcon.addEventListener("click", () => {
 });
 
 function hideApperenaceControlMenu() {
-  appereanceControl.style.opacity = "0";
-  appereanceControlIcon.style.opacity = "0.9";
+  appereanceControl.style.display = "none";
+  appereanceControlIcon.style.display = "flex";
 }
 
 function showApperenaceControlMenu() {
-  appereanceControl.style.opacity = "0.9";
-  appereanceControlIcon.style.opacity = "0";
+  appereanceControl.style.display = "flex";
+  appereanceControlIcon.style.display = "none";
 }
