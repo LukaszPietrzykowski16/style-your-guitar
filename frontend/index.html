@@ -9,30 +9,41 @@
   <body>
     <div
       style="
-        height: 60%;
         display: flex;
-        width: 300px;
-        flex-direction: column;
         position: absolute;
-        left: 20px;
-        background-color: #333;
+        justify-content: space-evenly;
+        bottom: 20px;
         color: white;
+        width: 600px;
         text-align: center;
         display: flex;
-        justify-content: center;
-        align-items: center;
         border-radius: 16px;
       "
       id="guitar-elements"
     >
-      <p id="preview">Preview</p>
-      <p id="GUITAR">Body</p>
-      <p id="design_guitar">Pick guard</p>
-      <p id="pastilas">Pickups</p>
-      <p id="MASTIIL">Neck</p>
-      <p id="MASTIIL">Head</p>
+      <div class="camera-control">
+        <p id="front">FRONT</p>
+      </div>
+      <div class="camera-control">
+        <p id="back">BACK</p>
+      </div>
+      <div class="camera-control">
+        <p id="left">LEFT</p>
+      </div>
+      <div class="camera-control">
+        <p id="right">RIGHT</p>
+      </div>
+      <div class="camera-control">
+        <p id="body">BODY</p>
+      </div>
+      <div class="camera-control">
+        <p id="head">HEAD</p>
+      </div>
     </div>
-    <div class="appearence-control-icon">O</div>
+    <div class="appearence-control-icon">
+      <i data-feather="pen-tool"></i>
+      <p>CUSTOMIZATION</p>
+    </div>
     <div
       style="
         height: 60%;
@@ -63,7 +74,7 @@
       >
         Change Color
       </h1>
-      <div class="close-icon">X</div>
+      <div class="close-icon"><i data-feather="x"></i></div>
       <div class="colors-container">
         <span class="color-dot-red" value="red"></span>
         <span class="color-dot-blue" value="blue"></span>
@@ -124,5 +135,9 @@
       <input type="range" min="0" max="2" step="0.01" value="" id="metalness" />
     </div>
     <script type="module" src="/main.js"></script>
+    <script type="module">
+      import feather from "feather-icons";
+      feather.replace();
+    </script>
   </body>
 </html>
