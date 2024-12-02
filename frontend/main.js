@@ -220,7 +220,7 @@ function addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
   glowMesh.position.y = -1;
 
   glowMesh.material.onBeforeCompile = (shader) => {
-    shader.uniforms.glowIntensity = { value: 10.0 };
+    shader.uniforms.glowIntensity = { value: 20.0 };
     shader.fragmentShader = `
         uniform float glowIntensity;
         ${shader.fragmentShader.replace(
