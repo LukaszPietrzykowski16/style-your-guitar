@@ -238,3 +238,15 @@ canvas {
   color: white;
   border-radius: 16px;
 }
+
+.settings-container {
+  display: flex;
+
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+#refresh {
+  margin-right: 8px;
+}

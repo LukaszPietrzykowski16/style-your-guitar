@@ -77,6 +77,8 @@ canvas.addEventListener(
 
     intersectedObject = { ...intersectedObject, ...intersects[0].object };
 
+    addHaloGlow(intersectedObject, 0xffffff, 1, 0.2);
+
     appereanceControlIcon.style.display = "none";
     showApperenaceControlMenu();
     updateActiveElement();
@@ -155,6 +157,7 @@ guitarElements.forEach((guitarElement) => {
   guitarElement.addEventListener("click", (element) => {
     const searchedelement = scene.getObjectByName(element.target.id);
     intersectedObject = { ...intersectedObject, ...searchedelement };
+
     updateActiveElement(intersectedObject.name);
   });
 });
@@ -199,6 +202,39 @@ colorsContainer.childNodes.forEach((colorContainer) => {
   });
 });
 
+function addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
+  const glowGeometry = object.geometry.clone();
+  const glowMaterial = new THREE.MeshBasicMaterial({
+    color: glowColor,
+    transparent: true,
+    opacity: glowIntensity,
+    blending: THREE.AdditiveBlending,
+    side: THREE.DoubleSide,
+    depthTest: false,
+  });
+  console.log(glowGeometry);
+  const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+  glowMesh.scale.multiplyScalar(sizeMultiplier);
+  glowMesh.position.copy(object.position);
+  glowMesh.rotation.copy(object.rotation);
+  glowMesh.position.y = -1;
+
+  glowMesh.material.onBeforeCompile = (shader) => {
+    shader.uniforms.glowIntensity = { value: 10.0 };
+    shader.fragmentShader = `
+        uniform float glowIntensity;
+        ${shader.fragmentShader.replace(
+          "gl_FragColor = vec4( outgoingLight, diffuseColor.a );",
+          `
+            vec3 glow = vec3(glowIntensity) * outgoingLight;
+            gl_FragColor = vec4(outgoingLight + glow, diffuseColor.a);
+            `
+        )}
+    `;
+  };
+  scene.add(glowMesh);
+}
+
 const texturesContainer = document.querySelector(".texture-container");
 
 texturesContainer.childNodes.forEach((textureContainer) => {
@@ -238,3 +274,8 @@ function showApperenaceControlMenu() {
   appereanceControl.style.display = "flex";
   appereanceControlIcon.style.display = "none";
 }
+
+const refresh = document.querySelector("#refresh");
+refresh.addEventListener("click", () => {
+  location.reload();
+});
