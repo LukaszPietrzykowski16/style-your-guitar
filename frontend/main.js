@@ -77,7 +77,7 @@ canvas.addEventListener(
 
     intersectedObject = { ...intersectedObject, ...intersects[0].object };
 
-    addHaloGlow(intersectedObject, 0xffffff, 1, 0.2);
+    addTemporaryGlow();
 
     appereanceControlIcon.style.display = "none";
     showApperenaceControlMenu();
@@ -209,30 +209,44 @@ function addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
     transparent: true,
     opacity: glowIntensity,
     blending: THREE.AdditiveBlending,
-    side: THREE.DoubleSide,
     depthTest: false,
   });
-  console.log(glowGeometry);
+
   const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
   glowMesh.scale.multiplyScalar(sizeMultiplier);
   glowMesh.position.copy(object.position);
   glowMesh.rotation.copy(object.rotation);
   glowMesh.position.y = -1;
 
-  glowMesh.material.onBeforeCompile = (shader) => {
-    shader.uniforms.glowIntensity = { value: 20.0 };
-    shader.fragmentShader = `
-        uniform float glowIntensity;
-        ${shader.fragmentShader.replace(
-          "gl_FragColor = vec4( outgoingLight, diffuseColor.a );",
-          `
-            vec3 glow = vec3(glowIntensity) * outgoingLight;
-            gl_FragColor = vec4(outgoingLight + glow, diffuseColor.a);
-            `
-        )}
-    `;
-  };
+  return glowMesh;
+}
+
+function addTemporaryGlow() {
+  const glowMesh = addHaloGlow(intersectedObject, 0xffffff, 1, 8);
+
   scene.add(glowMesh);
+
+  fadeOutGlow(glowMesh, 800);
+}
+
+function fadeOutGlow(glowMesh, duration) {
+  const startTime = performance.now();
+
+  function animateGlow() {
+    const elapsed = performance.now() - startTime;
+    const progress = elapsed / duration;
+
+    if (progress < 1) {
+      glowMesh.material.opacity = 0.5 * (1 - progress);
+      requestAnimationFrame(animateGlow);
+    } else {
+      scene.remove(glowMesh);
+      glowMesh.geometry.dispose();
+      glowMesh.material.dispose();
+    }
+  }
+
+  animateGlow();
 }
 
 const texturesContainer = document.querySelector(".texture-container");
