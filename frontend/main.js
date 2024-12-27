@@ -93,13 +93,6 @@ canvas.addEventListener(
 
     const position = intersects[0].point;
 
-    let n = intersects[0].face.normal.clone();
-
-    n.add(intersects[0].point);
-
-    helper.position.copy(intersects[0].point);
-    helper.lookAt(n);
-
     intersectedObject = { ...intersectedObject, ...intersects[0].object };
 
     addTemporaryGlow();
@@ -107,6 +100,13 @@ canvas.addEventListener(
     appereanceControlIcon.style.display = "none";
     showApperenaceControlMenu();
     updateActiveElement();
+
+    let n = intersects[0].face.normal.clone();
+
+    n.add(intersects[0].point);
+
+    helper.position.copy(intersects[0].point);
+    helper.lookAt(n);
 
     applySticker(position, intersects[0].face.normal, intersectedObject);
   },
@@ -175,7 +175,7 @@ loader.load(
   }
 );
 
-scene.add(helpers.axesHelper);
+// scene.add(helpers.axesHelper);
 
 const guitarElements = document.querySelectorAll("#guitar-elements");
 
