@@ -20,16 +20,38 @@ let isMenuOpen = false;
 let intersectedObject = {};
 
 const textureLoader = new THREE.TextureLoader();
-const stickerTexture = textureLoader.load("public/texture-default.png");
+const stickerTexture = textureLoader.load("public/stop.jpg");
 
 // cameraControls(camera);
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight.position.set(10, -5, 0);
+directionalLight.position.set(0, 0, 8);
 const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight2.position.set(-10, -5, 0);
+directionalLight2.position.set(0, 0, -8);
+const directionalLight3 = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight3.position.set(
+  -9.947420066907123,
+  -1.019879765564146,
+  -0.09316263352782056
+);
+const directionalLight4 = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight4.position.set(
+  9.981306658855566,
+  -0.4765927811330809,
+  0.3825920841538427
+);
+const directionalLight5 = new THREE.DirectionalLight(0xffffff, 1);
+
+directionalLight5.position.set(
+  -0.1268484876457273,
+  -5.6404379973057175,
+  0.7229959592571308
+);
 scene.add(directionalLight);
 scene.add(directionalLight2);
+scene.add(directionalLight3);
+scene.add(directionalLight4);
+scene.add(directionalLight5);
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -49,7 +71,10 @@ window.addEventListener(
 
 function animate() {
   requestAnimationFrame(animate);
-
+  console.log(`Camera Position:
+    x: ${camera.position.x}
+    y: ${camera.position.y}
+    z: ${camera.position.z}`);
   helpers.controls.update();
 
   render();
@@ -83,8 +108,7 @@ canvas.addEventListener(
     showApperenaceControlMenu();
     updateActiveElement();
 
-    // to do: implement apply sticker and normal object
-    // applySticker(position, intersects[0].face.normal, intersectedObject);
+    applySticker(position, intersects[0].face.normal, intersectedObject);
   },
   false
 );
@@ -121,16 +145,18 @@ function applySticker(position, normal, object) {
 animate();
 
 loader.load(
-  "public/guitar.gltf",
+  "public/guitar-extra-gltf.gltf",
   (gltf) => {
     const guitar = gltf.scene;
     const guitarBody = "GUITAR";
 
-    guitar.position.set(0, -5, 0);
-
     guitar.traverse((node) => {
+      if (node.isMesh) {
+        node.geometry.rotateX(1.5);
+        node.geometry.rotateY(0);
+        node.geometry.rotateZ(1.555);
+      }
       if (node.isMesh && node.name === guitarBody) {
-        node.material.map = stickerTexture;
         // node.material.color.setHex(0xff0000);
         node.geometry.computeVertexNormals();
       }
@@ -216,12 +242,14 @@ function addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
   glowMesh.scale.multiplyScalar(sizeMultiplier);
   glowMesh.position.copy(object.position);
   glowMesh.rotation.copy(object.rotation);
-  glowMesh.position.y = -1;
+  glowMesh.position.y = 0.1;
 
   return glowMesh;
 }
 
 function addTemporaryGlow() {
+  console.log(intersectedObject);
+
   const glowMesh = addHaloGlow(intersectedObject, 0xffffff, 1, 8);
 
   scene.add(glowMesh);

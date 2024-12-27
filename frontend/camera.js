@@ -7,6 +7,6 @@ export function Camera() {
     0.1,
     1000
   );
-  camera.position.set(-10, 2, 0);
+  camera.position.set(0, 0, 10);
   return camera;
 }
