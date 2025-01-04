@@ -17,6 +17,7 @@ const roughness = document.querySelector("#roughness");
 const metalness = document.querySelector("#metalness");
 
 let isMenuOpen = false;
+let isStickerOn = false;
 let intersectedObject = {};
 
 const textureLoader = new THREE.TextureLoader();
@@ -95,20 +96,24 @@ canvas.addEventListener(
 
     intersectedObject = { ...intersectedObject, ...intersects[0].object };
 
+    if (isStickerOn) {
+      isStickerOn = false;
+      applySticker(position, intersects[0].face.normal, intersectedObject);
+      return;
+    }
+
     addTemporaryGlow();
 
     appereanceControlIcon.style.display = "none";
     showApperenaceControlMenu();
     updateActiveElement();
 
-    let n = intersects[0].face.normal.clone();
+    // helper.position.copy(intersects[0].point);
+    // helper.lookAt(n);
 
-    n.add(intersects[0].point);
+    // let n = intersects[0].face.normal.clone();
 
-    helper.position.copy(intersects[0].point);
-    helper.lookAt(n);
-
-    applySticker(position, intersects[0].face.normal, intersectedObject);
+    // n.add(intersects[0].point);
   },
   false
 );
@@ -295,9 +300,18 @@ texturesContainer.childNodes.forEach((textureContainer) => {
 });
 
 const closeIcon = document.querySelector(".close-icon");
+const closeStickerIcon = document.querySelector(".close-icon-sticker");
 const appereanceControlIcon = document.querySelector(
   ".appearence-control-icon"
 );
+
+const stickerControlIcon = document.querySelector(".sticker-control-icon");
+const stickerControl = document.querySelector("#sticker-control");
+const addSticker = document.querySelector("#add-sticker");
+
+addSticker.addEventListener("click", () => {
+  isStickerOn = true;
+});
 
 closeIcon.addEventListener("click", () => {
   hideApperenaceControlMenu();
@@ -305,6 +319,14 @@ closeIcon.addEventListener("click", () => {
 
 appereanceControlIcon.addEventListener("click", () => {
   showApperenaceControlMenu();
+});
+
+closeStickerIcon.addEventListener("click", () => {
+  hideStickerControlMenu();
+});
+
+stickerControlIcon.addEventListener("click", () => {
+  showStickerControlMenu();
 });
 
 function hideApperenaceControlMenu() {
@@ -315,6 +337,16 @@ function hideApperenaceControlMenu() {
 function showApperenaceControlMenu() {
   appereanceControl.style.display = "flex";
   appereanceControlIcon.style.display = "none";
+}
+
+function hideStickerControlMenu() {
+  stickerControl.style.display = "none";
+  stickerControlIcon.style.display = "flex";
+}
+
+function showStickerControlMenu() {
+  stickerControl.style.display = "flex";
+  stickerControlIcon.style.display = "none";
 }
 
 const refresh = document.querySelector("#refresh");

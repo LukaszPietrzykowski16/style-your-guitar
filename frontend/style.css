@@ -206,7 +206,8 @@ canvas {
   right: 8px;
 }
 
-.appearence-control-icon {
+.appearence-control-icon,
+.close-icon-sticker {
   font-size: 10px;
   display: flex;
   align-items: center;
@@ -214,6 +215,17 @@ canvas {
   flex-direction: column;
   position: absolute;
   right: 10px;
+  opacity: 1;
+}
+
+.sticker-control-icon {
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  left: 10px;
   opacity: 1;
 }
 
@@ -235,6 +247,21 @@ canvas {
   width: 300px;
   position: absolute;
   right: 20px;
+  background-color: #7c7c7c;
+  color: white;
+  border-radius: 16px;
+}
+
+#sticker-control {
+  display: none;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  height: 60%;
+  width: 300px;
+  position: absolute;
+  left: 20px;
   background-color: #7c7c7c;
   color: white;
   border-radius: 16px;
