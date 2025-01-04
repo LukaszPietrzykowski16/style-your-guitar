@@ -56,6 +56,7 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 const helper = new THREE.Object3D();
 const loader = new GLTFLoader();
+const textureLoader = new THREE.TextureLoader();
 
 window.addEventListener(
   "resize",
@@ -305,12 +306,6 @@ const appereanceControlIcon = document.querySelector(
 
 const stickerControlIcon = document.querySelector(".sticker-control-icon");
 const stickerControl = document.querySelector("#sticker-control");
-const addSticker = document.querySelector("#add-sticker");
-
-addSticker.addEventListener("click", () => {
-  isStickerOn = true;
-});
-
 const stickerContainer = document.querySelector(".sticker-container");
 
 stickerContainer.childNodes.forEach((stickerContainer) => {
