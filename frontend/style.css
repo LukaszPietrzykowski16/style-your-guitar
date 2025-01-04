@@ -173,7 +173,8 @@ canvas {
   border: 1px black solid;
 }
 
-.texture-container {
+.texture-container,
+.sticker-container {
   overflow-x: hidden;
   display: flex;
   flex-wrap: wrap;

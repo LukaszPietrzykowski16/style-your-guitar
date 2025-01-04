@@ -19,9 +19,7 @@ const metalness = document.querySelector("#metalness");
 let isMenuOpen = false;
 let isStickerOn = false;
 let intersectedObject = {};
-
-const textureLoader = new THREE.TextureLoader();
-const stickerTexture = textureLoader.load("public/stop.jpg");
+let selectedSticker = {};
 
 // cameraControls(camera);
 
@@ -131,7 +129,7 @@ function applySticker(position, normal, object) {
     polygonOffset: true,
     polygonOffsetFactor: -1,
     transparent: true,
-    map: stickerTexture,
+    map: selectedSticker,
     specular: 0x444444,
     wireframe: false,
   });
@@ -311,6 +309,24 @@ const addSticker = document.querySelector("#add-sticker");
 
 addSticker.addEventListener("click", () => {
   isStickerOn = true;
+});
+
+const stickerContainer = document.querySelector(".sticker-container");
+
+stickerContainer.childNodes.forEach((stickerContainer) => {
+  stickerContainer.addEventListener("click", (event) => {
+    const clickedElement = event.target;
+    const style = window.getComputedStyle(clickedElement);
+    const backgroundImage = style.backgroundImage;
+    const urlMatch = backgroundImage.match(
+      /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
+    );
+    if (urlMatch[2]) {
+      const clickedSticker = textureLoader.load(urlMatch[2]);
+      selectedSticker = clickedSticker;
+      isStickerOn = true;
+    }
+  });
 });
 
 closeIcon.addEventListener("click", () => {
