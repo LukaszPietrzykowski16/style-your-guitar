@@ -166,9 +166,10 @@ loader.load(
       }
     });
 
-    scene.add(gltf.scene);
+    scene.add(guitar);
+    isModelLoaded(guitar);
 
-    const targetPart = gltf.scene.getObjectByName(guitarBody);
+    const targetPart = guitar.getObjectByName(guitarBody);
     if (targetPart) {
       camera.lookAt(targetPart.getWorldPosition(new THREE.Vector3()));
     }
@@ -364,3 +365,25 @@ const refresh = document.querySelector("#refresh");
 refresh.addEventListener("click", () => {
   location.reload();
 });
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  console.log("DOM fully loaded and parsed");
+});
+
+function isModelLoaded(model) {
+  const frustum = new THREE.Frustum();
+  const cameraViewProjectionMatrix = new THREE.Matrix4().multiplyMatrices(
+    camera.projectionMatrix,
+    camera.matrixWorldInverse
+  );
+  const boundingBox = new THREE.Box3().setFromObject(model);
+  const boundingSphere = new THREE.Sphere();
+  boundingBox.getBoundingSphere(boundingSphere);
+  frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
+  console.log(frustum.intersectsObject(boundingSphere));
+  if (frustum.intersectsObject(model)) {
+    console.log("Model is visible");
+  } else {
+    console.log("Model is not visible");
+  }
+}
