@@ -179,13 +179,31 @@ loader.load(
     const precentageLoaded = xhr.loaded / xhr.total;
     const LOADED = 1;
     isLoading = true;
-    if (precentageLoaded === LOADED) isLoading = false;
+    if (precentageLoaded === LOADED) {
+      isLoading = false;
+      removeLoader();
+    }
   },
   undefined,
   (error) => {
     console.error(error);
   }
 );
+
+function removeLoader() {
+  const loaderContainer = document.querySelector(".loader-container");
+
+  // to do animate this
+
+  // loaderContainer.animate([
+  //   {transorm: "translateX(0px)"}
+  // ])
+  // loaderContainer.style.display = "none";
+}
+
+function addLoader() {
+  document.querySelector(".loader-container").style.display = "flex";
+}
 
 // scene.add(helpers.axesHelper);
 
