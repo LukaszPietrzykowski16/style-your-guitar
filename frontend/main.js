@@ -18,6 +18,7 @@ const metalness = document.querySelector("#metalness");
 
 let isMenuOpen = false;
 let isStickerOn = false;
+let isLoading = false;
 let intersectedObject = {};
 let selectedSticker = {};
 
@@ -174,8 +175,14 @@ loader.load(
       camera.lookAt(targetPart.getWorldPosition(new THREE.Vector3()));
     }
   },
+  (xhr) => {
+    const precentageLoaded = xhr.loaded / xhr.total;
+    const LOADED = 1;
+    isLoading = true;
+    if (precentageLoaded === LOADED) isLoading = false;
+  },
   undefined,
-  function (error) {
+  (error) => {
     console.error(error);
   }
 );
