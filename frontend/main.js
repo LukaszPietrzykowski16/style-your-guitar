@@ -72,10 +72,10 @@ window.addEventListener(
 
 function animate() {
   requestAnimationFrame(animate);
-  console.log(`Camera Position:
-    x: ${camera.position.x}
-    y: ${camera.position.y}
-    z: ${camera.position.z}`);
+  // console.log(`Camera Position:
+  //   x: ${camera.position.x}
+  //   y: ${camera.position.y}
+  //   z: ${camera.position.z}`);
   helpers.controls.update();
 
   render();
@@ -168,7 +168,7 @@ loader.load(
     });
 
     scene.add(guitar);
-    isModelLoaded(guitar);
+    // isModelLoaded(guitar);
 
     const targetPart = guitar.getObjectByName(guitarBody);
     if (targetPart) {
@@ -193,13 +193,26 @@ loader.load(
 function removeLoader() {
   const loaderContainer = document.querySelector(".loader-container");
 
-  // to do animate this
+  setTimeout(() => {
+    loaderContainer.animate(
+      [
+        { clipPath: "circle(100% at center)", opacity: 1 },
+        { clipPath: "circle(5% at center)", opacity: 0, display: "none" },
+      ],
+      {
+        duration: 700,
+        easing: "ease-in-out",
+        fill: "forwards",
+      }
+    );
+  }, 700); // 2000 ms = 2 sekundy
 
-  // loaderContainer.animate([
-  //   {transorm: "translateX(0px)"}
-  // ])
-  // loaderContainer.style.display = "none";
+  // setTimeout(() => {
+  //   loaderContainer.style.display = "none";
+  // }, 1000); // Czas trwania animacji
 }
+
+// window.addEventListener("DOMContentLoaded", prewarmLoader);
 
 function addLoader() {
   document.querySelector(".loader-container").style.display = "flex";
@@ -278,8 +291,6 @@ function addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
 }
 
 function addTemporaryGlow() {
-  console.log(intersectedObject);
-
   const glowMesh = addHaloGlow(intersectedObject, 0xffffff, 1, 8);
 
   scene.add(glowMesh);
@@ -390,25 +401,3 @@ const refresh = document.querySelector("#refresh");
 refresh.addEventListener("click", () => {
   location.reload();
 });
-
-document.addEventListener("DOMContentLoaded", (event) => {
-  console.log("DOM fully loaded and parsed");
-});
-
-function isModelLoaded(model) {
-  const frustum = new THREE.Frustum();
-  const cameraViewProjectionMatrix = new THREE.Matrix4().multiplyMatrices(
-    camera.projectionMatrix,
-    camera.matrixWorldInverse
-  );
-  const boundingBox = new THREE.Box3().setFromObject(model);
-  const boundingSphere = new THREE.Sphere();
-  boundingBox.getBoundingSphere(boundingSphere);
-  frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
-  console.log(frustum.intersectsObject(boundingSphere));
-  if (frustum.intersectsObject(model)) {
-    console.log("Model is visible");
-  } else {
-    console.log("Model is not visible");
-  }
-}
