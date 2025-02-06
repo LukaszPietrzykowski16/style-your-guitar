@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import "./style.css";
-// import { cameraControls } from "./camera-controls";
+import { cameraControls } from "./camera-controls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Camera } from "./camera";
 import { Helpers } from "./helpers";
 import { Renderer } from "./renderer";
+import { Light } from "./light";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
 
 const scene = new THREE.Scene();
@@ -13,51 +14,29 @@ const camera = Camera();
 const renderer = Renderer();
 const helpers = Helpers(camera, renderer);
 
-const roughness = document.querySelector("#roughness");
-const metalness = document.querySelector("#metalness");
-
-let isMenuOpen = false;
 let isStickerOn = false;
 let isLoading = false;
 let intersectedObject = {};
 let selectedSticker = {};
-
-// cameraControls(camera);
-
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight.position.set(0, 0, 8);
-const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight2.position.set(0, 0, -8);
-const directionalLight3 = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight3.position.set(
-  -9.947420066907123,
-  -1.019879765564146,
-  -0.09316263352782056
-);
-const directionalLight4 = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight4.position.set(
-  9.981306658855566,
-  -0.4765927811330809,
-  0.3825920841538427
-);
-const directionalLight5 = new THREE.DirectionalLight(0xffffff, 1);
-
-directionalLight5.position.set(
-  -0.1268484876457273,
-  -5.6404379973057175,
-  0.7229959592571308
-);
-scene.add(directionalLight);
-scene.add(directionalLight2);
-scene.add(directionalLight3);
-scene.add(directionalLight4);
-scene.add(directionalLight5);
-
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 const helper = new THREE.Object3D();
 const loader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
+const lightPositions = [
+  [0, 0, 8],
+  [0, 0, -8],
+  [-9.947420066907123, -1.019879765564146, -0.09316263352782056],
+  [9.981306658855566, -0.4765927811330809, 0.3825920841538427],
+  [-0.1268484876457273, -5.6404379973057175, 0.7229959592571308],
+];
+
+lightPositions.forEach(([x, y, z]) => {
+  const light = new Light().initDirectionalLight(x, y, z);
+  scene.add(light);
+});
+
+cameraControls(camera);
 
 window.addEventListener(
   "resize",
@@ -72,10 +51,10 @@ window.addEventListener(
 
 function animate() {
   requestAnimationFrame(animate);
-  // console.log(`Camera Position:
-  //   x: ${camera.position.x}
-  //   y: ${camera.position.y}
-  //   z: ${camera.position.z}`);
+  console.log(`Camera Position:
+    x: ${camera.position.x}
+    y: ${camera.position.y}
+    z: ${camera.position.z}`);
   helpers.controls.update();
 
   render();
@@ -205,17 +184,7 @@ function removeLoader() {
         fill: "forwards",
       }
     );
-  }, 700); // 2000 ms = 2 sekundy
-
-  // setTimeout(() => {
-  //   loaderContainer.style.display = "none";
-  // }, 1000); // Czas trwania animacji
-}
-
-// window.addEventListener("DOMContentLoaded", prewarmLoader);
-
-function addLoader() {
-  document.querySelector(".loader-container").style.display = "flex";
+  }, 700);
 }
 
 // scene.add(helpers.axesHelper);
