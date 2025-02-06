@@ -370,3 +370,55 @@ const refresh = document.querySelector("#refresh");
 refresh.addEventListener("click", () => {
   location.reload();
 });
+
+// my first shader
+
+const vertexShader = `
+  void main() {
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+// Fragment shader
+const fragmentShader = `
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+  uniform float uTime;
+  uniform vec2 uResolution;
+
+  void main() {
+    vec2 uv = gl_FragCoord.xy / uResolution; 
+
+    vec3 uv3 = vec3(uv.x, uv.y, 1.0);
+
+    vec3 color = mix(vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0), uv.y);
+
+    	  gl_FragColor = vec4(color, 1.0);
+  }
+`;
+
+const uniforms = {
+  uTime: { value: 0 },
+  uResolution: {
+    value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+  },
+};
+
+const material = new THREE.ShaderMaterial({
+  vertexShader,
+  fragmentShader,
+  uniforms,
+  side: THREE.DoubleSide,
+  depthWrite: false,
+});
+
+// const material = new THREE.MeshBasicMaterial({
+//   color: 0x00ff00, // Set initial color
+//   side: THREE.DoubleSide,
+// });
+
+const geometry = new THREE.PlaneGeometry(20, 20);
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
