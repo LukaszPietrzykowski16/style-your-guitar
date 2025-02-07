@@ -8,18 +8,18 @@ import { Light } from "./core/light";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
 import { windowResizeHandler } from "./controls/window-controls";
 import { gltfLoader } from "./models/gltf-loader/gltf-loader";
+import { Guitar } from "./models/guitar/guitar";
 
 const scene = new THREE.Scene();
 const camera = Camera();
 const renderer = Renderer();
 const helpers = Helpers(camera, renderer);
+const guitar = new Guitar(scene, camera);
 
 let isStickerOn = false;
 let isLoading = false;
 let intersectedObject = {};
 let selectedSticker = {};
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
 const helper = new THREE.Object3D();
 
 const textureLoader = new THREE.TextureLoader();
@@ -49,43 +49,6 @@ function animate() {
 
   render();
 }
-
-const canvas = document.querySelector("canvas");
-canvas.addEventListener(
-  "click",
-  (event) => {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObjects(scene.children, true);
-
-    const position = intersects[0].point;
-
-    intersectedObject = { ...intersectedObject, ...intersects[0].object };
-
-    if (isStickerOn) {
-      isStickerOn = false;
-      applySticker(position, intersects[0].face.normal, intersectedObject);
-      return;
-    }
-
-    addTemporaryGlow();
-
-    appereanceControlIcon.style.display = "none";
-    showApperenaceControlMenu();
-    updateActiveElement();
-
-    // helper.position.copy(intersects[0].point);
-    // helper.lookAt(n);
-
-    // let n = intersects[0].face.normal.clone();
-
-    // n.add(intersects[0].point);
-  },
-  false
-);
 
 export function render() {
   renderer.setClearColor(0x2b2b2b, 1);
@@ -117,8 +80,6 @@ function applySticker(position, normal, object) {
 }
 
 animate();
-
-gltfLoader(scene, camera);
 
 export function removeLoader() {
   const loaderContainer = document.querySelector(".loader-container");
@@ -190,53 +151,6 @@ colorsContainer.childNodes.forEach((colorContainer) => {
     intersectedObject.material.color.set(selectedColor);
   });
 });
-
-function addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
-  const glowGeometry = object.geometry.clone();
-  const glowMaterial = new THREE.MeshBasicMaterial({
-    color: glowColor,
-    transparent: true,
-    opacity: glowIntensity,
-    blending: THREE.AdditiveBlending,
-    depthTest: false,
-  });
-
-  const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
-  glowMesh.scale.multiplyScalar(sizeMultiplier);
-  glowMesh.position.copy(object.position);
-  glowMesh.rotation.copy(object.rotation);
-  glowMesh.position.y = 0.1;
-
-  return glowMesh;
-}
-
-function addTemporaryGlow() {
-  const glowMesh = addHaloGlow(intersectedObject, 0xffffff, 1, 8);
-
-  scene.add(glowMesh);
-
-  fadeOutGlow(glowMesh, 800);
-}
-
-function fadeOutGlow(glowMesh, duration) {
-  const startTime = performance.now();
-
-  function animateGlow() {
-    const elapsed = performance.now() - startTime;
-    const progress = elapsed / duration;
-
-    if (progress < 1) {
-      glowMesh.material.opacity = 0.5 * (1 - progress);
-      requestAnimationFrame(animateGlow);
-    } else {
-      scene.remove(glowMesh);
-      glowMesh.geometry.dispose();
-      glowMesh.material.dispose();
-    }
-  }
-
-  animateGlow();
-}
 
 const texturesContainer = document.querySelector(".texture-container");
 
