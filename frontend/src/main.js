@@ -7,9 +7,9 @@ import { Helpers } from "./utils/helpers";
 import { Renderer } from "./core/renderer";
 import { Light } from "./core/light";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
+import { windowResizeHandler } from "./controls/window-controls";
 
 const scene = new THREE.Scene();
-
 const camera = Camera();
 const renderer = Renderer();
 const helpers = Helpers(camera, renderer);
@@ -37,17 +37,7 @@ lightPositions.forEach(([x, y, z]) => {
 });
 
 cameraControls(camera);
-
-window.addEventListener(
-  "resize",
-  () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    render();
-  },
-  false
-);
+windowResizeHandler(renderer);
 
 function animate() {
   requestAnimationFrame(animate);
@@ -97,7 +87,7 @@ canvas.addEventListener(
   false
 );
 
-function render() {
+export function render() {
   renderer.setClearColor(0x2b2b2b, 1);
   renderer.render(scene, camera);
 }
