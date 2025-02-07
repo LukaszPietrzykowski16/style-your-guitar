@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import "./style.css";
-import { cameraControls } from "./camera-controls";
+import "./styles/style.css";
+import { cameraControls } from "./controls/camera-controls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { Camera } from "./camera";
-import { Helpers } from "./helpers";
-import { Renderer } from "./renderer";
-import { Light } from "./light";
+import { Camera } from "./core/camera";
+import { Helpers } from "./utils/helpers";
+import { Renderer } from "./core/renderer";
+import { Light } from "./core/light";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
 
 const scene = new THREE.Scene();
@@ -179,12 +179,12 @@ function removeLoader() {
         { clipPath: "circle(5% at center)", opacity: 0, display: "none" },
       ],
       {
-        duration: 700,
+        duration: 10,
         easing: "ease-in-out",
         fill: "forwards",
       }
     );
-  }, 700);
+  }, 0);
 }
 
 // scene.add(helpers.axesHelper);
@@ -388,14 +388,19 @@ precision mediump float;
   uniform float uTime;
   uniform vec2 uResolution;
 
+  float plot(vec2 st){
+    return smoothstep(0.02, 0.0, abs(st.y - st.x));
+  }
+
   void main() {
     vec2 uv = gl_FragCoord.xy / uResolution; 
 
-    vec3 uv3 = vec3(uv.x, uv.y, 1.0);
+    vec3 uv3 = vec3(uv.x, uv.y,1.0);
 
+    float pct = plot(uv);
     vec3 color = mix(vec3(1.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0), uv.y);
 
-    	  gl_FragColor = vec4(color, 1.0);
+    	  gl_FragColor = vec4(color + pct, 1.0);
   }
 `;
 
