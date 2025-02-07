@@ -18,7 +18,6 @@ const guitar = new Guitar(scene, camera);
 
 let isStickerOn = false;
 let isLoading = false;
-let intersectedObject = {};
 let selectedSticker = {};
 const helper = new THREE.Object3D();
 
@@ -37,7 +36,17 @@ lightPositions.forEach(([x, y, z]) => {
 });
 
 cameraControls(camera);
-windowResizeHandler(renderer);
+// windowResizeHandler(renderer);
+window.addEventListener(
+  "resize",
+  () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    render();
+  },
+  false
+);
 
 function animate() {
   requestAnimationFrame(animate);
@@ -101,73 +110,7 @@ export function removeLoader() {
 
 // scene.add(helpers.axesHelper);
 
-const guitarElements = document.querySelectorAll("#guitar-elements");
-
-guitarElements.forEach((guitarElement) => {
-  guitarElement.addEventListener("click", (element) => {
-    const searchedelement = scene.getObjectByName(element.target.id);
-    intersectedObject = { ...intersectedObject, ...searchedelement };
-
-    updateActiveElement(intersectedObject.name);
-  });
-});
-
-function updateActiveElement() {
-  const activeElement = document.querySelector("#active-element");
-  const colorInput = document.querySelector("#color-picker");
-  const roughnessInput = document.querySelector("#roughness");
-  const metalnessInput = document.querySelector("#metalness");
-
-  colorInput.value = `#${intersectedObject.material.color.getHexString()}`;
-
-  roughnessInput.value = intersectedObject.material.roughness;
-  metalnessInput.value = intersectedObject.material.metalness;
-
-  activeElement.innerHTML = `Active element: ${intersectedObject.name}`;
-}
-
-const colorInput = document.getElementById("color-picker");
-colorInput.addEventListener("input", function (event) {
-  intersectedObject.material.color.set(event.target.value);
-});
-
-const roughnessInput = document.querySelector("#roughness");
-roughnessInput.addEventListener("input", function (event) {
-  intersectedObject.material.roughness = event.target.value;
-});
-
-const metalnessInput = document.querySelector("#metalness");
-metalnessInput.addEventListener("input", function (event) {
-  intersectedObject.material.metalness = event.target.value;
-});
-
 const appereanceControl = document.querySelector("#appearence-control");
-
-const colorsContainer = document.querySelector(".colors-container");
-
-colorsContainer.childNodes.forEach((colorContainer) => {
-  colorContainer.addEventListener("click", (event) => {
-    const selectedColor = event.target.getAttribute("value");
-    intersectedObject.material.color.set(selectedColor);
-  });
-});
-
-const texturesContainer = document.querySelector(".texture-container");
-
-texturesContainer.childNodes.forEach((textureContainer) => {
-  textureContainer.addEventListener("click", (event) => {
-    const clickedElement = event.target;
-    const style = window.getComputedStyle(clickedElement);
-    const backgroundImage = style.backgroundImage;
-    const urlMatch = backgroundImage.match(
-      /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
-    );
-    if (urlMatch[2]) {
-      const clickedTexture = textureLoader.load(urlMatch[2]);
-      intersectedObject.material.map = clickedTexture;
-    }
-  });
-});
 
 const closeIcon = document.querySelector(".close-icon");
 const closeStickerIcon = document.querySelector(".close-icon-sticker");
@@ -216,7 +159,7 @@ function hideApperenaceControlMenu() {
   appereanceControlIcon.style.display = "flex";
 }
 
-function showApperenaceControlMenu() {
+export function showApperenaceControlMenu() {
   appereanceControl.style.display = "flex";
   appereanceControlIcon.style.display = "none";
 }

@@ -1,9 +1,11 @@
 import { gltfLoader } from "../gltf-loader/gltf-loader";
 import * as THREE from "three";
+import { showApperenaceControlMenu } from "../../main";
 
 export class Guitar {
   raycaster = new THREE.Raycaster();
   mouse = new THREE.Vector2();
+  textureLoader = new THREE.TextureLoader();
   camera;
   scene;
 
@@ -16,6 +18,10 @@ export class Guitar {
     this.scene = scene;
     gltfLoader(scene, camera);
     this.initListningForClick();
+    this.mapGuitarElements();
+    this.initListiningForInput();
+    this.initListiningForColorContainer();
+    this.initListiningForTextureContainer();
   }
 
   initListningForClick() {
@@ -51,7 +57,7 @@ export class Guitar {
 
         // appereanceControlIcon.style.display = "none";
         showApperenaceControlMenu();
-        updateActiveElement();
+        this.updateActiveElement();
       },
       false
     );
@@ -102,5 +108,83 @@ export class Guitar {
     }
 
     animateGlow();
+  }
+
+  // move all to the ui
+  updateActiveElement() {
+    const activeElement = document.querySelector("#active-element");
+    const colorInput = document.querySelector("#color-picker");
+    const roughnessInput = document.querySelector("#roughness");
+    const metalnessInput = document.querySelector("#metalness");
+
+    colorInput.value = `#${this.intersectedObject.material.color.getHexString()}`;
+
+    roughnessInput.value = this.intersectedObject.material.roughness;
+    metalnessInput.value = this.intersectedObject.material.metalness;
+
+    activeElement.innerHTML = `Active element: ${this.intersectedObject.name}`;
+  }
+
+  mapGuitarElements() {
+    const guitarElements = document.querySelectorAll("#guitar-elements");
+
+    guitarElements.forEach((guitarElement) => {
+      guitarElement.addEventListener("click", (element) => {
+        const searchedelement = this.scene.getObjectByName(element.target.id);
+        this.intersectedObject = {
+          ...this.intersectedObject,
+          ...searchedelement,
+        };
+
+        updateActiveElement(this.intersectedObject.name);
+      });
+    });
+  }
+
+  initListiningForInput() {
+    const colorInput = document.getElementById("color-picker");
+    colorInput.addEventListener("input", function (event) {
+      this.intersectedObject.material.color.set(event.target.value);
+    });
+
+    const roughnessInput = document.querySelector("#roughness");
+    roughnessInput.addEventListener("input", function (event) {
+      this.intersectedObject.material.roughness = event.target.value;
+    });
+
+    const metalnessInput = document.querySelector("#metalness");
+    metalnessInput.addEventListener("input", function (event) {
+      this.intersectedObject.material.metalness = event.target.value;
+    });
+  }
+
+  initListiningForColorContainer() {
+    const colorsContainer = document.querySelector(".colors-container");
+
+    colorsContainer.childNodes.forEach((colorContainer) => {
+      colorContainer.addEventListener("click", (event) => {
+        const selectedColor = event.target.getAttribute("value");
+        this.intersectedObject.material.color.set(selectedColor);
+      });
+    });
+  }
+
+  initListiningForTextureContainer() {
+    const texturesContainer = document.querySelector(".texture-container");
+
+    texturesContainer.childNodes.forEach((textureContainer) => {
+      textureContainer.addEventListener("click", (event) => {
+        const clickedElement = event.target;
+        const style = window.getComputedStyle(clickedElement);
+        const backgroundImage = style.backgroundImage;
+        const urlMatch = backgroundImage.match(
+          /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
+        );
+        if (urlMatch[2]) {
+          const clickedTexture = this.textureLoader.load(urlMatch[2]);
+          this.intersectedObject.material.map = clickedTexture;
+        }
+      });
+    });
   }
 }
