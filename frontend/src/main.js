@@ -1,13 +1,13 @@
 import * as THREE from "three";
 import "./styles/style.css";
 import { cameraControls } from "./controls/camera-controls";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Camera } from "./core/camera";
 import { Helpers } from "./utils/helpers";
 import { Renderer } from "./core/renderer";
 import { Light } from "./core/light";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
 import { windowResizeHandler } from "./controls/window-controls";
+import { gltfLoader } from "./models/gltf-loader/gltf-loader";
 
 const scene = new THREE.Scene();
 const camera = Camera();
@@ -21,7 +21,7 @@ let selectedSticker = {};
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 const helper = new THREE.Object3D();
-const loader = new GLTFLoader();
+
 const textureLoader = new THREE.TextureLoader();
 const lightPositions = [
   [0, 0, 8],
@@ -118,48 +118,9 @@ function applySticker(position, normal, object) {
 
 animate();
 
-loader.load(
-  "public/guitar-extra-gltf.gltf",
-  (gltf) => {
-    const guitar = gltf.scene;
-    const guitarBody = "GUITAR";
+gltfLoader(scene, camera);
 
-    guitar.traverse((node) => {
-      if (node.isMesh) {
-        node.geometry.rotateX(1.5);
-        node.geometry.rotateY(0);
-        node.geometry.rotateZ(1.555);
-      }
-      if (node.isMesh && node.name === guitarBody) {
-        // node.material.color.setHex(0xff0000);
-        node.geometry.computeVertexNormals();
-      }
-    });
-
-    scene.add(guitar);
-    // isModelLoaded(guitar);
-
-    const targetPart = guitar.getObjectByName(guitarBody);
-    if (targetPart) {
-      camera.lookAt(targetPart.getWorldPosition(new THREE.Vector3()));
-    }
-  },
-  (xhr) => {
-    const precentageLoaded = xhr.loaded / xhr.total;
-    const LOADED = 1;
-    isLoading = true;
-    if (precentageLoaded === LOADED) {
-      isLoading = false;
-      removeLoader();
-    }
-  },
-  undefined,
-  (error) => {
-    console.error(error);
-  }
-);
-
-function removeLoader() {
+export function removeLoader() {
   const loaderContainer = document.querySelector(".loader-container");
 
   setTimeout(() => {
