@@ -6,15 +6,15 @@ import { Helpers } from "./utils/helpers";
 import { Renderer } from "./core/renderer";
 import { Light } from "./core/light";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
-import { windowResizeHandler } from "./controls/window-controls";
-import { gltfLoader } from "./models/gltf-loader/gltf-loader";
 import { Guitar } from "./models/guitar/guitar";
+import { UiController } from "./ui/ui-controler";
 
 const scene = new THREE.Scene();
 const camera = Camera();
 const renderer = Renderer();
 const helpers = Helpers(camera, renderer);
 const guitar = new Guitar(scene, camera);
+const uiControler = new UiController(guitar);
 
 let isStickerOn = false;
 let isLoading = false;
