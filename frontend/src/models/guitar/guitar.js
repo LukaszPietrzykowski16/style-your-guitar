@@ -1,16 +1,21 @@
 import { gltfLoader } from "../gltf-loader/gltf-loader";
 import * as THREE from "three";
-import { showApperenaceControlMenu } from "../../main";
+import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
 
 export class Guitar {
   raycaster = new THREE.Raycaster();
   mouse = new THREE.Vector2();
   textureLoader = new THREE.TextureLoader();
-  camera;
-  scene;
+  helper = new THREE.Object3D();
 
+  camera = {};
+  scene = {};
   intersectedObject = {};
+  selectedSticker = {};
+  isStickerOn = false;
 
+  appereanceControl = document.querySelector("#appearence-control");
+  appereanceControlIcon = document.querySelector(".appearence-control-icon");
   canvas = document.querySelector("canvas");
 
   constructor(scene, camera) {
@@ -18,6 +23,25 @@ export class Guitar {
     this.scene = scene;
     gltfLoader(scene, camera);
     this.initListningForClick();
+  }
+
+  addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
+    const glowGeometry = object.geometry.clone();
+    const glowMaterial = new THREE.MeshBasicMaterial({
+      color: glowColor,
+      transparent: true,
+      opacity: glowIntensity,
+      blending: THREE.AdditiveBlending,
+      depthTest: false,
+    });
+
+    const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+    glowMesh.scale.multiplyScalar(sizeMultiplier);
+    glowMesh.position.copy(object.position);
+    glowMesh.rotation.copy(object.rotation);
+    glowMesh.position.y = 0.1;
+
+    return glowMesh;
   }
 
   initListningForClick() {
@@ -39,42 +63,24 @@ export class Guitar {
           ...intersects[0].object,
         };
 
-        // if (isStickerOn) {
-        //   isStickerOn = false;
-        //   applySticker(
-        //     position,
-        //     intersects[0].face.normal,
-        //     this.intersectedObject
-        //   );
-        //   return;
-        // }
+        if (this.isStickerOn) {
+          this.isStickerOn = false;
+          this.applySticker(
+            position,
+            intersects[0].face.normal,
+            this.intersectedObject
+          );
+          return;
+        }
 
         this.addTemporaryGlow();
 
-        // appereanceControlIcon.style.display = "none";
-        showApperenaceControlMenu();
+        // that needs to go to ui's
+        this.appereanceControl.style.display = "flex";
+        this.appereanceControlIcon.style.display = "none";
       },
       false
     );
-  }
-
-  addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
-    const glowGeometry = object.geometry.clone();
-    const glowMaterial = new THREE.MeshBasicMaterial({
-      color: glowColor,
-      transparent: true,
-      opacity: glowIntensity,
-      blending: THREE.AdditiveBlending,
-      depthTest: false,
-    });
-
-    const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
-    glowMesh.scale.multiplyScalar(sizeMultiplier);
-    glowMesh.position.copy(object.position);
-    glowMesh.rotation.copy(object.rotation);
-    glowMesh.position.y = 0.1;
-
-    return glowMesh;
   }
 
   addTemporaryGlow() {
@@ -127,5 +133,35 @@ export class Guitar {
   updateIntersectedObjectTexture(texture) {
     const clickedTexture = this.textureLoader.load(texture);
     this.intersectedObject.material.map = clickedTexture;
+  }
+
+  applySticker(position, normal, object) {
+    const decalMaterial = new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      depthWrite: false,
+      depthTest: true,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      transparent: true,
+      map: this.selectedSticker,
+      specular: 0x444444,
+      wireframe: false,
+    });
+
+    const decalGeometry = new DecalGeometry(
+      this.intersectedObject,
+      position,
+      this.helper.rotation,
+      new THREE.Vector3(0.5, 0.5, 0.5)
+    );
+
+    const decalMesh = new THREE.Mesh(decalGeometry, decalMaterial);
+    this.scene.add(decalMesh);
+  }
+
+  putStickerOnTheGuitar(sticker) {
+    const clickedSticker = this.textureLoader.load(sticker);
+    this.selectedSticker = clickedSticker;
+    this.isStickerOn = true;
   }
 }

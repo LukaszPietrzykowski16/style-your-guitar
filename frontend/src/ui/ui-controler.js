@@ -1,5 +1,5 @@
 export class UiController {
-  guitar;
+  guitar = {};
 
   colorInput = document.querySelector("#color-picker");
   roughnessInput = document.querySelector("#roughness");
@@ -7,6 +7,15 @@ export class UiController {
   guitarElements = document.querySelectorAll("#guitar-elements");
   colorsContainer = document.querySelector(".colors-container");
   texturesContainer = document.querySelector(".texture-container");
+  appereanceControl = document.querySelector("#appearence-control");
+  closeIcon = document.querySelector(".close-icon");
+  closeStickerIcon = document.querySelector(".close-icon-sticker");
+  appereanceControlIcon = document.querySelector(".appearence-control-icon");
+  stickerControlIcon = document.querySelector(".sticker-control-icon");
+  stickerControl = document.querySelector("#sticker-control");
+  stickerContainer = document.querySelector(".sticker-container");
+  refresh = document.querySelector("#refresh");
+  loaderContainer = document.querySelector(".loader-container");
 
   constructor(guitar) {
     this.guitar = guitar;
@@ -18,6 +27,9 @@ export class UiController {
     this.initListiningForInput();
     this.initListiningForColorContainer();
     this.initListiningForTextureContainer();
+    this.initLoader();
+    this.stickerInit();
+    this.initListingForIcons();
   }
 
   updateActiveElement() {
@@ -74,5 +86,78 @@ export class UiController {
         }
       });
     });
+  }
+
+  initLoader() {
+    setTimeout(() => {
+      this.loaderContainer.animate(
+        [
+          { clipPath: "circle(100% at center)", opacity: 1 },
+          { clipPath: "circle(5% at center)", opacity: 0, display: "none" },
+        ],
+        {
+          duration: 1000,
+          easing: "ease-in-out",
+          fill: "forwards",
+        }
+      );
+    }, 700);
+  }
+
+  stickerInit() {
+    this.stickerContainer.childNodes.forEach((stickerContainer) => {
+      stickerContainer.addEventListener("click", (event) => {
+        const clickedElement = event.target;
+        const style = window.getComputedStyle(clickedElement);
+        const backgroundImage = style.backgroundImage;
+        const urlMatch = backgroundImage.match(
+          /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
+        );
+        if (urlMatch[2]) {
+          this.guitar.putStickerOnTheGuitar(urlMatch[2]);
+        }
+      });
+    });
+  }
+  initListingForIcons() {
+    this.closeIcon.addEventListener("click", () => {
+      this.hideApperenaceControlMenu();
+    });
+
+    this.appereanceControlIcon.addEventListener("click", () => {
+      this.showApperenaceControlMenu();
+    });
+
+    this.closeStickerIcon.addEventListener("click", () => {
+      this.hideStickerControlMenu();
+    });
+
+    this.stickerControlIcon.addEventListener("click", () => {
+      this.showStickerControlMenu();
+    });
+
+    this.refresh.addEventListener("click", () => {
+      location.reload();
+    });
+  }
+
+  hideApperenaceControlMenu() {
+    this.appereanceControl.style.display = "none";
+    this.appereanceControlIcon.style.display = "flex";
+  }
+
+  showApperenaceControlMenu() {
+    this.appereanceControl.style.display = "flex";
+    this.appereanceControlIcon.style.display = "none";
+  }
+
+  hideStickerControlMenu() {
+    this.stickerControl.style.display = "none";
+    this.stickerControlIcon.style.display = "flex";
+  }
+
+  showStickerControlMenu() {
+    this.stickerControl.style.display = "flex";
+    this.stickerControlIcon.style.display = "none";
   }
 }

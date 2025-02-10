@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { removeLoader } from "../../main";
 
 export function gltfLoader(scene, camera) {
   const loader = new GLTFLoader();
@@ -29,7 +28,7 @@ export function gltfLoader(scene, camera) {
       }
     },
     (xhr) => {
-      removeLoader();
+      // removeLoader();
       //   const precentageLoaded = xhr.loaded / xhr.total;
       //   const LOADED = 1;
       //   isLoading = true;
