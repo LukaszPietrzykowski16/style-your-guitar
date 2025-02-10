@@ -52,6 +52,31 @@ export function render() {
 
 // my first shader
 
+const vertexShader = `
+`;
+
+const fragmentShader = `
+`;
+
+const uniforms = {
+  time: { value: 0 },
+  resolution: {
+    value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+  },
+};
+
+const material = new THREE.ShaderMaterial({
+  vertexShader,
+  fragmentShader,
+  uniforms,
+  side: THREE.DoubleSide,
+  depthWrite: false,
+});
+
+const geometry = new THREE.PlaneGeometry(30, 30);
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
 function animate() {
   requestAnimationFrame(animate);
   console.log(`Camera Position:
@@ -59,7 +84,7 @@ function animate() {
     y: ${camera.position.y}
     z: ${camera.position.z}`);
   helpers.controls.update();
-
+  uniforms.time.value = performance.now() * 0.001; // Przekazuje czas w sekundach
   render();
 }
 animate();
