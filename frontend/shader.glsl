@@ -7,7 +7,34 @@ precision mediump float;
 uniform vec2 u_resolution;
 uniform float iTime;
 
+// scene.add(helpers.axesHelper);
 
+  // my first shader
+
+  //  vertexShader = `
+  // `;
+
+  //  fragmentShader = `
+  // `;
+
+  //  uniforms = {
+  //   time: { value: 0 },
+  //   resolution: {
+  //     value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+  //   },
+  // };
+
+  //  material = new THREE.ShaderMaterial({
+  //   vertexShader,
+  //   fragmentShader,
+  //   uniforms,
+  //   side: THREE.DoubleSide,
+  //   depthWrite: false,
+  // });
+
+  //  geometry = new THREE.PlaneGeometry(30, 30);
+  //  mesh = new THREE.Mesh(geometry, material);
+  // scene.add(mesh);
 
 // circle
 float circle(in vec2 _st, in float _radius){
