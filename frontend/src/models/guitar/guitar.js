@@ -136,17 +136,17 @@ export class Guitar {
     this.intersectedObject.material.map = clickedTexture;
   }
 
-  initListningForRotate() {
-    document.addEventListener("click", () => {
-      const texture = this.intersectedObject.material.map;
-      if (texture) {
-        texture.center.set(0.5, 0.5);
-        texture.rotation += Math.PI / 4;
-        texture.repeat.multiplyScalar(1.5); // Zoom in (increase scale)
-        texture.needsUpdate = true;
-      }
-    });
-  }
+  // initListningForRotate() {
+  //   document.addEventListener("click", () => {
+  //     const texture = this.intersectedObject.material.map;
+  //     if (texture) {
+  //       texture.center.set(0.5, 0.5);
+  //       texture.rotation += Math.PI / 4;
+  //       texture.repeat.multiplyScalar(1.5);
+  //       texture.needsUpdate = true;
+  //     }
+  //   });
+  // }
 
   applySticker(position, normal, object) {
     const decalMaterial = new THREE.MeshPhongMaterial({
