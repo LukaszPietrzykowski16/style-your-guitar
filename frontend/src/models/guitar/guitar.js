@@ -23,7 +23,7 @@ export class Guitar {
     this.scene = scene;
     gltfLoader(scene, camera);
     this.initListningForClick();
-    this.initListningForRotate();
+    // this.initListningForRotate();
   }
 
   addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
