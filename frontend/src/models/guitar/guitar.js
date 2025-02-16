@@ -23,6 +23,7 @@ export class Guitar {
     this.scene = scene;
     gltfLoader(scene, camera);
     this.initListningForClick();
+    this.initListningForRotate();
   }
 
   addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
@@ -133,6 +134,18 @@ export class Guitar {
   updateIntersectedObjectTexture(texture) {
     const clickedTexture = this.textureLoader.load(texture);
     this.intersectedObject.material.map = clickedTexture;
+  }
+
+  initListningForRotate() {
+    document.addEventListener("click", () => {
+      const texture = this.intersectedObject.material.map;
+      if (texture) {
+        texture.center.set(0.5, 0.5);
+        texture.rotation += Math.PI / 4;
+        texture.repeat.multiplyScalar(1.5); // Zoom in (increase scale)
+        texture.needsUpdate = true;
+      }
+    });
   }
 
   applySticker(position, normal, object) {

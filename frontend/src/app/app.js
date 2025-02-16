@@ -17,7 +17,6 @@ export class App {
   uiControler = new UiController(this.guitar);
   isLoading = false;
 
-  textureLoader = new THREE.TextureLoader();
   lightPositions = [
     [0, 0, 8],
     [0, 0, -8],
@@ -57,7 +56,6 @@ export class App {
       () => {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
-        console.log(this.renderer);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.render();
       },
