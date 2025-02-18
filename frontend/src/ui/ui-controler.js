@@ -3,16 +3,17 @@ export class UiController {
 
   guitarElements = document.querySelectorAll("#guitar-elements");
   appereanceControl = document.querySelector("#appearence-control");
-  closeStickerIcon = document.querySelector(".close-icon-sticker");
   appereanceControlIcon = document.querySelector(".appearence-control-icon");
-  stickerControlIcon = document.querySelector(".sticker-control-icon");
   stickerControl = document.querySelector("#sticker-control");
-  stickerContainer = document.querySelector(".sticker-container");
   refresh = document.querySelector("#refresh");
   loaderContainer = document.querySelector(".loader-container");
   canvas = document.querySelector("canvas");
+  closeStickerIcon = document.querySelector(".close-icon-sticker");
+  stickerControlIcon = document.querySelector(".sticker-control-icon");
+  stickerContainer = document.querySelector(".sticker-container");
 
   isApperanceControlMenuGenerated = false;
+  isStickerControlMenuGenerated = false;
 
   constructor(guitar) {
     this.guitar = guitar;
@@ -24,7 +25,7 @@ export class UiController {
     this.mapGuitarElements();
     this.initListingForIcons();
     this.initMutationObserver();
-    this.stickerInit();
+    this.initMutationObserverSticker();
     this.initListningForClickOnModel();
   }
 
@@ -33,6 +34,37 @@ export class UiController {
     this.observer.observe(this.appereanceControl, {
       childList: true,
       subtree: true,
+    });
+  }
+
+  initMutationObserverSticker() {
+    this.observer = new MutationObserver(() => this.checkElementsSticker());
+    this.observer.observe(this.stickerControl, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  checkElementsSticker() {
+    const stickerContainer = document.querySelector(".sticker-container");
+    const closeStikcerIcon = document.querySelector(".close-icon-sticker");
+
+    stickerContainer.childNodes.forEach((stickerContainer) => {
+      stickerContainer.addEventListener("click", (event) => {
+        const clickedElement = event.target;
+        const style = window.getComputedStyle(clickedElement);
+        const backgroundImage = style.backgroundImage;
+        const urlMatch = backgroundImage.match(
+          /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
+        );
+        if (urlMatch[2]) {
+          this.guitar.putStickerOnTheGuitar(urlMatch[2]);
+        }
+      });
+    });
+
+    closeStikcerIcon.addEventListener("click", () => {
+      this.hideStickerControlMenu();
     });
   }
 
@@ -114,22 +146,6 @@ export class UiController {
     }, 700);
   }
 
-  stickerInit() {
-    this.stickerContainer.childNodes.forEach((stickerContainer) => {
-      stickerContainer.addEventListener("click", (event) => {
-        const clickedElement = event.target;
-        const style = window.getComputedStyle(clickedElement);
-        const backgroundImage = style.backgroundImage;
-        const urlMatch = backgroundImage.match(
-          /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
-        );
-        if (urlMatch[2]) {
-          this.guitar.putStickerOnTheGuitar(urlMatch[2]);
-        }
-      });
-    });
-  }
-
   initListingForIcons() {
     this.appereanceControlIcon.addEventListener("click", () => {
       if (!this.isApperanceControlMenuGenerated) {
@@ -139,11 +155,10 @@ export class UiController {
       this.showApperenaceControlMenu();
     });
 
-    this.closeStickerIcon.addEventListener("click", () => {
-      this.hideStickerControlMenu();
-    });
-
     this.stickerControlIcon.addEventListener("click", () => {
+      if (!this.isStickerControlMenuGenerated) {
+        this.generateStickerControlMenu();
+      }
       this.showStickerControlMenu();
     });
 
@@ -217,6 +232,105 @@ export class UiController {
       <input type="range" min="0" max="2" step="0.01" value="" id="roughness" />
       <p>Metalness</p>
       <input type="range" min="0" max="2" step="0.01" value="" id="metalness" />
+    `;
+  }
+
+  generateStickerControlMenu() {
+    this.isStickerControlMenuGenerated = true;
+    this.stickerControl.innerHTML = `
+       <h1
+        style="
+          font-size: 18px;
+          text-align: left;
+          width: 100%;
+          padding-top: 8px;
+          padding-left: 16px;
+        "
+      >
+        Add sticker
+      </h1>
+      <div class="close-icon-sticker">X</div>
+      <div class="sticker-container">
+        <div class="texture-card">
+          <span> Custom </span>
+        </div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/stop.jpg')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker0.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker1.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker2.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker3.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker4.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker5.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker6.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker7.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker8.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker9.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker10.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker11.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker12.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker13.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker14.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker15.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker16.PNG')"
+        ></div>
+        <div
+          class="texture-card"
+          style="background-image: url('/public/sticker17.PNG')"
+        ></div>
+      </div>
     `;
   }
 
