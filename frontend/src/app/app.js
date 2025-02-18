@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import "../styles/style.css";
 import { Camera } from "../core/camera";
 import { Helpers } from "../utils/helpers";
 import { Renderer } from "../core/renderer";
