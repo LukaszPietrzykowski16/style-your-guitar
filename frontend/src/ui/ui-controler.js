@@ -10,6 +10,7 @@ export class UiController {
   stickerContainer = document.querySelector(".sticker-container");
   refresh = document.querySelector("#refresh");
   loaderContainer = document.querySelector(".loader-container");
+  canvas = document.querySelector("canvas");
 
   isApperanceControlMenuGenerated = false;
 
@@ -24,6 +25,7 @@ export class UiController {
     this.initListingForIcons();
     this.initMutationObserver();
     this.stickerInit();
+    this.initListningForClickOnModel();
   }
 
   initMutationObserver() {
@@ -157,178 +159,60 @@ export class UiController {
 
   generateApperanceControlMenu() {
     this.isApperanceControlMenuGenerated = true;
+
+    const colors = [
+      { name: "red", hex: "#ff0000" },
+      { name: "blue", hex: "#0000ff" },
+      { name: "green", hex: "#008000" },
+      { name: "yellow", hex: "#ffff00" },
+      { name: "purple", hex: "#800080" },
+      { name: "white", hex: "#ffffff" },
+      { name: "black", hex: "#000000" },
+    ];
+
+    const textures = [
+      { name: "Default", url: "/public/texture-default.PNG" },
+      { name: "Custom", url: "" },
+      { name: "Pastel", url: "/public/texture0.PNG" },
+      { name: "Rusty", url: "/public/texture1.jpg" },
+      { name: "Chaotic", url: "/public/texture2.PNG" },
+    ];
+
+    for (let i = 4; i <= 21; i++) {
+      textures.push({ name: "Scratches", url: `/public/texture${i}.PNG` });
+    }
+
     this.appereanceControl.innerHTML = `
-       <div id="active-element" style="display: none"></div>
-      <h1
-        style="
-          font-size: 18px;
-          text-align: left;
-          width: 100%;
-          padding-left: 16px;
-        "
-      >
+      <div id="active-element" style="display: none"></div>
+      <h1 style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
         Change Color
       </h1>
       <div class="close-icon"><i data-feather="x"></i>X</div>
       <div class="colors-container">
-        <span class="color-dot-red" data-color="#ff0000"></span>
-        <span class="color-dot-blue" data-color="#0000ff"></span>
-        <span class="color-dot-green" data-color="#008000"></span>
-        <span class="color-dot-yellow" data-color="#ffff00"></span>
-        <span class="color-dot-purple" data-color="#800080"></span>
-        <span class="color-dot-white" data-color="#ffffff"></span>
-        <span class="color-dot-black" data-color="#000000"></span>
+        ${colors
+          .map(
+            (c) =>
+              `<span class="color-dot-${c.name}" data-color="${c.hex}"></span>`
+          )
+          .join("")}
         <input type="color" id="color-picker" name="color-picker" value="" />
       </div>
-      <h1
-        style="
-          font-size: 18px;
-          text-align: left;
-          width: 100%;
-          padding-left: 16px;
-        "
-      >
+      <h1 style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
         Change Texture
       </h1>
-
       <div class="texture-container">
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture-default.PNG')"
-        >
-          <span> Default </span>
-        </div>
-        <div class="texture-card">
-          <span> Custom </span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture0.PNG')"
-        >
-          <span> Pastel </span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture1.jpg')"
-        >
-          <span>Rusty</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture2.PNG')"
-        >
-          <span>Chaotic</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture4.jpg')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture5.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture6.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture7.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture8.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture9.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture10.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture11.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture12.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture13.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture14.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture15.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture16.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture17.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture18.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture19.jpg')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture20.jpg')"
-        >
-          <span> Scratches</span>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('/public/texture21.PNG')"
-        >
-          <span> Scratches</span>
-        </div>
+        ${textures
+          .map(
+            (t) => `
+          <div class="texture-card" style="${
+            t.url ? `background-image: url('${t.url}')` : ""
+          }">
+            <span>${t.name}</span>
+          </div>
+        `
+          )
+          .join("")}
       </div>
-
       <p>Roughness</p>
       <input type="range" min="0" max="2" step="0.01" value="" id="roughness" />
       <p>Metalness</p>
@@ -349,5 +233,21 @@ export class UiController {
   showStickerControlMenu() {
     this.stickerControl.style.display = "flex";
     this.stickerControlIcon.style.display = "none";
+  }
+
+  initListningForClickOnModel() {
+    this.canvas.addEventListener(
+      "click",
+      (event) => {
+        this.guitar.changeIntersectedObject(event);
+
+        if (!this.isApperanceControlMenuGenerated) {
+          this.generateApperanceControlMenu();
+        }
+
+        this.showApperenaceControlMenu();
+      },
+      false
+    );
   }
 }

@@ -14,15 +14,10 @@ export class Guitar {
   selectedSticker = {};
   isStickerOn = false;
 
-  appereanceControl = document.querySelector("#appearence-control");
-  appereanceControlIcon = document.querySelector(".appearence-control-icon");
-  canvas = document.querySelector("canvas");
-
   constructor(scene, camera) {
     this.camera = camera;
     this.scene = scene;
     gltfLoader(scene, camera);
-    this.initListningForClick();
     // this.initListningForRotate();
   }
 
@@ -45,43 +40,33 @@ export class Guitar {
     return glowMesh;
   }
 
-  initListningForClick() {
-    this.canvas.addEventListener(
-      "click",
-      (event) => {
-        this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  changeIntersectedObject(event) {
+    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-        this.raycaster.setFromCamera(this.mouse, this.camera);
+    this.raycaster.setFromCamera(this.mouse, this.camera);
 
-        const intersects = this.raycaster.intersectObjects(
-          this.scene.children,
-          true
-        );
-        const position = intersects[0].point;
-        this.intersectedObject = {
-          ...this.intersectedObject,
-          ...intersects[0].object,
-        };
-
-        if (this.isStickerOn) {
-          this.isStickerOn = false;
-          this.applySticker(
-            position,
-            intersects[0].face.normal,
-            this.intersectedObject
-          );
-          return;
-        }
-
-        this.addTemporaryGlow();
-
-        // that needs to go to ui's
-        this.appereanceControl.style.display = "flex";
-        this.appereanceControlIcon.style.display = "none";
-      },
-      false
+    const intersects = this.raycaster.intersectObjects(
+      this.scene.children,
+      true
     );
+    const position = intersects[0].point;
+    this.intersectedObject = {
+      ...this.intersectedObject,
+      ...intersects[0].object,
+    };
+
+    if (this.isStickerOn) {
+      this.isStickerOn = false;
+      this.applySticker(
+        position,
+        intersects[0].face.normal,
+        this.intersectedObject
+      );
+      return;
+    }
+
+    this.addTemporaryGlow();
   }
 
   addTemporaryGlow() {
