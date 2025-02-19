@@ -75,6 +75,8 @@ export class UiController {
     const metalnessInput = document.querySelector("#metalness");
     const colorsContainer = document.querySelector(".colors-container");
     const texturesContainer = document.querySelector(".texture-container");
+    const rotateInput = document.querySelector("#rotate");
+    const zoomInZoomOutInput = document.querySelector("#zoom");
 
     closeIcon.addEventListener("click", () => {
       this.hideApperenaceControlMenu();
@@ -88,6 +90,12 @@ export class UiController {
     metalnessInput.addEventListener("input", (event) => {
       this.guitar.changeIntersectedObjectMaterialMetalness(event.target.value);
     });
+    rotateInput.addEventListener("input", (event) => {
+      this.guitar.rotateTexture(event.target.value);
+    });
+    // zoomInZoomOutInput.addEventListener("input", (event) => {
+    //   this.guitar.changeIntersectedObjectMaterialMetalness(event.target.value);
+    // });
 
     colorsContainer.childNodes.forEach((colorContainer) => {
       colorContainer.addEventListener("click", (event) => {
@@ -228,10 +236,34 @@ export class UiController {
           )
           .join("")}
       </div>
+      <div style="display: flex; gap: 10px">
+      <div>
       <p>Roughness</p>
       <input type="range" min="0" max="2" step="0.01" value="" id="roughness" />
+      </div>
+      <div>
       <p>Metalness</p>
       <input type="range" min="0" max="2" step="0.01" value="" id="metalness" />
+      </div>
+      </div>
+
+      <div style="display: flex; gap: 10px">
+          <div>
+   <p> Rotate </p>
+      <input type="range" min="-10" max="10" step="0.001" value="" id="rotate" />
+        <input type="range" min="0" max="10" step="0.001" value="" id="rotateY" />
+          </div>
+         <div>
+ <p> Zoom in / Zoom out</p>
+      <input type="range" min="0" max="2" step="0.01" value="" id="zoom" />
+         </div>
+      
+      </div>
+      </div>
+
+
+ 
+   
     `;
   }
 
