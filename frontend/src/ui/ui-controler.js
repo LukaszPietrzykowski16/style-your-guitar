@@ -93,9 +93,9 @@ export class UiController {
     rotateInput.addEventListener("input", (event) => {
       this.guitar.rotateTexture(event.target.value);
     });
-    // zoomInZoomOutInput.addEventListener("input", (event) => {
-    //   this.guitar.changeIntersectedObjectMaterialMetalness(event.target.value);
-    // });
+    zoomInZoomOutInput.addEventListener("input", (event) => {
+      this.guitar.zoomInOutTexture(event.target.value);
+    });
 
     colorsContainer.childNodes.forEach((colorContainer) => {
       colorContainer.addEventListener("click", (event) => {
@@ -250,12 +250,12 @@ export class UiController {
       <div style="display: flex; gap: 10px">
           <div>
    <p> Rotate </p>
-      <input type="range" min="-10" max="10" step="0.001" value="" id="rotate" />
+      <input type="range" min="0" max="360" step="1" value="0" id="rotate" />
         <input type="range" min="0" max="10" step="0.001" value="" id="rotateY" />
           </div>
          <div>
  <p> Zoom in / Zoom out</p>
-      <input type="range" min="0" max="2" step="0.01" value="" id="zoom" />
+      <input type="range" min="0.5" max="2.5" step="0.01" value="1.0" id="zoom" />
          </div>
       
       </div>
@@ -361,6 +361,10 @@ export class UiController {
         <div
           class="texture-card"
           style="background-image: url('/public/sticker17.PNG')"
+        ></div>
+              <div
+          class="texture-card"
+          style="background-image: url('/public/test.png')"
         ></div>
       </div>
     `;

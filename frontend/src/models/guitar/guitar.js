@@ -121,22 +121,29 @@ export class Guitar {
     this.intersectedObject.material.map = clickedTexture;
   }
 
-  rotateTexture(rotateX) {
-    console.log(this.intersectedObject.material);
+  lastRotate = 0;
+
+  rotateTexture(newRotate) {
     const texture = this.intersectedObject.material.map;
     if (texture) {
-      texture.center.set(0.5, 0.5);
-      texture.rotation += 0.1;
+      const delta = newRotate - this.lastRotate;
+      texture.rotation += THREE.MathUtils.degToRad(delta);
       texture.needsUpdate = true;
+      this.lastRotate = newRotate;
     }
   }
 
-  zoomInOutTExture() {
+  zoomInOutTexture(zoomValue) {
+    if (!this.intersectedObject.originalRepeat) {
+      this.intersectedObject.originalRepeat =
+        this.intersectedObject.material.map.repeat.clone();
+    }
+
     const texture = this.intersectedObject.material.map;
     if (texture) {
-      texture.center.set(0.5, 0.5);
-      texture.rotation += Math.PI / 4;
-      texture.repeat.multiplyScalar(1.5);
+      texture.repeat
+        .copy(this.intersectedObject.originalRepeat)
+        .multiplyScalar(zoomValue);
       texture.needsUpdate = true;
     }
   }
