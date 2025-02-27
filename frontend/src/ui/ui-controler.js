@@ -77,6 +77,8 @@ export class UiController {
     const texturesContainer = document.querySelector(".texture-container");
     const rotateInput = document.querySelector("#rotate");
     const zoomInZoomOutInput = document.querySelector("#zoom");
+    const moveXInput = document.querySelector("#moveX");
+    const moveYInput = document.querySelector("#moveY");
 
     closeIcon.addEventListener("click", () => {
       this.hideApperenaceControlMenu();
@@ -95,6 +97,12 @@ export class UiController {
     });
     zoomInZoomOutInput.addEventListener("input", (event) => {
       this.guitar.zoomInOutTexture(event.target.value);
+    });
+    moveXInput.addEventListener("input", (event) => {
+      this.guitar.moveX(event.target.value);
+    });
+    moveYInput.addEventListener("input", (event) => {
+      this.guitar.moveY(event.target.value);
     });
 
     colorsContainer.childNodes.forEach((colorContainer) => {
@@ -251,7 +259,10 @@ export class UiController {
           <div>
    <p> Rotate </p>
       <input type="range" min="0" max="360" step="1" value="0" id="rotate" />
-        <input type="range" min="0" max="10" step="0.001" value="" id="rotateY" />
+       <p> MoveX </p>
+        <input type="range" min="0" max="10" step="0.001" value="" id="moveX" />
+         <p> MoveY </p>
+            <input type="range" min="0" max="10" step="0.001" value="" id="moveY" />
           </div>
          <div>
  <p> Zoom in / Zoom out</p>

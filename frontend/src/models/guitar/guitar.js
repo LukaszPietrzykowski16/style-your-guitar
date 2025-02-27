@@ -133,6 +133,20 @@ export class Guitar {
     }
   }
 
+  moveX(x) {
+    const texture = this.intersectedObject.material.map;
+    if (texture) {
+      texture.center.set(x, texture.center.y);
+    }
+  }
+
+  moveY(y) {
+    const texture = this.intersectedObject.material.map;
+    if (texture) {
+      texture.center.set(texture.center.x, y);
+    }
+  }
+
   zoomInOutTexture(zoomValue) {
     if (!this.intersectedObject.originalRepeat) {
       this.intersectedObject.originalRepeat =
