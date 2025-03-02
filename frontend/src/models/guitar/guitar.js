@@ -51,6 +51,8 @@ export class Guitar {
       this.scene.children,
       true
     );
+    if (!intersects) return;
+
     const position = intersects[0].point;
     this.intersectedObject = {
       ...this.intersectedObject,
