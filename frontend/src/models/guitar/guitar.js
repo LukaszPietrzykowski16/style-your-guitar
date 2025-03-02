@@ -89,7 +89,7 @@ export class Guitar {
         glowMesh.material.opacity = 0.5 * (1 - progress);
         requestAnimationFrame(animateGlow);
       } else {
-        // this.scene.remove(glowMesh);
+        this.scene.remove(glowMesh);
         glowMesh.geometry.dispose();
         glowMesh.material.dispose();
       }
@@ -99,7 +99,7 @@ export class Guitar {
   }
 
   changeIntersectedObjectMaterialColor(materialColor) {
-    this.color.set(materialColor);
+    // this.color.set(materialColor);
     this.intersectedObject.material.color.set(materialColor);
   }
 

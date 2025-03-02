@@ -151,8 +151,8 @@ export class App {
 
   initBackground() {
     this.geometry.scale(-1, 1, 1);
-    console.log(this.geometry);
     const plane = new THREE.Mesh(this.geometry, this.material);
+    plane.raycast = () => {};
     this.scene.add(plane);
   }
 

@@ -18,6 +18,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: white;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -202,6 +215,7 @@ canvas {
 }
 
 .close-icon {
+  cursor: pointer;
   position: absolute;
   top: 8px;
   right: 8px;
@@ -216,8 +230,9 @@ canvas {
   flex-direction: column;
   position: absolute;
   right: 10px;
-  /* top: 8px; */
+  top: 8px;
   opacity: 1;
+  cursor: pointer;
 }
 
 .sticker-control-icon {
@@ -229,6 +244,7 @@ canvas {
   position: absolute;
   left: 10px;
   opacity: 1;
+  cursor: pointer;
 }
 
 .camera-control {
@@ -266,7 +282,7 @@ canvas {
   width: 300px;
   position: absolute;
   left: 20px;
-  background-color: #7c7c7c;
+  background-color: rgba(30, 30, 30, 0.6);
   color: white;
   border-radius: 16px;
 }

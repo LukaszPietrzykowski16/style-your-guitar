@@ -259,16 +259,26 @@ export class UiController {
           <div>
    <p> Rotate </p>
       <input type="range" min="0" max="360" step="1" value="0" id="rotate" />
-       <p> MoveX </p>
-        <input type="range" min="0" max="10" step="0.001" value="" id="moveX" />
-         <p> MoveY </p>
-            <input type="range" min="0" max="10" step="0.001" value="" id="moveY" />
+
+      
           </div>
          <div>
  <p> Zoom in / Zoom out</p>
       <input type="range" min="0.5" max="2.5" step="0.01" value="1.0" id="zoom" />
          </div>
+
       
+      </div>
+            <div style="display: flex; gap: 10px">
+      <div>
+        <p> MoveX </p>
+        <input type="range" min="0" max="10" step="0.001" value="" id="moveX" />
+      </div>
+      <div>
+  <p> MoveY </p>
+            <input type="range" min="0" max="10" step="0.001" value="" id="moveY" />
+      </div>
+       
       </div>
       </div>
 
