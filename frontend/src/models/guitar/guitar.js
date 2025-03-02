@@ -7,6 +7,7 @@ export class Guitar {
   mouse = new THREE.Vector2();
   textureLoader = new THREE.TextureLoader();
   helper = new THREE.Object3D();
+  color = new THREE.Color(0x616161);
 
   camera = {};
   scene = {};
@@ -98,6 +99,7 @@ export class Guitar {
   }
 
   changeIntersectedObjectMaterialColor(materialColor) {
+    this.color.set(materialColor);
     this.intersectedObject.material.color.set(materialColor);
   }
 

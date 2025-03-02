@@ -190,7 +190,7 @@ canvas {
   height: 80px;
   width: 120px;
   background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 18px;
+  border-radius: 8px;
   background-size: cover;
   background-repeat: repeat;
   background-position: center;
@@ -237,6 +237,7 @@ canvas {
   justify-content: center;
   flex-direction: column;
   font-size: 10px;
+  cursor: pointer;
 }
 
 #appearence-control {
@@ -246,10 +247,11 @@ canvas {
   flex-direction: column;
   text-align: center;
   height: 60%;
-  width: 300px;
+  padding: 8px;
+  width: 350px;
   position: absolute;
   right: 20px;
-  background-color: #7c7c7c;
+  background-color: rgba(30, 30, 30, 0.6);
   color: white;
   border-radius: 16px;
 }
