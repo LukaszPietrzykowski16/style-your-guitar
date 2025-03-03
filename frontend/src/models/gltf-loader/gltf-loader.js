@@ -9,7 +9,15 @@ export function gltfLoader(scene, camera) {
       const guitar = gltf.scene;
       const guitarBody = "GUITAR";
 
+      const textureLoader = new THREE.TextureLoader();
+      const defaultTexture = textureLoader.load("texture-default.png");
+
       guitar.traverse((node) => {
+        if (node.name === guitarBody) {
+          node.material.map = defaultTexture;
+          node.material.needsUpdate = true;
+          node.material.color.set(0xff0000);
+        }
         if (node.isMesh) {
           node.geometry.rotateX(1.5);
           node.geometry.rotateY(0);
