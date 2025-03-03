@@ -83,7 +83,7 @@ export class Guitar {
   fadeOutGlow(glowMesh, duration) {
     const startTime = performance.now();
 
-    function animateGlow() {
+    const animateGlow = () => {
       const elapsed = performance.now() - startTime;
       const progress = elapsed / duration;
 
@@ -95,7 +95,7 @@ export class Guitar {
         glowMesh.geometry.dispose();
         glowMesh.material.dispose();
       }
-    }
+    };
 
     animateGlow();
   }

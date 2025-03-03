@@ -159,10 +159,10 @@ export class App {
   animate() {
     requestAnimationFrame(this.animate);
     this.material.uniforms.iTime.value += 0.05;
-    console.log(`Camera Position:
-	  x: ${this.camera.position.x}
-	  y: ${this.camera.position.y}
-	  z: ${this.camera.position.z}`);
+    // console.log(`Camera Position:
+    // x: ${this.camera.position.x}
+    // y: ${this.camera.position.y}
+    // z: ${this.camera.position.z}`);
     this.helpers.controls.update();
     this.render();
   }
