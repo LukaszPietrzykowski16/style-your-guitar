@@ -188,6 +188,28 @@ export class UiController {
     this.appereanceControlIcon.style.display = "flex";
   }
 
+  textureLoader() {
+    document
+      .getElementById("textureInput")
+      .addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const textureLoader = new THREE.TextureLoader();
+          const texture = textureLoader.load(
+            e.target.result,
+            function (loadedTexture) {
+              loadedTexture.needsUpdate = true;
+              console.log(loadedTexture);
+            }
+          );
+        };
+        reader.readAsDataURL(file);
+      });
+  }
+
   generateApperanceControlMenu() {
     this.isApperanceControlMenuGenerated = true;
 
@@ -202,7 +224,7 @@ export class UiController {
     ];
 
     const textures = [
-      { name: "Default", url: "/public/texture-default.PNG" },
+      { name: "Default", url: "/public/texture-default.png" },
       { name: "Custom", url: "" },
       { name: "Pastel", url: "/public/texture0.PNG" },
       { name: "Rusty", url: "/public/texture1.jpg" },
@@ -220,6 +242,7 @@ export class UiController {
       </h1>
       <div class="close-icon"><i data-feather="x"></i>X</div>
       <div class="colors-container">
+  
         ${colors
           .map(
             (c) =>
@@ -231,7 +254,9 @@ export class UiController {
       <h1 style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
         Change Texture
       </h1>
+       <input type="file" id="textureInput" accept="image/*">
       <div class="texture-container">
+         
         ${textures
           .map(
             (t) => `
@@ -272,11 +297,11 @@ export class UiController {
             <div style="display: flex; gap: 10px">
       <div>
         <p> MoveX </p>
-        <input type="range" min="0" max="10" step="0.001" value="" id="moveX" />
+        <input type="range" min="0" max="10" step="0.001" value="0" id="moveX" />
       </div>
       <div>
   <p> MoveY </p>
-            <input type="range" min="0" max="10" step="0.001" value="" id="moveY" />
+            <input type="range" min="0" max="10" step="0.001" value="0" id="moveY" />
       </div>
        
       </div>
