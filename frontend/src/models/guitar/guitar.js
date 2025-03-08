@@ -125,6 +125,18 @@ export class Guitar {
     this.intersectedObject.material.map = clickedTexture;
   }
 
+  updateIntersectedObjectTextureFromFile(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const textureLoader = new THREE.TextureLoader();
+      const texture = textureLoader.load(e.target.result, (loadedTexture) => {
+        loadedTexture.needsUpdate = true;
+      });
+      this.intersectedObject.material.map = texture;
+    };
+    reader.readAsDataURL(file);
+  }
+
   lastRotate = 0;
 
   rotateTexture(newRotate) {

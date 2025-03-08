@@ -79,6 +79,7 @@ export class UiController {
     const zoomInZoomOutInput = document.querySelector("#zoom");
     const moveXInput = document.querySelector("#moveX");
     const moveYInput = document.querySelector("#moveY");
+    const fileLoader = document.querySelector("#textureInput");
 
     closeIcon.addEventListener("click", () => {
       this.hideApperenaceControlMenu();
@@ -124,6 +125,13 @@ export class UiController {
           this.guitar.updateIntersectedObjectTexture(urlMatch[2]);
         }
       });
+    });
+
+    fileLoader.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      this.guitar.updateIntersectedObjectTextureFromFile(file);
     });
   }
 
@@ -186,28 +194,6 @@ export class UiController {
   hideApperenaceControlMenu() {
     this.appereanceControl.style.display = "none";
     this.appereanceControlIcon.style.display = "flex";
-  }
-
-  textureLoader() {
-    document
-      .getElementById("textureInput")
-      .addEventListener("change", function (event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const textureLoader = new THREE.TextureLoader();
-          const texture = textureLoader.load(
-            e.target.result,
-            function (loadedTexture) {
-              loadedTexture.needsUpdate = true;
-              console.log(loadedTexture);
-            }
-          );
-        };
-        reader.readAsDataURL(file);
-      });
   }
 
   generateApperanceControlMenu() {
