@@ -587,3 +587,7 @@ input[type="range"]:focus::-ms-fill-upper {
 .loader-container p {
   position: absolute;
 }
+input[type="file" i] {
+  color: transparent !important;
+  width: 60px !important;
+}

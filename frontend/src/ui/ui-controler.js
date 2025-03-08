@@ -235,12 +235,12 @@ export class UiController {
               `<span class="color-dot-${c.name}" data-color="${c.hex}"></span>`
           )
           .join("")}
-        <input type="color" id="color-picker" name="color-picker" value="" />
+      <input type="color" id="color-picker" name="color-picker" value="" />
       </div>
       <h1 style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
         Change Texture
       </h1>
-       <input type="file" id="textureInput" accept="image/*">
+
       <div class="texture-container">
          
         ${textures
@@ -249,7 +249,11 @@ export class UiController {
           <div class="texture-card" style="${
             t.url ? `background-image: url('${t.url}')` : ""
           }">
-            <span>${t.name}</span>
+            <span>${
+              t.name === "Custom"
+                ? `Custom <input type="file" id="textureInput" accept="image/*">`
+                : t.name
+            }</span>
           </div>
         `
           )
