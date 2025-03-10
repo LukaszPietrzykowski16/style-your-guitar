@@ -152,14 +152,16 @@ export class Guitar {
   moveX(x) {
     const texture = this.intersectedObject.material.map;
     if (texture) {
-      texture.center.set(x, texture.center.y);
+      texture.offset.x = x;
+      texture.needsUpdate = true;
     }
   }
 
   moveY(y) {
     const texture = this.intersectedObject.material.map;
     if (texture) {
-      texture.center.set(texture.center.x, y);
+      texture.offset.y = y;
+      texture.needsUpdate = true;
     }
   }
 

@@ -287,11 +287,11 @@ export class UiController {
             <div style="display: flex; gap: 10px">
       <div>
         <p> MoveX </p>
-        <input type="range" min="0" max="10" step="0.001" value="0" id="moveX" />
+        <input type="range" min="0" max="1" step="0.001" value="0.5" id="moveX" />
       </div>
       <div>
   <p> MoveY </p>
-            <input type="range" min="0" max="10" step="0.001" value="0" id="moveY" />
+            <input type="range" min="0" max="1" step="0.001" value="0.5" id="moveY" />
       </div>
        
       </div>
