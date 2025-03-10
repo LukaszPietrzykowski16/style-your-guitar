@@ -4,7 +4,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 export function gltfLoader(scene, camera) {
   const loader = new GLTFLoader();
   loader.load(
-    "public/guitar-extra-gltf.gltf",
+    "./guitar-extra-gltf.gltf",
     (gltf) => {
       const guitar = gltf.scene;
       const guitarBody = "GUITAR";
