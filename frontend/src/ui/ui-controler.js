@@ -121,8 +121,10 @@ export class UiController {
         const urlMatch = backgroundImage.match(
           /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
         );
-        if (urlMatch[2]) {
-          this.guitar.updateIntersectedObjectTexture(urlMatch[2]);
+        const textureUrl = `${urlMatch[1]}${urlMatch[2]}`;
+
+        if (textureUrl) {
+          this.guitar.updateIntersectedObjectTexture(textureUrl);
         }
       });
     });
@@ -210,15 +212,15 @@ export class UiController {
     ];
 
     const textures = [
-      { name: "Default", url: "/public/texture-default.png" },
+      { name: "Default", url: "texture-default.png" },
       { name: "Custom", url: "" },
-      { name: "Pastel", url: "/public/texture0.PNG" },
-      { name: "Rusty", url: "/public/texture1.jpg" },
-      { name: "Chaotic", url: "/public/texture2.PNG" },
+      { name: "Pastel", url: "texture0.PNG" },
+      { name: "Rusty", url: "texture1.jpg" },
+      { name: "Chaotic", url: "texture2.PNG" },
     ];
 
     for (let i = 4; i <= 21; i++) {
-      textures.push({ name: "Scratches", url: `/public/texture${i}.PNG` });
+      textures.push({ name: "Scratches", url: `texture${i}.PNG` });
     }
 
     this.appereanceControl.innerHTML = `
@@ -324,83 +326,83 @@ export class UiController {
         </div>
         <div
           class="texture-card"
-          style="background-image: url('/public/stop.jpg')"
+          style="background-image: url('stop.jpg')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker0.PNG')"
+          style="background-image: url('sticker0.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker1.PNG')"
+          style="background-image: url('sticker1.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker2.PNG')"
+          style="background-image: url('sticker2.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker3.PNG')"
+          style="background-image: url('sticker3.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker4.PNG')"
+          style="background-image: url('sticker4.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker5.PNG')"
+          style="background-image: url('sticker5.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker6.PNG')"
+          style="background-image: url('sticker6.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker7.PNG')"
+          style="background-image: url('sticker7.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker8.PNG')"
+          style="background-image: url('sticker8.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker9.PNG')"
+          style="background-image: url('sticker9.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker10.PNG')"
+          style="background-image: url('sticker10.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker11.PNG')"
+          style="background-image: url('sticker11.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker12.PNG')"
+          style="background-image: url('sticker12.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker13.PNG')"
+          style="background-image: url('sticker13.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker14.PNG')"
+          style="background-image: url('sticker14.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker15.PNG')"
+          style="background-image: url('sticker15.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker16.PNG')"
+          style="background-image: url('sticker16.PNG')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('/public/sticker17.PNG')"
+          style="background-image: url('sticker17.PNG')"
         ></div>
               <div
           class="texture-card"
-          style="background-image: url('/public/test.png')"
+          style="background-image: url('test.png')"
         ></div>
       </div>
     `;
