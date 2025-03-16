@@ -591,3 +591,26 @@ input[type="file" i] {
   color: transparent !important;
   width: 60px !important;
 }
+
+.camera-control-container {
+  display: flex;
+  position: absolute;
+  justify-content: space-evenly;
+  bottom: 20px;
+  gap: 60px;
+  color: white;
+  text-align: center;
+  display: flex;
+  border-radius: 16px;
+  z-index: 20;
+}
+
+@media (max-width: 500px) {
+  .camera-control-container {
+    gap: 40px;
+  }
+  #appearence-control,
+  #sticker-control {
+    height: 80%;
+  }
+}

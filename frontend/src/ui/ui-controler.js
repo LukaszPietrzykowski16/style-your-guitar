@@ -57,8 +57,9 @@ export class UiController {
         const urlMatch = backgroundImage.match(
           /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
         );
-        if (urlMatch[2]) {
-          this.guitar.putStickerOnTheGuitar(urlMatch[2]);
+        const textureUrl = `${urlMatch[1]}${urlMatch[2]}`;
+        if (textureUrl) {
+          this.guitar.putStickerOnTheGuitar(textureUrl);
         }
       });
     });
