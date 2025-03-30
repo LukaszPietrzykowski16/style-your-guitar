@@ -614,3 +614,21 @@ input[type="file" i] {
     height: 80%;
   }
 }
+
+.selected {
+  border: 1px solid white;
+  position: relative;
+}
+
+.selected-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  pointer-events: none;
+}

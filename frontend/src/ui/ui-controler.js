@@ -15,6 +15,8 @@ export class UiController {
   isApperanceControlMenuGenerated = false;
   isStickerControlMenuGenerated = false;
 
+  selectedSticker;
+
   constructor(guitar) {
     this.guitar = guitar;
     this.init();
@@ -52,6 +54,10 @@ export class UiController {
     stickerContainer.childNodes.forEach((stickerContainer) => {
       stickerContainer.addEventListener("click", (event) => {
         const clickedElement = event.target;
+        this.selectedSticker = clickedElement;
+
+        this.addSelectedLabel();
+
         const style = window.getComputedStyle(clickedElement);
         const backgroundImage = style.backgroundImage;
         const urlMatch = backgroundImage.match(
@@ -67,6 +73,26 @@ export class UiController {
     closeStikcerIcon.addEventListener("click", () => {
       this.hideStickerControlMenu();
     });
+  }
+
+  addSelectedLabel() {
+    this.selectedSticker.style.border = "1px solid white";
+    this.selectedSticker.style.position = "relative";
+
+    document.querySelectorAll(".selected").forEach((el) => {
+      el.classList.remove("selected");
+      const label = el.querySelector(".selected-label");
+      if (label) label.remove();
+    });
+
+    this.selectedSticker.classList.add("selected");
+
+    if (!this.selectedSticker.querySelector(".selected-label")) {
+      const label = document.createElement("div");
+      label.className = "selected-label";
+      label.innerText = "SELECTED";
+      this.selectedSticker.appendChild(label);
+    }
   }
 
   checkElements() {

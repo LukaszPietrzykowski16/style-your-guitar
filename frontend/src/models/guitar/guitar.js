@@ -181,6 +181,13 @@ export class Guitar {
   }
 
   applySticker(position, normal, object) {
+    // TODO: move  this to ui-controler
+    document.querySelectorAll(".selected").forEach((el) => {
+      el.classList.remove("selected");
+      const label = el.querySelector(".selected-label");
+      if (label) label.remove();
+    });
+
     const decalMaterial = new THREE.MeshPhongMaterial({
       color: 0xffffff,
       depthWrite: false,
