@@ -632,3 +632,7 @@ input[type="file" i] {
   font-size: 12px;
   pointer-events: none;
 }
+
+.sticker-config-container {
+  height: 1000px;
+}

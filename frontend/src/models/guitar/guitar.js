@@ -14,6 +14,24 @@ export class Guitar {
   intersectedObject = {};
   selectedSticker = {};
   isStickerOn = false;
+  stickersProxy = new Proxy([], {
+    set(target, property, value) {
+      target[property] = value;
+      this.updateView(target);
+      return true;
+    },
+
+    updateView(targets) {
+      document.querySelector("#sticker-config").innerHTML = `
+      ${targets
+        .map(
+          (target) =>
+            `<div class="texture-card" style="background-image: url(${target.textureUrl})"> <span class="remove-sticker" data-value="${target.texture.uuid}"> Remove </span> </div>`
+        )
+        .join("")}
+    `;
+    },
+  });
 
   constructor(scene, camera) {
     this.camera = camera;
@@ -123,6 +141,19 @@ export class Guitar {
   updateIntersectedObjectTexture(texture) {
     const clickedTexture = this.textureLoader.load(texture);
     this.intersectedObject.material.map = clickedTexture;
+    this.intersectedObject.material.color.set(0xffffff);
+  }
+
+  removeDecalByUUID(uuid) {
+    const decalIndex = this.stickersProxy.findIndex(
+      (decal) => decal.texture.uuid === uuid
+    );
+    // const updatedStickers = this.stickersProxy.filter((sticker) => {
+    //   sticker.texture.uuid === decalIndex;
+    // });
+    // console.log(updatedStickers);
+
+    this.scene.remove(this.stickersProxy[decalIndex].texture);
   }
 
   updateIntersectedObjectTextureFromFile(file) {
@@ -206,8 +237,11 @@ export class Guitar {
       this.helper.rotation,
       new THREE.Vector3(0.5, 0.5, 0.5)
     );
-
     const decalMesh = new THREE.Mesh(decalGeometry, decalMaterial);
+    this.stickersProxy.push({
+      textureUrl: decalMesh.material.map.image.src,
+      texture: decalMesh,
+    });
     this.scene.add(decalMesh);
   }
 

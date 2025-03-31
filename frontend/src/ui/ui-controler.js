@@ -50,6 +50,7 @@ export class UiController {
   checkElementsSticker() {
     const stickerContainer = document.querySelector(".sticker-container");
     const closeStikcerIcon = document.querySelector(".close-icon-sticker");
+    const removeSticker = document.querySelectorAll(".remove-sticker");
 
     stickerContainer.childNodes.forEach((stickerContainer) => {
       stickerContainer.addEventListener("click", (event) => {
@@ -67,6 +68,13 @@ export class UiController {
         if (textureUrl) {
           this.guitar.putStickerOnTheGuitar(textureUrl);
         }
+      });
+    });
+
+    removeSticker.forEach((sticker) => {
+      sticker.addEventListener("click", (event) => {
+        const decalUUID = event.target.dataset.value;
+        this.guitar.removeDecalByUUID(decalUUID);
       });
     });
 
@@ -431,6 +439,18 @@ export class UiController {
           class="texture-card"
           style="background-image: url('test.png')"
         ></div>
+      </div>
+      <div class="sticker-config-container">
+      <h1      style="
+          font-size: 18px;
+          text-align: left;
+          width: 100%;
+          padding-top: 8px;
+          padding-left: 16px;
+        "> Change Sticker </h1>
+      <div id="sticker-config" class="sticker-container">
+        Please selected sticker
+      </div>
       </div>
     `;
   }
