@@ -212,7 +212,6 @@ export class UiController {
       if (!this.isApperanceControlMenuGenerated) {
         this.generateApperanceControlMenu();
       }
-
       this.showApperenaceControlMenu();
     });
 
@@ -354,7 +353,8 @@ export class UiController {
       >
         Add sticker
       </h1>
-      <div class="close-icon-sticker">X</div>
+      
+      <div class="close-icon-sticker"><i data-feather="x"></i>x</div>
       <div class="sticker-container">
         <div class="texture-card">
           <span> Custom </span>

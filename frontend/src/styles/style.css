@@ -188,11 +188,13 @@ canvas {
 
 .texture-container,
 .sticker-container {
+  width: 340px;
   overflow-x: hidden;
   display: flex;
   flex-wrap: wrap;
   padding: 16px;
   gap: 8px;
+  height: 180px;
 }
 
 .texture-card {
@@ -634,5 +636,5 @@ input[type="file" i] {
 }
 
 .sticker-config-container {
-  height: 1000px;
+  /* height: 1000px; */
 }
