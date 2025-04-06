@@ -257,6 +257,8 @@ export class UiController {
       textures.push({ name: "Scratches", url: `texture${i}.PNG` });
     }
 
+    this.showAppereanceControlMenuAnimation();
+
     this.appereanceControl.innerHTML = `
       <div id="active-element" style="display: none"></div>
       <h1 style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
@@ -341,6 +343,9 @@ export class UiController {
 
   generateStickerControlMenu() {
     this.isStickerControlMenuGenerated = true;
+
+    this.showStickerControlMenuAnimation();
+
     this.stickerControl.innerHTML = `
        <h1
         style="
@@ -455,17 +460,56 @@ export class UiController {
     `;
   }
 
+  showStickerControlMenuAnimation() {
+    this.stickerControl.animate(
+      [
+        { clipPath: "circle(0% at left)", opacity: 0 },
+        { clipPath: "circle(110% at left)", opacity: 1, display: "flex" },
+      ],
+      {
+        duration: 500,
+        easing: "ease-in-out",
+        fill: "forwards",
+      }
+    );
+  }
+
+  showAppereanceControlMenuAnimation() {
+    this.appereanceControl.animate(
+      [
+        { clipPath: "circle(0% at right)", opacity: 0 },
+        { clipPath: "circle(110% at right)", opacity: 1, display: "flex" },
+      ],
+      {
+        duration: 500,
+        easing: "ease-in-out",
+        fill: "forwards",
+      }
+    );
+  }
+
   showApperenaceControlMenu() {
     this.appereanceControl.style.display = "flex";
     this.appereanceControlIcon.style.display = "none";
   }
 
   hideStickerControlMenu() {
-    this.stickerControl.style.display = "none";
+    this.stickerControl.animate(
+      [
+        { clipPath: "circle(110% at left)", opacity: 1 },
+        { clipPath: "circle(0% at left)", opacity: 0, display: "none" },
+      ],
+      {
+        duration: 500,
+        easing: "ease-in-out",
+        fill: "forwards",
+      }
+    );
     this.stickerControlIcon.style.display = "flex";
   }
 
   showStickerControlMenu() {
+    this.showStickerControlMenuAnimation();
     this.stickerControl.style.display = "flex";
     this.stickerControlIcon.style.display = "none";
   }
