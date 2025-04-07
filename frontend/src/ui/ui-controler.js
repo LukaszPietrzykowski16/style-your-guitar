@@ -228,7 +228,7 @@ export class UiController {
   }
 
   hideApperenaceControlMenu() {
-    this.appereanceControl.style.display = "none";
+    this.hideApperenaceControlMenuAnimation();
     this.appereanceControlIcon.style.display = "flex";
   }
 
@@ -474,6 +474,20 @@ export class UiController {
     );
   }
 
+  hideApperenaceControlMenuAnimation() {
+    this.appereanceControl.animate(
+      [
+        { clipPath: "circle(110% at right)", opacity: 1 },
+        { clipPath: "circle(0% at right)", opacity: 0, display: "none" },
+      ],
+      {
+        duration: 500,
+        easing: "ease-in-out",
+        fill: "forwards",
+      }
+    );
+  }
+
   showAppereanceControlMenuAnimation() {
     this.appereanceControl.animate(
       [
@@ -481,7 +495,7 @@ export class UiController {
         { clipPath: "circle(110% at right)", opacity: 1, display: "flex" },
       ],
       {
-        duration: 500,
+        duration: 800,
         easing: "ease-in-out",
         fill: "forwards",
       }
