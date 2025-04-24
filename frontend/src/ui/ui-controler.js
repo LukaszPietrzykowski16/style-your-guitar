@@ -503,6 +503,7 @@ export class UiController {
   }
 
   showApperenaceControlMenu() {
+    this.showAppereanceControlMenuAnimation();
     this.appereanceControl.style.display = "flex";
     this.appereanceControlIcon.style.display = "none";
   }
