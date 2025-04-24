@@ -14,6 +14,11 @@ export class UiController {
 
   isApperanceControlMenuGenerated = false;
   isStickerControlMenuGenerated = false;
+  isLoading = true;
+
+  setIsLoading(isLoading) {
+    this.isLoading = isLoading;
+  }
 
   selectedSticker;
 
@@ -192,19 +197,21 @@ export class UiController {
   }
 
   initLoader() {
-    setTimeout(() => {
-      this.loaderContainer.animate(
-        [
-          { clipPath: "circle(100% at center)", opacity: 1 },
-          { clipPath: "circle(5% at center)", opacity: 0, display: "none" },
-        ],
-        {
-          duration: 1000,
-          easing: "ease-in-out",
-          fill: "forwards",
-        }
-      );
-    }, 700);
+    const loaderAnimation = this.loaderContainer.animate(
+      [
+        { clipPath: "circle(100% at center)", opacity: 1 },
+        { clipPath: "circle(5% at center)", opacity: 0, display: "none" },
+      ],
+      {
+        duration: 1000,
+        easing: "ease-in-out",
+        fill: "forwards",
+      }
+    );
+
+    if (!this.isLoading) {
+      loaderAnimation.finish();
+    }
   }
 
   initListingForIcons() {
