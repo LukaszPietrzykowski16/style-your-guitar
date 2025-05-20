@@ -62,7 +62,8 @@ export class UiController {
         const clickedElement = event.target;
         this.selectedSticker = clickedElement;
 
-        this.addSelectedLabel();
+        // TO DO fix this
+        // this.addSelectedLabel();
 
         const style = window.getComputedStyle(clickedElement);
         const backgroundImage = style.backgroundImage;
@@ -70,7 +71,7 @@ export class UiController {
           /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
         );
         const textureUrl = `${urlMatch[1]}${urlMatch[2]}`;
-        if (textureUrl) {
+        if (textureUrl && this.guitar) {
           this.guitar.putStickerOnTheGuitar(textureUrl);
         }
       });
@@ -240,6 +241,7 @@ export class UiController {
   }
 
   generateApperanceControlMenu() {
+    if (Object.keys(this.guitar.selectedSticker).length !== 0) return;
     this.isApperanceControlMenuGenerated = true;
 
     const colors = [
@@ -510,6 +512,7 @@ export class UiController {
   }
 
   showApperenaceControlMenu() {
+    if (Object.keys(this.guitar.selectedSticker).length !== 0) return;
     this.showAppereanceControlMenuAnimation();
     this.appereanceControl.style.display = "flex";
     this.appereanceControlIcon.style.display = "none";
@@ -540,13 +543,16 @@ export class UiController {
     this.canvas.addEventListener(
       "click",
       (event) => {
-        this.guitar.changeIntersectedObject(event);
+        if (!this.guitar) return;
+
+        console.log(this.guitar);
 
         if (!this.isApperanceControlMenuGenerated) {
           this.generateApperanceControlMenu();
         }
-
         this.showApperenaceControlMenu();
+
+        this.guitar.changeIntersectedObject(event);
       },
       false
     );
