@@ -57,24 +57,32 @@ export class UiController {
     const closeStikcerIcon = document.querySelector(".close-icon-sticker");
     const removeSticker = document.querySelectorAll(".remove-sticker");
 
-    stickerContainer.childNodes.forEach((stickerContainer) => {
-      stickerContainer.addEventListener("click", (event) => {
-        const clickedElement = event.target;
-        this.selectedSticker = clickedElement;
+    Array.from(stickerContainer.children).forEach((stickerEl) => {
+      if (!stickerEl.dataset.listenerAdded) {
+        stickerEl.addEventListener("click", (event) => {
+          document
+            .querySelectorAll(".selected")
+            .forEach((el) => el.classList.remove("selected"));
+          const clickedElement = event.target;
+          this.selectedSticker = clickedElement;
 
-        // TO DO fix this
-        // this.addSelectedLabel();
+          this.selectedSticker.classList.add("selected");
 
-        const style = window.getComputedStyle(clickedElement);
-        const backgroundImage = style.backgroundImage;
-        const urlMatch = backgroundImage.match(
-          /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
-        );
-        const textureUrl = `${urlMatch[1]}${urlMatch[2]}`;
-        if (textureUrl && this.guitar) {
-          this.guitar.putStickerOnTheGuitar(textureUrl);
-        }
-      });
+          const style = window.getComputedStyle(clickedElement);
+          const backgroundImage = style.backgroundImage;
+          const urlMatch = backgroundImage.match(
+            /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
+          );
+
+          const textureUrl = `${urlMatch[1]}${urlMatch[2]}`;
+
+          if (textureUrl && this.guitar) {
+            this.guitar.putStickerOnTheGuitar(textureUrl);
+          }
+
+          stickerEl.dataset.listenerAdded = "true";
+        });
+      }
     });
 
     removeSticker.forEach((sticker) => {
@@ -87,26 +95,6 @@ export class UiController {
     closeStikcerIcon.addEventListener("click", () => {
       this.hideStickerControlMenu();
     });
-  }
-
-  addSelectedLabel() {
-    this.selectedSticker.style.border = "1px solid white";
-    this.selectedSticker.style.position = "relative";
-
-    document.querySelectorAll(".selected").forEach((el) => {
-      el.classList.remove("selected");
-      const label = el.querySelector(".selected-label");
-      if (label) label.remove();
-    });
-
-    this.selectedSticker.classList.add("selected");
-
-    if (!this.selectedSticker.querySelector(".selected-label")) {
-      const label = document.createElement("div");
-      label.className = "selected-label";
-      label.innerText = "SELECTED";
-      this.selectedSticker.appendChild(label);
-    }
   }
 
   checkElements() {
@@ -241,7 +229,6 @@ export class UiController {
   }
 
   generateApperanceControlMenu() {
-    if (Object.keys(this.guitar.selectedSticker).length !== 0) return;
     this.isApperanceControlMenuGenerated = true;
 
     const colors = [
@@ -512,7 +499,6 @@ export class UiController {
   }
 
   showApperenaceControlMenu() {
-    if (Object.keys(this.guitar.selectedSticker).length !== 0) return;
     this.showAppereanceControlMenuAnimation();
     this.appereanceControl.style.display = "flex";
     this.appereanceControlIcon.style.display = "none";
@@ -545,12 +531,9 @@ export class UiController {
       (event) => {
         if (!this.guitar) return;
 
-        console.log(this.guitar);
-
-        if (!this.isApperanceControlMenuGenerated) {
-          this.generateApperanceControlMenu();
-        }
-        this.showApperenaceControlMenu();
+        document
+          .querySelectorAll(".selected")
+          .forEach((el) => el.classList.remove("selected"));
 
         this.guitar.changeIntersectedObject(event);
       },
