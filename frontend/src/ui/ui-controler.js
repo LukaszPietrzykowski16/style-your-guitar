@@ -214,7 +214,6 @@ export class UiController {
         fill: "forwards",
       }
     );
-
     if (!this.isLoading) {
       loaderAnimation.finish();
     }

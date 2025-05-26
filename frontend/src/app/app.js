@@ -6,6 +6,7 @@ import { Light } from "../core/light";
 import { Guitar } from "../models/guitar/guitar";
 import { UiController } from "../ui/ui-controler";
 import { cameraControls } from "../controls/camera-controls";
+import { gsap } from "gsap";
 
 export class App {
   scene = new THREE.Scene();
@@ -31,6 +32,29 @@ export class App {
     this.initBackground();
     this.animate = this.animate.bind(this);
     this.animate();
+    this.initAnimation();
+  }
+
+  initAnimation() {
+    gsap.to(this.camera.position, {
+      x: 0,
+      y: 0,
+      z: 10,
+      duration: 2,
+      ease: "power2.inOut",
+      onUpdate: () => {
+        this.camera.updateProjectionMatrix();
+      },
+    });
+
+    gsap.to(this.camera, {
+      zoom,
+      duration: 4,
+      ease: "power2.inOut",
+      onUpdate: () => {
+        this.camera.updateProjectionMatrix();
+      },
+    });
   }
 
   initLight() {
@@ -159,10 +183,10 @@ export class App {
   animate() {
     requestAnimationFrame(this.animate);
     this.material.uniforms.iTime.value += 0.05;
-    // console.log(`Camera Position:
-    // x: ${this.camera.position.x}
-    // y: ${this.camera.position.y}
-    // z: ${this.camera.position.z}`);
+    console.log(`Camera Position:
+    x: ${this.camera.position.x}
+    y: ${this.camera.position.y}
+    z: ${this.camera.position.z}`);
     this.helpers.controls.update();
     this.render();
   }
