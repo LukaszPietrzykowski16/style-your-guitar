@@ -144,6 +144,7 @@ export class UiController {
 
     texturesContainer.childNodes.forEach((textureContainer) => {
       textureContainer.addEventListener("click", (event) => {
+        this.resetInputs();
         const clickedElement = event.target;
         const style = window.getComputedStyle(clickedElement);
         const backgroundImage = style.backgroundImage;
@@ -170,6 +171,22 @@ export class UiController {
     this.guitar.changeIntersectedObjectMaterialColor(colorInput.value);
     this.guitar.changeIntersectedObjectMaterialMetalness(metalnessInput.value);
     this.guitar.changeIntersectedObjectMaterialRoughness(roughnessInput.value);
+  }
+
+  resetInputs() {
+    const defaults = {
+      roughness: "",
+      metalness: "",
+      rotate: "0",
+      zoom: "1.0",
+      moveX: "0.5",
+      moveY: "0.5",
+    };
+
+    for (const id in defaults) {
+      const input = document.getElementById(id);
+      if (input) input.value = defaults[id];
+    }
   }
 
   mapGuitarElements() {
@@ -313,7 +330,7 @@ export class UiController {
           </div>
          <div>
  <p> Zoom in / Zoom out</p>
-      <input type="range" min="0.5" max="2.5" step="0.01" value="1.0" id="zoom" />
+      <input type="range" min="0.0" max="2.0" step="0.01" value="1.0" id="zoom" />
          </div>
 
       
