@@ -252,4 +252,47 @@ export class Guitar {
     this.selectedSticker = clickedSticker;
     this.isStickerOn = true;
   }
+
+  currentHovered = null;
+  glowMeshHover = null;
+
+  addTextOnHover(event) {
+    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    const intersects = this.raycaster.intersectObjects(this.scene.children);
+
+    if (intersects.length > 0) {
+      const intersectedObject = intersects[0].object;
+
+      console.log(this.currentHovered, this.glowMeshHover);
+
+      if (!this.currentHovered && !this.glowMeshHover) {
+        this.currentHovered = intersectedObject;
+        this.glowMeshHover = this.addHaloGlow(
+          intersectedObject,
+          0xffffff,
+          1,
+          0.3
+        );
+
+        if (this.glowMeshHover) {
+          this.scene.remove(this.glowMeshHover);
+          this.glowMeshHover.geometry.dispose();
+          this.glowMeshHover.material.dispose();
+        }
+
+        this.scene.add(this.glowMeshHover);
+      }
+    } else {
+      this.currentHovered = null;
+      if (this.glowMeshHover) {
+        this.scene.remove(this.glowMeshHover);
+        this.glowMeshHover.geometry.dispose();
+        this.glowMeshHover.material.dispose();
+        this.glowMeshHover = null;
+      }
+    }
+  }
 }

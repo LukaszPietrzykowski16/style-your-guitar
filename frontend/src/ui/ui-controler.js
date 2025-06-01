@@ -34,6 +34,17 @@ export class UiController {
     this.initMutationObserver();
     this.initMutationObserverSticker();
     this.initListningForClickOnModel();
+    this.initMouseMove();
+  }
+
+  initMouseMove() {
+    window.addEventListener(
+      "mousemove",
+      (event) => {
+        if (this.guitar) this.guitar.addTextOnHover(event);
+      },
+      false
+    );
   }
 
   initMutationObserver() {
