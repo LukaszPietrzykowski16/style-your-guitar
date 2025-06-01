@@ -256,6 +256,11 @@ export class Guitar {
   currentHovered = null;
   glowMeshHover = null;
 
+  toggleHoverText(show) {
+    const hoverText = document.getElementById("hover-text");
+    hoverText.style.display = show ? "block" : "none";
+  }
+
   addTextOnHover(event) {
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -266,9 +271,13 @@ export class Guitar {
     if (intersects.length > 0) {
       const intersectedObject = intersects[0].object;
 
-      console.log(this.currentHovered, this.glowMeshHover);
+      const hoverText = document.getElementById("hover-text");
+
+      hoverText.style.left = event.clientX + "px";
+      hoverText.style.top = event.clientY + "px";
 
       if (!this.currentHovered && !this.glowMeshHover) {
+        this.toggleHoverText(true);
         this.currentHovered = intersectedObject;
         this.glowMeshHover = this.addHaloGlow(
           intersectedObject,
@@ -288,6 +297,7 @@ export class Guitar {
     } else {
       this.currentHovered = null;
       if (this.glowMeshHover) {
+        this.toggleHoverText(false);
         this.scene.remove(this.glowMeshHover);
         this.glowMeshHover.geometry.dispose();
         this.glowMeshHover.material.dispose();
