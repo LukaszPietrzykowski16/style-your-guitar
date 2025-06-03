@@ -273,8 +273,8 @@ export class Guitar {
 
       const hoverText = document.getElementById("hover-text");
 
-      hoverText.style.left = event.clientX + "px";
-      hoverText.style.top = event.clientY + "px";
+      hoverText.style.left = event.clientX - 50 + "px";
+      hoverText.style.top = event.clientY - 50 + "px";
 
       if (!this.currentHovered && !this.glowMeshHover) {
         this.toggleHoverText(true);

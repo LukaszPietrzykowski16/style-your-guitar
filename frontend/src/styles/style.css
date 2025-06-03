@@ -635,6 +635,121 @@ input[type="file" i] {
   pointer-events: none;
 }
 
-.sticker-config-container {
-  /* height: 1000px; */
+#hover-text {
+  position: fixed;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0);
+  color: white;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  display: none;
+  z-index: 9999;
+  animation: rotateText 10s linear infinite;
+}
+
+#hover-text .click-to-edit-text span {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform-origin: 0 50px;
+}
+
+@keyframes rotateText {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+#hover-text .click-to-edit-text span:nth-child(n) {
+  transform: rotate(calc(var(--i) * 12.8deg)) translateY(-20px);
+}
+
+#hover-text .click-to-edit-text span:nth-child(1) {
+  --i: 0;
+}
+#hover-text .click-to-edit-text span:nth-child(2) {
+  --i: 1;
+}
+#hover-text .click-to-edit-text span:nth-child(3) {
+  --i: 2;
+}
+#hover-text .click-to-edit-text span:nth-child(4) {
+  --i: 3;
+}
+#hover-text .click-to-edit-text span:nth-child(5) {
+  --i: 4;
+}
+#hover-text .click-to-edit-text span:nth-child(6) {
+  --i: 5;
+}
+#hover-text .click-to-edit-text span:nth-child(7) {
+  --i: 6;
+}
+#hover-text .click-to-edit-text span:nth-child(8) {
+  --i: 7;
+}
+#hover-text .click-to-edit-text span:nth-child(9) {
+  --i: 8;
+}
+#hover-text .click-to-edit-text span:nth-child(10) {
+  --i: 9;
+}
+#hover-text .click-to-edit-text span:nth-child(11) {
+  --i: 10;
+}
+#hover-text .click-to-edit-text span:nth-child(12) {
+  --i: 11;
+}
+#hover-text .click-to-edit-text span:nth-child(13) {
+  --i: 12;
+}
+#hover-text .click-to-edit-text span:nth-child(14) {
+  --i: 13;
+}
+#hover-text .click-to-edit-text span:nth-child(15) {
+  --i: 14;
+}
+#hover-text .click-to-edit-text span:nth-child(16) {
+  --i: 15;
+}
+#hover-text .click-to-edit-text span:nth-child(17) {
+  --i: 16;
+}
+#hover-text .click-to-edit-text span:nth-child(18) {
+  --i: 17;
+}
+#hover-text .click-to-edit-text span:nth-child(19) {
+  --i: 18;
+}
+#hover-text .click-to-edit-text span:nth-child(20) {
+  --i: 19;
+}
+#hover-text .click-to-edit-text span:nth-child(21) {
+  --i: 20;
+}
+#hover-text .click-to-edit-text span:nth-child(22) {
+  --i: 21;
+}
+#hover-text .click-to-edit-text span:nth-child(23) {
+  --i: 22;
+}
+#hover-text .click-to-edit-text span:nth-child(24) {
+  --i: 23;
+}
+#hover-text .click-to-edit-text span:nth-child(25) {
+  --i: 24;
+}
+#hover-text .click-to-edit-text span:nth-child(26) {
+  --i: 25;
+}
+#hover-text .click-to-edit-text span:nth-child(27) {
+  --i: 26;
+}
+#hover-text .click-to-edit-text span:nth-child(28) {
+  --i: 27;
 }
