@@ -268,15 +268,26 @@ export class Guitar {
     this.raycaster.setFromCamera(this.mouse, this.camera);
     const intersects = this.raycaster.intersectObjects(this.scene.children);
 
+    const hoverText = document.getElementById("hover-text");
+    if (!hoverText) return; // 🛑 Bail if element doesn't exist
+
+    hoverText.style.left = event.clientX - 50 + "px";
+    hoverText.style.top = event.clientY - 50 + "px";
+
     if (intersects.length > 0) {
-      const intersectedObject = intersects[0].object;
+      const intersectedObject = intersects[0]?.object;
+      if (!intersectedObject) return; // 🛑 Just in case
 
-      const hoverText = document.getElementById("hover-text");
+      if (this.currentHovered?.name !== intersectedObject?.name) {
+        if (this.glowMeshHover) {
+          this.scene.remove(this.glowMeshHover);
+          this.glowMeshHover.geometry?.dispose?.();
+          this.glowMeshHover.material?.dispose?.();
+          this.glowMeshHover = null;
+        }
+      }
 
-      hoverText.style.left = event.clientX - 50 + "px";
-      hoverText.style.top = event.clientY - 50 + "px";
-
-      if (!this.currentHovered && !this.glowMeshHover) {
+      if (!this.glowMeshHover) {
         this.toggleHoverText(true);
         this.currentHovered = intersectedObject;
         this.glowMeshHover = this.addHaloGlow(
@@ -285,23 +296,18 @@ export class Guitar {
           1,
           0.3
         );
-
         if (this.glowMeshHover) {
-          this.scene.remove(this.glowMeshHover);
-          this.glowMeshHover.geometry.dispose();
-          this.glowMeshHover.material.dispose();
+          this.scene.add(this.glowMeshHover);
         }
-
-        this.scene.add(this.glowMeshHover);
       }
     } else {
-      this.currentHovered = null;
       if (this.glowMeshHover) {
         this.toggleHoverText(false);
         this.scene.remove(this.glowMeshHover);
-        this.glowMeshHover.geometry.dispose();
-        this.glowMeshHover.material.dispose();
+        this.glowMeshHover.geometry?.dispose?.();
+        this.glowMeshHover.material?.dispose?.();
         this.glowMeshHover = null;
+        this.currentHovered = null;
       }
     }
   }
