@@ -77,11 +77,9 @@ export class Guitar {
       ...intersects[0].object,
     };
 
-    const selectedGuitarPart = document.querySelector("#selected-guitar-part");
+    // const selectedGuitarPart = document.querySelector("#selected-guitar-part");
 
-    console.log(this.intersectedObject.name);
-
-    selectedGuitarPart.textContent = this.intersectedObject.name;
+    // selectedGuitarPart.textContent = this.intersectedObject.name;
 
     if (this.isStickerOn) {
       this.isStickerOn = false;
@@ -94,6 +92,9 @@ export class Guitar {
     }
 
     this.addTemporaryGlow();
+
+    const eventUI = new CustomEvent("guitarPartSelected");
+    window.dispatchEvent(eventUI);
   }
 
   addTemporaryGlow() {
@@ -125,7 +126,6 @@ export class Guitar {
   }
 
   changeIntersectedObjectMaterialColor(materialColor) {
-    // this.color.set(materialColor);
     this.intersectedObject.material.color.set(materialColor);
   }
 
@@ -275,14 +275,14 @@ export class Guitar {
     const intersects = this.raycaster.intersectObjects(this.scene.children);
 
     const hoverText = document.getElementById("hover-text");
-    if (!hoverText) return; // 🛑 Bail if element doesn't exist
+    if (!hoverText) return;
 
     hoverText.style.left = event.clientX - 50 + "px";
     hoverText.style.top = event.clientY - 50 + "px";
 
     if (intersects.length > 0) {
       const intersectedObject = intersects[0]?.object;
-      if (!intersectedObject) return; // 🛑 Just in case
+      if (!intersectedObject) return;
 
       if (this.currentHovered?.name !== intersectedObject?.name) {
         if (this.glowMeshHover) {

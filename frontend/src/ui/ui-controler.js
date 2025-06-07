@@ -35,6 +35,13 @@ export class UiController {
     this.initMutationObserverSticker();
     this.initListningForClickOnModel();
     this.initMouseMove();
+
+    window.addEventListener("guitarPartSelected", () => {
+      if (!this.isStickerControlMenuGenerated) {
+        this.generateApperanceControlMenu();
+      }
+      this.showApperenaceControlMenu();
+    });
   }
 
   initMouseMove() {
