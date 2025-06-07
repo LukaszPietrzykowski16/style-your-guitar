@@ -258,110 +258,133 @@ export class UiController {
   generateApperanceControlMenu() {
     this.isApperanceControlMenuGenerated = true;
 
-    const colors = [
-      { name: "red", hex: "#ff0000" },
-      { name: "blue", hex: "#0000ff" },
-      { name: "green", hex: "#008000" },
-      { name: "yellow", hex: "#ffff00" },
-      { name: "purple", hex: "#800080" },
-      { name: "white", hex: "#ffffff" },
-      { name: "black", hex: "#000000" },
-    ];
-
-    const textures = [
-      { name: "Default", url: "texture-default.png" },
-      { name: "Custom", url: "" },
-      { name: "Pastel", url: "texture0.PNG" },
-      { name: "Rusty", url: "texture1.jpg" },
-      { name: "Chaotic", url: "texture2.PNG" },
-    ];
-
-    for (let i = 4; i <= 21; i++) {
-      textures.push({ name: "Scratches", url: `texture${i}.PNG` });
-    }
-
     this.showAppereanceControlMenuAnimation();
 
     this.appereanceControl.innerHTML = `
-      <div id="active-element" style="display: none"></div>
-      <h1 style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
-        Change Color
-      </h1>
-      <div class="close-icon"><i data-feather="x"></i>X</div>
-      <div class="colors-container">
-  
-        ${colors
-          .map(
-            (c) =>
-              `<span class="color-dot-${c.name}" data-color="${c.hex}"></span>`
-          )
-          .join("")}
-      <input type="color" id="color-picker" name="color-picker" value="" />
-      </div>
-      <h1 style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
-        Change Texture
-      </h1>
+  <div id="active-element" style="display: none"></div>
+  <h1 style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
+    <span id="selected-guitar-part"> </span> Change Color 
+  </h1>
+  <div class="close-icon"><i data-feather="x"></i>X</div>
+  <div class="colors-container">
+    <span class="color-dot-red" data-color="#ff0000"></span>
+    <span class="color-dot-blue" data-color="#0000ff"></span>
+    <span class="color-dot-green" data-color="#008000"></span>
+    <span class="color-dot-yellow" data-color="#ffff00"></span>
+    <span class="color-dot-purple" data-color="#800080"></span>
+    <span class="color-dot-white" data-color="#ffffff"></span>
+    <span class="color-dot-black" data-color="#000000"></span>
+    <input type="color" id="color-picker" name="color-picker" value="" />
+  </div>
 
-      <div class="texture-container">
-         
-        ${textures
-          .map(
-            (t) => `
-          <div class="texture-card" style="${
-            t.url ? `background-image: url('${t.url}')` : ""
-          }">
-            <span>${
-              t.name === "Custom"
-                ? `Custom <input type="file" id="textureInput" accept="image/*">`
-                : t.name
-            }</span>
-          </div>
-        `
-          )
-          .join("")}
-      </div>
-      <div style="display: flex; gap: 10px">
-      <div>
+  <h1 style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
+    Change Texture
+  </h1>
+  <div class="texture-container">
+    <div class="texture-card" style="background-image: url('texture-default.png')">
+      <span>Default</span>
+    </div>
+    <div class="texture-card">
+      <span>Custom <input type="file" id="textureInput" accept="image/*"></span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture0.PNG')">
+      <span>Pastel</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture1.jpg')">
+      <span>Rusty</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture2.PNG')">
+      <span>Chaotic</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture4.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture5.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture6.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture7.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture8.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture9.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture10.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture11.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture12.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture13.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture14.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture15.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture16.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture17.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture18.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture19.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture20.PNG')">
+      <span>Scratches</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture21.PNG')">
+      <span>Scratches</span>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 10px">
+    <div>
       <p>Roughness</p>
       <input type="range" min="0" max="2" step="0.01" value="" id="roughness" />
-      </div>
-      <div>
+    </div>
+    <div>
       <p>Metalness</p>
       <input type="range" min="0" max="2" step="0.01" value="" id="metalness" />
-      </div>
-      </div>
+    </div>
+  </div>
 
-      <div style="display: flex; gap: 10px">
-          <div>
-   <p> Rotate </p>
+  <div style="display: flex; gap: 10px">
+    <div>
+      <p> Rotate </p>
       <input type="range" min="0" max="360" step="1" value="0" id="rotate" />
-
-      
-          </div>
-         <div>
- <p> Zoom in / Zoom out</p>
+    </div>
+    <div>
+      <p> Zoom in / Zoom out</p>
       <input type="range" min="0.0" max="2.0" step="0.01" value="1.0" id="zoom" />
-         </div>
+    </div>
+  </div>
 
-      
-      </div>
-            <div style="display: flex; gap: 10px">
-      <div>
-        <p> MoveX </p>
-        <input type="range" min="0" max="1" step="0.001" value="0.5" id="moveX" />
-      </div>
-      <div>
-  <p> MoveY </p>
-            <input type="range" min="0" max="1" step="0.001" value="0.5" id="moveY" />
-      </div>
-       
-      </div>
-      </div>
-
-
- 
-   
-    `;
+  <div style="display: flex; gap: 10px">
+    <div>
+      <p> MoveX </p>
+      <input type="range" min="0" max="1" step="0.001" value="0.5" id="moveX" />
+    </div>
+    <div>
+      <p> MoveY </p>
+      <input type="range" min="0" max="1" step="0.001" value="0.5" id="moveY" />
+    </div>
+  </div>
+`;
   }
 
   generateStickerControlMenu() {

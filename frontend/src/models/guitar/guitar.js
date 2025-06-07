@@ -77,6 +77,12 @@ export class Guitar {
       ...intersects[0].object,
     };
 
+    const selectedGuitarPart = document.querySelector("#selected-guitar-part");
+
+    console.log(this.intersectedObject.name);
+
+    selectedGuitarPart.textContent = this.intersectedObject.name;
+
     if (this.isStickerOn) {
       this.isStickerOn = false;
       this.applySticker(

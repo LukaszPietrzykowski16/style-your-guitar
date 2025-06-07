@@ -194,7 +194,7 @@ canvas {
   flex-wrap: wrap;
   padding: 16px;
   gap: 8px;
-  height: 180px;
+  height: 300px;
 }
 
 .texture-card {
@@ -275,7 +275,7 @@ canvas {
   align-items: center;
   flex-direction: column;
   text-align: center;
-  height: 60%;
+  height: 80%;
   padding: 8px;
   width: 350px;
   position: absolute;
@@ -291,7 +291,7 @@ canvas {
   align-items: center;
   flex-direction: column;
   text-align: center;
-  height: 60%;
+  height: 80%;
   width: 350px;
   position: absolute;
   left: 20px;
