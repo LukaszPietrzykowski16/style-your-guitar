@@ -30,7 +30,6 @@ export class UiController {
 
   init() {
     this.initLoader();
-    this.mapGuitarElements();
     this.initListingForIcons();
     this.initMutationObserver();
     this.initMutationObserverSticker();
@@ -135,31 +134,51 @@ export class UiController {
       this.hideApperenaceControlMenu();
     });
     colorInput.addEventListener("input", (event) => {
-      this.guitar.changeIntersectedObjectMaterialColor(event.target.value);
+      if (this.guitar) {
+        this.guitar.changeIntersectedObjectMaterialColor(event.target.value);
+      }
     });
     roughnessInput.addEventListener("input", (event) => {
-      this.guitar.changeIntersectedObjectMaterialRoughness(event.target.value);
+      if (this.guitar) {
+        this.guitar.changeIntersectedObjectMaterialRoughness(
+          event.target.value
+        );
+      }
     });
     metalnessInput.addEventListener("input", (event) => {
-      this.guitar.changeIntersectedObjectMaterialMetalness(event.target.value);
+      if (this.guitar) {
+        this.guitar.changeIntersectedObjectMaterialMetalness(
+          event.target.value
+        );
+      }
     });
     rotateInput.addEventListener("input", (event) => {
-      this.guitar.rotateTexture(event.target.value);
+      if (this.guitar) {
+        this.guitar.rotateTexture(event.target.value);
+      }
     });
     zoomInZoomOutInput.addEventListener("input", (event) => {
-      this.guitar.zoomInOutTexture(event.target.value);
+      if (this.guitar) {
+        this.guitar.zoomInOutTexture(event.target.value);
+      }
     });
     moveXInput.addEventListener("input", (event) => {
-      this.guitar.moveX(event.target.value);
+      if (this.guitar) {
+        this.guitar.moveX(event.target.value);
+      }
     });
     moveYInput.addEventListener("input", (event) => {
-      this.guitar.moveY(event.target.value);
+      if (this.guitar) {
+        this.guitar.moveY(event.target.value);
+      }
     });
 
     colorsContainer.childNodes.forEach((colorContainer) => {
       colorContainer.addEventListener("click", (event) => {
-        const selectedColor = event.target.getAttribute("data-color");
-        this.guitar.changeIntersectedObjectMaterialColor(selectedColor);
+        if (this.guitar) {
+          const selectedColor = event.target.getAttribute("data-color");
+          this.guitar.changeIntersectedObjectMaterialColor(selectedColor);
+        }
       });
     });
 
@@ -174,7 +193,7 @@ export class UiController {
         );
         const textureUrl = `${urlMatch[1]}${urlMatch[2]}`;
 
-        if (textureUrl) {
+        if (textureUrl && this.guitar) {
           this.guitar.updateIntersectedObjectTexture(textureUrl);
         }
       });
@@ -208,19 +227,6 @@ export class UiController {
       const input = document.getElementById(id);
       if (input) input.value = defaults[id];
     }
-  }
-
-  mapGuitarElements() {
-    this.guitarElements.forEach((guitarElement) => {
-      guitarElement.addEventListener("click", (element) => {
-        const searchedelement = this.scene.getObjectByName(element.target.id);
-        this.guitar.updateIntersectedObject({
-          ...this.intersectedObject,
-          ...searchedelement,
-        });
-        updateActiveElement(this.intersectedObject.name);
-      });
-    });
   }
 
   initLoader() {

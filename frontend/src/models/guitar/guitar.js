@@ -69,7 +69,7 @@ export class Guitar {
       this.scene.children,
       true
     );
-    if (!intersects) return;
+    if (intersects.length === 0) return;
 
     const position = intersects[0].point;
     this.intersectedObject = {
@@ -77,9 +77,10 @@ export class Guitar {
       ...intersects[0].object,
     };
 
-    // const selectedGuitarPart = document.querySelector("#selected-guitar-part");
-
-    // selectedGuitarPart.textContent = this.intersectedObject.name;
+    const selectedGuitarPart = document.querySelector("#selected-guitar-part");
+    if (selectedGuitarPart) {
+      selectedGuitarPart.textContent = this.intersectedObject.name;
+    }
 
     if (this.isStickerOn) {
       this.isStickerOn = false;

@@ -209,16 +209,20 @@ canvas {
   background-size: cover;
   background-repeat: repeat;
   background-position: center;
+  cursor: pointer;
 }
 
 .texture-card span {
   font-weight: bold;
   color: white;
   padding: 2px 4px;
-  pointer-events: none;
   border-radius: 4px;
   background-color: black;
   opacity: 0.8;
+}
+
+.texture-container .texture-card span {
+  pointer-events: none;
 }
 
 .close-icon {

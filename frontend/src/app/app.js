@@ -48,7 +48,7 @@ export class App {
     });
 
     gsap.to(this.camera, {
-      zoom,
+      zoom: 1,
       duration: 4,
       ease: "power2.inOut",
       onUpdate: () => {
