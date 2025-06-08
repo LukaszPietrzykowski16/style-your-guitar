@@ -15,6 +15,7 @@ export class UiController {
   isApperanceControlMenuGenerated = false;
   isStickerControlMenuGenerated = false;
   isLoading = true;
+  isApperanceControlMenuVisible = false;
 
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
@@ -36,11 +37,13 @@ export class UiController {
     this.initListningForClickOnModel();
     this.initMouseMove();
 
-    window.addEventListener("guitarPartSelected", () => {
-      if (!this.isStickerControlMenuGenerated) {
-        this.generateApperanceControlMenu();
+    window.addEventListener("guitarPartSelected", (e) => {
+      if (!this.isApperanceControlMenuVisible) {
+        if (!this.isStickerControlMenuGenerated) {
+          this.generateApperanceControlMenu();
+        }
+        this.showApperenaceControlMenu();
       }
-      this.showApperenaceControlMenu();
     });
   }
 
@@ -258,6 +261,7 @@ export class UiController {
   }
 
   hideApperenaceControlMenu() {
+    this.isApperanceControlMenuVisible = false;
     this.hideApperenaceControlMenuAnimation();
     this.appereanceControlIcon.style.display = "flex";
   }
@@ -556,6 +560,7 @@ export class UiController {
   }
 
   showApperenaceControlMenu() {
+    this.isApperanceControlMenuVisible = true;
     this.showAppereanceControlMenuAnimation();
     this.appereanceControl.style.display = "flex";
     this.appereanceControlIcon.style.display = "none";
