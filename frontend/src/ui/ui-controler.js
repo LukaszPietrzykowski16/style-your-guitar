@@ -298,68 +298,86 @@ export class UiController {
     <div class="texture-card">
       <span>Custom <input type="file" id="textureInput" accept="image/*"></span>
     </div>
-    <div class="texture-card" style="background-image: url('texture0.PNG')">
-      <span>Pastel</span>
+        <div class="texture-card" style="background-image: url('texture14.PNG')">
+      <span>Pine</span>
     </div>
+    <div class="texture-card" style="background-image: url('texture15.PNG')">
+      <span>Nut tree</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture16.PNG')">
+      <span>Oak</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture17.PNG')">
+      <span>Ash</span>
+    </div>
+    <div class="texture-card" style="background-image: url('panther.PNG')">
+      <span>Panther</span>
+    </div>
+    <div class="texture-card" style="background-image: url('zebra.PNG')">
+      <span>Zebra</span>
+    </div>
+        <div class="texture-card" style="background-image: url('texture13.PNG')">
+      <span>Zebra 2</span>
+    </div>
+    <div class="texture-card" style="background-image: url('camo-white.PNG')">
+  <span>Camo White</span>
+</div>
+<div class="texture-card" style="background-image: url('camo.PNG')">
+  <span>Camo</span>
+</div>
+<div class="texture-card" style="background-image: url('vhs.PNG')">
+  <span>VHS</span>
+</div>
     <div class="texture-card" style="background-image: url('texture1.jpg')">
       <span>Rusty</span>
     </div>
+<div class="texture-card" style="background-image: url('crack.PNG')">
+  <span>Crack</span>
+</div>
+<div class="texture-card" style="background-image: url('mineral-oil.jpg')">
+  <span>Mineral Oil</span>
+</div>
+<div class="texture-card" style="background-image: url('pattern.PNG')">
+  <span>Pattern</span>
+</div>
+
+    <div class="texture-card" style="background-image: url('texture0.PNG')">
+      <span>Pastel</span>
+    </div>
+
     <div class="texture-card" style="background-image: url('texture2.PNG')">
       <span>Chaotic</span>
     </div>
-    <div class="texture-card" style="background-image: url('texture4.PNG')">
-      <span>Scratches</span>
-    </div>
     <div class="texture-card" style="background-image: url('texture5.PNG')">
-      <span>Scratches</span>
+      <span>Lines</span>
     </div>
     <div class="texture-card" style="background-image: url('texture6.PNG')">
-      <span>Scratches</span>
+      <span>Lines 2</span>
+    </div>
+        <div class="texture-card" style="background-image: url('texture10.PNG')">
+      <span>Lines 3</span>
     </div>
     <div class="texture-card" style="background-image: url('texture7.PNG')">
-      <span>Scratches</span>
+      <span>Brocade</span>
     </div>
     <div class="texture-card" style="background-image: url('texture8.PNG')">
-      <span>Scratches</span>
+      <span>Brocade 2</span>
     </div>
     <div class="texture-card" style="background-image: url('texture9.PNG')">
-      <span>Scratches</span>
+      <span>Brocade 3</span>
     </div>
-    <div class="texture-card" style="background-image: url('texture10.PNG')">
-      <span>Scratches</span>
-    </div>
+
     <div class="texture-card" style="background-image: url('texture11.PNG')">
-      <span>Scratches</span>
+      <span>Dots</span>
     </div>
     <div class="texture-card" style="background-image: url('texture12.PNG')">
-      <span>Scratches</span>
-    </div>
-    <div class="texture-card" style="background-image: url('texture13.PNG')">
-      <span>Scratches</span>
-    </div>
-    <div class="texture-card" style="background-image: url('texture14.PNG')">
-      <span>Scratches</span>
-    </div>
-    <div class="texture-card" style="background-image: url('texture15.PNG')">
-      <span>Scratches</span>
-    </div>
-    <div class="texture-card" style="background-image: url('texture16.PNG')">
-      <span>Scratches</span>
-    </div>
-    <div class="texture-card" style="background-image: url('texture17.PNG')">
-      <span>Scratches</span>
-    </div>
-    <div class="texture-card" style="background-image: url('texture18.PNG')">
-      <span>Scratches</span>
-    </div>
-    <div class="texture-card" style="background-image: url('texture19.PNG')">
-      <span>Scratches</span>
-    </div>
-    <div class="texture-card" style="background-image: url('texture20.PNG')">
-      <span>Scratches</span>
+      <span>Dots</span>
     </div>
     <div class="texture-card" style="background-image: url('texture21.PNG')">
-      <span>Scratches</span>
+      <span>Flames</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture20.PNG')">
+      <span>Flames 2</span>
     </div>
   </div>
 

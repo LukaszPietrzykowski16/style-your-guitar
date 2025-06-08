@@ -213,7 +213,12 @@ canvas {
 
 .texture-card span {
   font-weight: bold;
-  mix-blend-mode: difference;
+  color: white;
+  padding: 2px 4px;
+  pointer-events: none;
+  border-radius: 4px;
+  background-color: black;
+  opacity: 0.8;
 }
 
 .close-icon {
