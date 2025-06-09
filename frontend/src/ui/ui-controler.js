@@ -38,7 +38,7 @@ export class UiController {
 
     window.addEventListener("guitarPartSelected", (e) => {
       if (!this.isApperanceControlMenuVisible) {
-        if (!this.isStickerControlMenuGenerated) {
+        if (!this.isApperanceControlMenuGenerated) {
           this.generateApperanceControlMenu();
         }
         this.showApperenaceControlMenu();
