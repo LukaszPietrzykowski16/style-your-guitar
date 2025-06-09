@@ -447,83 +447,71 @@ export class UiController {
         </div>
         <div
           class="texture-card"
-          style="background-image: url('stop.jpg')"
+          style="background-image: url('sticker0.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker0.PNG')"
+          style="background-image: url('sticker1.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker1.PNG')"
+          style="background-image: url('sticker2.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker2.PNG')"
+          style="background-image: url('sticker3.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker3.PNG')"
+          style="background-image: url('sticker4.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker4.PNG')"
+          style="background-image: url('sticker5.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker5.PNG')"
+          style="background-image: url('sticker6.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker6.PNG')"
+          style="background-image: url('sticker7.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker7.PNG')"
+          style="background-image: url('sticker8.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker8.PNG')"
+          style="background-image: url('sticker10.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker9.PNG')"
+          style="background-image: url('sticker11.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker10.PNG')"
+          style="background-image: url('sticker12.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker11.PNG')"
+          style="background-image: url('sticker13.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker12.PNG')"
+          style="background-image: url('sticker14.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker13.PNG')"
+          style="background-image: url('sticker15.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker14.PNG')"
+          style="background-image: url('sticker16.png')"
         ></div>
         <div
           class="texture-card"
-          style="background-image: url('sticker15.PNG')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker16.PNG')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker17.PNG')"
-        ></div>
-              <div
-          class="texture-card"
-          style="background-image: url('test.png')"
+          style="background-image: url('sticker17.png')"
         ></div>
       </div>
       <div class="sticker-config-container">
