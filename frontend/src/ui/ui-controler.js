@@ -279,9 +279,9 @@ export class UiController {
 
     this.appereanceControl.innerHTML = `
   <div id="active-element" style="display: none"></div>
-  <h1 style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
+  <div class="section-header">
     <span id="selected-guitar-part"> </span> Change Color 
-  </h1>
+  </div>
   <div class="close-icon"><i data-feather="x"></i>X</div>
   <div class="colors-container">
     <span class="color-dot-red" data-color="#ff0000"></span>
@@ -294,9 +294,9 @@ export class UiController {
     <input type="color" id="color-picker" name="color-picker" value="" />
   </div>
 
-  <h1 style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
+  <span style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
     Change Texture
-  </h1>
+  </span>
   <div class="texture-container">
     <div class="texture-card" style="background-image: url('texture-default.png')">
       <span>Default</span>
@@ -428,19 +428,13 @@ export class UiController {
     this.showStickerControlMenuAnimation();
 
     this.stickerControl.innerHTML = `
-       <h1
-        style="
-          font-size: 18px;
-          text-align: left;
-          width: 100%;
-          padding-top: 8px;
-          padding-left: 16px;
-        "
+       <span
+        class="section-header"
       >
         Add sticker
-      </h1>
+      </span>
       
-      <div class="close-icon-sticker"><i data-feather="x"></i>x</div>
+      <div class="close-icon-sticker"><i data-feather="x"></i>X</div>
       <div class="sticker-container">
         <div class="texture-card">
           <span> Custom </span>
@@ -515,13 +509,15 @@ export class UiController {
         ></div>
       </div>
       <div class="sticker-config-container">
-      <h1      style="
+      <span      style="
           font-size: 18px;
           text-align: left;
           width: 100%;
-          padding-top: 8px;
+          text-align: left;
+          padding-top: 12px;
           padding-left: 16px;
-        "> Change Sticker </h1>
+          display: flex;
+        "> Change Sticker </span>
       <div id="sticker-config" class="sticker-container">
         Please selected sticker
       </div>
