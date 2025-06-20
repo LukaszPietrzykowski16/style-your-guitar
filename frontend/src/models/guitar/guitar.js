@@ -41,6 +41,7 @@ export class Guitar {
   }
 
   addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
+    if (this.isStickerOn) return;
     const glowGeometry = object.geometry.clone();
     const glowMaterial = new THREE.MeshBasicMaterial({
       color: glowColor,
@@ -253,6 +254,9 @@ export class Guitar {
       new THREE.Vector3(0.5, 0.5, 0.5)
     );
     const decalMesh = new THREE.Mesh(decalGeometry, decalMaterial);
+
+    decalMesh.userData.isDecal = true;
+
     this.stickersProxy.push({
       textureUrl: decalMesh.material.map.image.src,
       texture: decalMesh,
@@ -282,6 +286,10 @@ export class Guitar {
     this.raycaster.setFromCamera(this.mouse, this.camera);
     const intersects = this.raycaster.intersectObjects(this.scene.children);
 
+    const isDecal = intersects[0]?.object?.userData?.isDecal === true;
+
+    if (isDecal) return;
+
     const hoverText = document.getElementById("hover-text");
     if (!hoverText) return;
 
@@ -301,7 +309,7 @@ export class Guitar {
         }
       }
 
-      if (!this.glowMeshHover) {
+      if (!this.glowMeshHover && !this.isStickerOn) {
         this.toggleHoverText(true);
         this.currentHovered = intersectedObject;
         this.glowMeshHover = this.addHaloGlow(
