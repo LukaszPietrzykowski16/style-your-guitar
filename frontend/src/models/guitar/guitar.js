@@ -69,24 +69,31 @@ export class Guitar {
       this.scene.children,
       true
     );
+
     if (intersects.length === 0) return;
 
-    const position = intersects[0].point;
+    const selectedGuitarPart = intersects[0].object.name
+      ? intersects[0]
+      : intersects[1];
+
+    const position = selectedGuitarPart.point;
     this.intersectedObject = {
       ...this.intersectedObject,
-      ...intersects[0].object,
+      ...selectedGuitarPart.object,
     };
 
-    const selectedGuitarPart = document.querySelector("#selected-guitar-part");
-    if (selectedGuitarPart) {
-      selectedGuitarPart.textContent = this.intersectedObject.name;
+    const selectedGuitarPartDOM = document.querySelector(
+      "#selected-guitar-part"
+    );
+    if (selectedGuitarPartDOM) {
+      selectedGuitarPartDOM.textContent = this.intersectedObject.name;
     }
 
     if (this.isStickerOn) {
       this.isStickerOn = false;
       this.applySticker(
         position,
-        intersects[0].face.normal,
+        selectedGuitarPart.face.normal,
         this.intersectedObject
       );
       return;
