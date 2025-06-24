@@ -1,6 +1,8 @@
 export class UiController {
   guitar = {};
 
+  selectedPart = { name: "" };
+
   guitarElements = document.querySelectorAll("#guitar-elements");
   appereanceControl = document.querySelector("#appearence-control");
   appereanceControlIcon = document.querySelector(".appearence-control-icon");
@@ -35,8 +37,7 @@ export class UiController {
     this.initMutationObserverSticker();
     this.initListningForClickOnModel();
     this.initMouseMove();
-
-    window.addEventListener("guitarPartSelected", (e) => {
+    document.addEventListener("guitarPartSelected", (e) => {
       if (!this.isApperanceControlMenuVisible) {
         if (!this.isApperanceControlMenuGenerated) {
           this.generateApperanceControlMenu();
@@ -273,14 +274,21 @@ export class UiController {
   }
 
   generateApperanceControlMenu() {
-    this.isApperanceControlMenuGenerated = true;
-
     this.showAppereanceControlMenuAnimation();
 
-    this.appereanceControl.innerHTML = `
-  <div id="active-element" style="display: none"></div>
+    if (this.guitar) {
+      this.selectedPart.name = this.guitar.intersectedObject.name;
+    }
+
+    if (!this.selectedPart.name) {
+      this.appereanceControl.innerHTML = `
+       <div class="close-icon"><i data-feather="x"></i>X</div>
+        <div> Select a part of guitar to customize it! </div>
+       `;
+    } else {
+      this.appereanceControl.innerHTML = `
   <div class="section-header">
-    <span id="selected-guitar-part"> </span> Change Color 
+    <span id="selected-guitar-part"> ${this.selectedPart.name}</span> Change Color 
   </div>
   <div class="close-icon"><i data-feather="x"></i>X</div>
   <div class="colors-container">
@@ -420,6 +428,7 @@ export class UiController {
     </div>
   </div>
 `;
+    }
   }
 
   generateStickerControlMenu() {

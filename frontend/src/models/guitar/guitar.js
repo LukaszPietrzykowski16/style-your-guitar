@@ -103,7 +103,7 @@ export class Guitar {
     this.addTemporaryGlow();
 
     const eventUI = new CustomEvent("guitarPartSelected");
-    window.dispatchEvent(eventUI);
+    document.dispatchEvent(eventUI);
   }
 
   addTemporaryGlow() {

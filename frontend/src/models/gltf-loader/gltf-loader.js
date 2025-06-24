@@ -1,10 +1,8 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { UiController } from "../../ui/ui-controler";
 
 export function gltfLoader(scene, camera) {
   const loader = new GLTFLoader();
-  const uiController = new UiController();
   loader.load(
     "./guitar-extra-gltf.gltf",
     (gltf) => {
@@ -40,9 +38,6 @@ export function gltfLoader(scene, camera) {
     (xhr) => {
       const precentageLoaded = xhr.loaded / xhr.total;
       const LOADED = 1;
-      if (precentageLoaded === LOADED) {
-        uiController.setIsLoading(false);
-      }
     },
     undefined,
     (error) => {
