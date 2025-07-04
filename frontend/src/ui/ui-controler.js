@@ -77,6 +77,15 @@ export class UiController {
     const stickerContainer = document.querySelector(".sticker-container");
     const closeStikcerIcon = document.querySelector(".close-icon-sticker");
     const removeSticker = document.querySelectorAll(".remove-sticker");
+    const fileLoaderSticker = document.querySelector("#stickerInput");
+
+    fileLoaderSticker.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+
+      if (!file) return;
+
+      this.guitar.updateSelectedStickerFromFile(file);
+    });
 
     Array.from(stickerContainer.children).forEach((stickerEl) => {
       if (!stickerEl.dataset.listenerAdded) {
@@ -95,8 +104,10 @@ export class UiController {
             /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
           );
 
+          if (!urlMatch) {
+            return;
+          }
           const textureUrl = `${urlMatch[1]}${urlMatch[2]}`;
-          console.log(`${urlMatch[1]}${urlMatch[2]}`);
 
           if (textureUrl && this.guitar) {
             this.guitar.putStickerOnTheGuitar(textureUrl);
@@ -448,7 +459,7 @@ export class UiController {
       <div class="close-icon-sticker"><i data-feather="x"></i>X</div>
       <div class="sticker-container">
         <div class="texture-card">
-          <span> Custom </span>
+          <span> Custom <input type="file" id="stickerInput" accept="image/*"></span> </span>
         </div>
         <div
           class="texture-card"

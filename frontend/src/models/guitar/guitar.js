@@ -189,6 +189,31 @@ export class Guitar {
     reader.readAsDataURL(file);
   }
 
+  updateSelectedStickerFromFile(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const imageDataUrl = e.target?.result;
+      localStorage.setItem("uploadedImage", imageDataUrl);
+    };
+    reader.readAsDataURL(file);
+
+    const savedImage = localStorage.getItem("uploadedImage");
+    const stickerContainer = document.querySelectorAll(".sticker-container");
+
+    if (savedImage && stickerContainer.length > 0) {
+      const div = document.createElement("div");
+      div.className = "texture-card";
+      div.style.backgroundImage = `url('${savedImage}')`;
+
+      const container = stickerContainer[0];
+      if (container.children.length >= 1) {
+        container.insertBefore(div, container.children[1]);
+      } else {
+        container.appendChild(div);
+      }
+    }
+  }
+
   lastRotate = 0;
 
   rotateTexture(newRotate) {
