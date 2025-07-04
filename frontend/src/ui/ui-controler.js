@@ -96,6 +96,7 @@ export class UiController {
           );
 
           const textureUrl = `${urlMatch[1]}${urlMatch[2]}`;
+          console.log(`${urlMatch[1]}${urlMatch[2]}`);
 
           if (textureUrl && this.guitar) {
             this.guitar.putStickerOnTheGuitar(textureUrl);
@@ -311,7 +312,7 @@ export class UiController {
       <span>Default</span>
     </div>
     <div class="texture-card">
-      <span>Custom <input type="file" id="textureInput" accept="image/*"></span>
+      <span style="pointer-events: auto;">Custom <input type="file" id="textureInput" accept="image/*"></span>
     </div>
         <div class="texture-card" style="background-image: url('texture14.PNG')">
       <span>Pine</span>
