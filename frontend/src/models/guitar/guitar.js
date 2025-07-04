@@ -170,6 +170,11 @@ export class Guitar {
     this.scene.remove(this.stickersProxy[decalIndex].texture);
 
     this.stickersProxy.splice(decalIndex, 1);
+
+    if (!this.stickersProxy.length) {
+      document.querySelector("#sticker-config").innerHTML =
+        "Please select sticker";
+    }
   }
 
   updateIntersectedObjectTextureFromFile(file) {

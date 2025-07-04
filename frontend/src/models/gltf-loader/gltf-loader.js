@@ -37,7 +37,6 @@ export function gltfLoader(scene, camera) {
     },
     (xhr) => {
       let percentageLoaded = Math.round((xhr.loaded / xhr.total) * 100);
-      console.log(percentageLoaded);
       document.querySelector("#loader").innerHTML = `${percentageLoaded}%`;
 
       if (percentageLoaded === 100) {

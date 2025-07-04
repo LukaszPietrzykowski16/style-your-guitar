@@ -529,7 +529,7 @@ export class UiController {
           display: flex;
         "> Change Sticker </span>
       <div id="sticker-config" class="sticker-container">
-        Please selected sticker
+        Please select sticker
       </div>
       </div>
     `;
