@@ -36,8 +36,14 @@ export function gltfLoader(scene, camera) {
       }
     },
     (xhr) => {
-      const precentageLoaded = xhr.loaded / xhr.total;
-      const LOADED = 1;
+      let percentageLoaded = Math.round((xhr.loaded / xhr.total) * 100);
+      console.log(percentageLoaded);
+      document.querySelector("#loader").innerHTML = `${percentageLoaded}%`;
+
+      if (percentageLoaded === 100) {
+        const eventUI = new CustomEvent("GLTFobjectLoaded");
+        document.dispatchEvent(eventUI);
+      }
     },
     undefined,
     (error) => {

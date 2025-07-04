@@ -547,8 +547,13 @@ input[type="range"]:focus::-ms-fill-upper {
 .loader {
   width: 400px;
   height: 400px;
+  padding-bottom: 10rem;
+  font-size: 6rem;
   display: inline-block;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .loader::after,
 .loader::before {
@@ -572,7 +577,7 @@ input[type="range"]:focus::-ms-fill-upper {
     opacity: 1;
   }
   100% {
-    transform: scale(1);
+    transform: scale(1.5);
     opacity: 0;
   }
 }

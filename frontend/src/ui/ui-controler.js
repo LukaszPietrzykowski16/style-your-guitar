@@ -237,14 +237,15 @@ export class UiController {
         { clipPath: "circle(5% at center)", opacity: 0, display: "none" },
       ],
       {
-        duration: 1000,
+        duration: 10000,
         easing: "ease-in-out",
         fill: "forwards",
       }
     );
-    if (!this.isLoading) {
+    document.addEventListener("GLTFobjectLoaded", () => {
+      this.isLoading = true;
       loaderAnimation.finish();
-    }
+    });
   }
 
   initListingForIcons() {
