@@ -189,28 +189,65 @@ export class Guitar {
     reader.readAsDataURL(file);
   }
 
-  updateSelectedStickerFromFile(file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const imageDataUrl = e.target?.result;
-      localStorage.setItem("uploadedImage", imageDataUrl);
-    };
-    reader.readAsDataURL(file);
+  async updateSelectedStickerFromFile(file) {
+    const stickerContainers = document.querySelectorAll(".sticker-container");
 
-    const savedImage = localStorage.getItem("uploadedImage");
-    const stickerContainer = document.querySelectorAll(".sticker-container");
+    const db = await new Promise((resolve, reject) => {
+      const request = indexedDB.open("ImageStorage", 1);
 
-    if (savedImage && stickerContainer.length > 0) {
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains("images")) {
+          db.createObjectStore("images", { keyPath: "id" });
+        }
+      };
+
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+
+    const transaction = db.transaction("images", "readwrite");
+    const store = transaction.objectStore("images");
+
+    await new Promise((resolve, reject) => {
+      const addRequest = store.put({ id: "uploadedImage", file });
+
+      addRequest.onsuccess = () => resolve();
+      addRequest.onerror = () => reject(addRequest.error);
+    });
+
+    const blobUrl = await new Promise((resolve, reject) => {
+      const transaction = db.transaction("images", "readonly");
+      const store = transaction.objectStore("images");
+
+      const getRequest = store.get("uploadedImage");
+      getRequest.onsuccess = () => {
+        const result = getRequest.result;
+        if (result) {
+          resolve(URL.createObjectURL(result.file));
+        } else {
+          resolve("");
+        }
+      };
+      getRequest.onerror = () => reject(getRequest.error);
+    });
+
+    if (!blobUrl) return;
+
+    if (stickerContainers.length > 0) {
+      console.log("hello");
+      const container = stickerContainers[0];
       const div = document.createElement("div");
       div.className = "texture-card";
-      div.style.backgroundImage = `url('${savedImage}')`;
+      div.style.backgroundImage = `url('${blobUrl}')`;
 
-      const container = stickerContainer[0];
       if (container.children.length >= 1) {
         container.insertBefore(div, container.children[1]);
       } else {
         container.appendChild(div);
       }
+
+      console.log("Image saved and loaded from IndexedDB!");
     }
   }
 

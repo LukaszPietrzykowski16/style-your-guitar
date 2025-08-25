@@ -101,13 +101,15 @@ export class UiController {
           const style = window.getComputedStyle(clickedElement);
           const backgroundImage = style.backgroundImage;
           const urlMatch = backgroundImage.match(
-            /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
+            /url\(["']?(https?:\/\/[^\/]+\/)?(?!undefinedblob:)(.*?)["']?\)/
           );
 
           if (!urlMatch) {
             return;
           }
-          const textureUrl = `${urlMatch[1]}${urlMatch[2]}`;
+          const textureUrl = urlMatch[1]
+            ? `${urlMatch[1]}${urlMatch[2]}`
+            : `${urlMatch[2]}`;
 
           if (textureUrl && this.guitar) {
             this.guitar.putStickerOnTheGuitar(textureUrl);
@@ -147,6 +149,7 @@ export class UiController {
       this.hideApperenaceControlMenu();
     });
     colorInput.addEventListener("input", (event) => {
+      console.log(event.target.value);
       if (this.guitar) {
         this.guitar.changeIntersectedObjectMaterialColor(event.target.value);
       }
@@ -243,24 +246,15 @@ export class UiController {
   }
 
   initLoader() {
-    const loaderAnimation = this.loaderContainer.animate(
-      [{ clipPath: "circle(100% at center)", opacity: 1 }],
-      {
-        duration: Infinity,
-        easing: "ease-in-out",
-        fill: "forwards",
-      }
-    );
     document.addEventListener("GLTFobjectLoaded", () => {
       this.isLoading = true;
-      loaderAnimation.cancel();
       this.loaderContainer.animate(
         [
           { clipPath: "circle(100% at center)", opacity: 1 },
           { clipPath: "circle(5% at center)", opacity: 0, display: "none" },
         ],
         {
-          duration: 800,
+          duration: 600,
           easing: "ease-in-out",
           fill: "forwards",
         }
