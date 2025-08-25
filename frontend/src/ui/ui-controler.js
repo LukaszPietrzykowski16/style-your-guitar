@@ -244,19 +244,27 @@ export class UiController {
 
   initLoader() {
     const loaderAnimation = this.loaderContainer.animate(
-      [
-        { clipPath: "circle(100% at center)", opacity: 1 },
-        { clipPath: "circle(5% at center)", opacity: 0, display: "none" },
-      ],
+      [{ clipPath: "circle(100% at center)", opacity: 1 }],
       {
-        duration: 10000,
+        duration: Infinity,
         easing: "ease-in-out",
         fill: "forwards",
       }
     );
     document.addEventListener("GLTFobjectLoaded", () => {
       this.isLoading = true;
-      loaderAnimation.finish();
+      loaderAnimation.cancel();
+      this.loaderContainer.animate(
+        [
+          { clipPath: "circle(100% at center)", opacity: 1 },
+          { clipPath: "circle(5% at center)", opacity: 0, display: "none" },
+        ],
+        {
+          duration: 800,
+          easing: "ease-in-out",
+          fill: "forwards",
+        }
+      );
     });
   }
 
