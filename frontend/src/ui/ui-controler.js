@@ -77,15 +77,20 @@ export class UiController {
     const stickerContainer = document.querySelector(".sticker-container");
     const closeStikcerIcon = document.querySelector(".close-icon-sticker");
     const removeSticker = document.querySelectorAll(".remove-sticker");
+
     const fileLoaderSticker = document.querySelector("#stickerInput");
 
-    fileLoaderSticker.addEventListener("change", (event) => {
-      const file = event.target.files[0];
+    if (!fileLoaderSticker.dataset.listenerAdded) {
+      fileLoaderSticker.addEventListener("change", (event) => {
+        const file = event.target.files[0];
 
-      if (!file) return;
+        if (!file) return;
 
-      this.guitar.updateSelectedStickerFromFile(file);
-    });
+        this.guitar.updateSelectedStickerFromFile(file);
+
+        fileLoaderSticker.dataset.listenerAdded = "true";
+      });
+    }
 
     Array.from(stickerContainer.children).forEach((stickerEl) => {
       if (!stickerEl.dataset.listenerAdded) {
@@ -121,15 +126,21 @@ export class UiController {
     });
 
     removeSticker.forEach((sticker) => {
-      sticker.addEventListener("click", (event) => {
-        const decalUUID = event.target.dataset.value;
-        this.guitar.removeDecalByUUID(decalUUID);
-      });
+      if (!sticker.dataset.listenerAdded) {
+        sticker.addEventListener("click", (event) => {
+          const decalUUID = event.target.dataset.value;
+          this.guitar.removeDecalByUUID(decalUUID);
+        });
+      }
+      sticker.dataset.listenerAdded = "true";
     });
 
-    closeStikcerIcon.addEventListener("click", () => {
-      this.hideStickerControlMenu();
-    });
+    if (closeStikcerIcon && !closeStikcerIcon.dataset.listenerAdded) {
+      closeStikcerIcon.addEventListener("click", () =>
+        this.hideStickerControlMenu()
+      );
+      closeStikcerIcon.dataset.listenerAdded = "true";
+    }
   }
 
   checkElements() {

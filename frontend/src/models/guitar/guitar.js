@@ -235,7 +235,6 @@ export class Guitar {
     if (!blobUrl) return;
 
     if (stickerContainers.length > 0) {
-      console.log("hello");
       const container = stickerContainers[0];
       const div = document.createElement("div");
       div.className = "texture-card";
