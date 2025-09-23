@@ -1,6 +1,7 @@
 import { gltfLoader } from "../gltf-loader/gltf-loader";
 import * as THREE from "three";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
+import { uploadImageToIndexedDb } from "../../utils/upload-image-to-indexed-db";
 
 export class Guitar {
   raycaster = new THREE.Raycaster();
@@ -180,45 +181,7 @@ export class Guitar {
   async updateIntersectedObjectTextureFromFile(file) {
     const textureContainers = document.querySelectorAll(".texture-container");
 
-    const db = await new Promise((resolve, reject) => {
-      const request = indexedDB.open("ImageStorage", 1);
-
-      request.onupgradeneeded = (event) => {
-        const db = event.target.result;
-        if (!db.objectStoreNames.contains("images")) {
-          db.createObjectStore("images", { keyPath: "id" });
-        }
-      };
-
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
-
-    const transaction = db.transaction("images", "readwrite");
-    const store = transaction.objectStore("images");
-
-    await new Promise((resolve, reject) => {
-      const addRequest = store.put({ id: "uploadedImage", file });
-
-      addRequest.onsuccess = () => resolve();
-      addRequest.onerror = () => reject(addRequest.error);
-    });
-
-    const blobUrl = await new Promise((resolve, reject) => {
-      const transaction = db.transaction("images", "readonly");
-      const store = transaction.objectStore("images");
-
-      const getRequest = store.get("uploadedImage");
-      getRequest.onsuccess = () => {
-        const result = getRequest.result;
-        if (result) {
-          resolve(URL.createObjectURL(result.file));
-        } else {
-          resolve("");
-        }
-      };
-      getRequest.onerror = () => reject(getRequest.error);
-    });
+    const blobUrl = await uploadImageToIndexedDb(file);
 
     if (textureContainers.length > 0) {
       const container = textureContainers[0];
@@ -237,45 +200,7 @@ export class Guitar {
   async updateSelectedStickerFromFile(file) {
     const stickerContainers = document.querySelectorAll(".sticker-container");
 
-    const db = await new Promise((resolve, reject) => {
-      const request = indexedDB.open("ImageStorage", 1);
-
-      request.onupgradeneeded = (event) => {
-        const db = event.target.result;
-        if (!db.objectStoreNames.contains("images")) {
-          db.createObjectStore("images", { keyPath: "id" });
-        }
-      };
-
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
-
-    const transaction = db.transaction("images", "readwrite");
-    const store = transaction.objectStore("images");
-
-    await new Promise((resolve, reject) => {
-      const addRequest = store.put({ id: "uploadedImage", file });
-
-      addRequest.onsuccess = () => resolve();
-      addRequest.onerror = () => reject(addRequest.error);
-    });
-
-    const blobUrl = await new Promise((resolve, reject) => {
-      const transaction = db.transaction("images", "readonly");
-      const store = transaction.objectStore("images");
-
-      const getRequest = store.get("uploadedImage");
-      getRequest.onsuccess = () => {
-        const result = getRequest.result;
-        if (result) {
-          resolve(URL.createObjectURL(result.file));
-        } else {
-          resolve("");
-        }
-      };
-      getRequest.onerror = () => reject(getRequest.error);
-    });
+    const blobUrl = await uploadImageToIndexedDb(file);
 
     if (!blobUrl) return;
 
