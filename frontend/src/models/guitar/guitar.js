@@ -177,16 +177,61 @@ export class Guitar {
     }
   }
 
-  updateIntersectedObjectTextureFromFile(file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const textureLoader = new THREE.TextureLoader();
-      const texture = textureLoader.load(e.target.result, (loadedTexture) => {
-        loadedTexture.needsUpdate = true;
-      });
-      this.intersectedObject.material.map = texture;
-    };
-    reader.readAsDataURL(file);
+  async updateIntersectedObjectTextureFromFile(file) {
+    const textureContainers = document.querySelectorAll(".texture-container");
+
+    const db = await new Promise((resolve, reject) => {
+      const request = indexedDB.open("ImageStorage", 1);
+
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains("images")) {
+          db.createObjectStore("images", { keyPath: "id" });
+        }
+      };
+
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+
+    const transaction = db.transaction("images", "readwrite");
+    const store = transaction.objectStore("images");
+
+    await new Promise((resolve, reject) => {
+      const addRequest = store.put({ id: "uploadedImage", file });
+
+      addRequest.onsuccess = () => resolve();
+      addRequest.onerror = () => reject(addRequest.error);
+    });
+
+    const blobUrl = await new Promise((resolve, reject) => {
+      const transaction = db.transaction("images", "readonly");
+      const store = transaction.objectStore("images");
+
+      const getRequest = store.get("uploadedImage");
+      getRequest.onsuccess = () => {
+        const result = getRequest.result;
+        if (result) {
+          resolve(URL.createObjectURL(result.file));
+        } else {
+          resolve("");
+        }
+      };
+      getRequest.onerror = () => reject(getRequest.error);
+    });
+
+    if (textureContainers.length > 0) {
+      const container = textureContainers[0];
+      const div = document.createElement("div");
+      div.className = "texture-card";
+      div.style.backgroundImage = `url('${blobUrl}')`;
+
+      if (container.children.length >= 1) {
+        container.insertBefore(div, container.children[1]);
+      } else {
+        container.appendChild(div);
+      }
+    }
   }
 
   async updateSelectedStickerFromFile(file) {
@@ -245,8 +290,6 @@ export class Guitar {
       } else {
         container.appendChild(div);
       }
-
-      console.log("Image saved and loaded from IndexedDB!");
     }
   }
 

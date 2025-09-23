@@ -160,7 +160,6 @@ export class UiController {
       this.hideApperenaceControlMenu();
     });
     colorInput.addEventListener("input", (event) => {
-      console.log(event.target.value);
       if (this.guitar) {
         this.guitar.changeIntersectedObjectMaterialColor(event.target.value);
       }
@@ -218,7 +217,7 @@ export class UiController {
         const urlMatch = backgroundImage.match(
           /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
         );
-        const textureUrl = `${urlMatch[1]}${urlMatch[2]}`;
+        const textureUrl = `${urlMatch[1] ?? ""}${urlMatch[2]}`;
 
         if (textureUrl && this.guitar) {
           this.guitar.updateIntersectedObjectTexture(textureUrl);
