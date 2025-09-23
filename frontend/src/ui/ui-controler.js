@@ -225,12 +225,15 @@ export class UiController {
       });
     });
 
-    fileLoader.addEventListener("change", (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
+    if (!fileLoader.dataset.listenerAdded) {
+      fileLoader.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
 
-      this.guitar.updateIntersectedObjectTextureFromFile(file);
-    });
+        this.guitar.updateIntersectedObjectTextureFromFile(file);
+        fileLoader.dataset.listenerAdded = "true";
+      });
+    }
   }
 
   updateActiveElement() {
