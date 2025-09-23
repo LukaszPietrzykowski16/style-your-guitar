@@ -2,6 +2,8 @@ import { gltfLoader } from "../gltf-loader/gltf-loader";
 import * as THREE from "three";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
 import { uploadImageToIndexedDb } from "../../utils/upload-image-to-indexed-db";
+import { removeSelectedStickerLabel } from "../../utils/remove-selected-sticker-label";
+import { addHaloGlow, addTemporaryGlow } from "./animations/animations";
 
 export class Guitar {
   raycaster = new THREE.Raycaster();
@@ -38,27 +40,6 @@ export class Guitar {
     this.camera = camera;
     this.scene = scene;
     gltfLoader(scene, camera);
-    // this.initListningForRotate();
-  }
-
-  addHaloGlow(object, glowColor, sizeMultiplier, glowIntensity) {
-    if (this.isStickerOn) return;
-    const glowGeometry = object.geometry.clone();
-    const glowMaterial = new THREE.MeshBasicMaterial({
-      color: glowColor,
-      transparent: true,
-      opacity: glowIntensity,
-      blending: THREE.AdditiveBlending,
-      depthTest: false,
-    });
-
-    const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
-    glowMesh.scale.multiplyScalar(sizeMultiplier);
-    glowMesh.position.copy(object.position);
-    glowMesh.rotation.copy(object.rotation);
-    glowMesh.position.y = 0.1;
-
-    return glowMesh;
   }
 
   changeIntersectedObject(event) {
@@ -101,38 +82,10 @@ export class Guitar {
       return;
     }
 
-    this.addTemporaryGlow();
+    addTemporaryGlow(this.intersectedObject, this.scene);
 
     const eventUI = new CustomEvent("guitarPartSelected");
     document.dispatchEvent(eventUI);
-  }
-
-  addTemporaryGlow() {
-    const glowMesh = this.addHaloGlow(this.intersectedObject, 0xffffff, 1, 8);
-
-    this.scene.add(glowMesh);
-
-    this.fadeOutGlow(glowMesh, 800);
-  }
-
-  fadeOutGlow(glowMesh, duration) {
-    const startTime = performance.now();
-
-    const animateGlow = () => {
-      const elapsed = performance.now() - startTime;
-      const progress = elapsed / duration;
-
-      if (progress < 1) {
-        glowMesh.material.opacity = 0.5 * (1 - progress);
-        requestAnimationFrame(animateGlow);
-      } else {
-        this.scene.remove(glowMesh);
-        glowMesh.geometry.dispose();
-        glowMesh.material.dispose();
-      }
-    };
-
-    animateGlow();
   }
 
   changeIntersectedObjectMaterialColor(materialColor) {
@@ -262,12 +215,7 @@ export class Guitar {
   }
 
   applySticker(position, normal, object) {
-    // TODO: move  this to ui-controler
-    document.querySelectorAll(".selected").forEach((el) => {
-      el.classList.remove("selected");
-      const label = el.querySelector(".selected-label");
-      if (label) label.remove();
-    });
+    removeSelectedStickerLabel();
 
     const decalMaterial = new THREE.MeshPhongMaterial({
       color: 0xffffff,
@@ -346,12 +294,10 @@ export class Guitar {
       if (!this.glowMeshHover && !this.isStickerOn) {
         this.toggleHoverText(true);
         this.currentHovered = intersectedObject;
-        this.glowMeshHover = this.addHaloGlow(
-          intersectedObject,
-          0xffffff,
-          1,
-          0.3
-        );
+
+        if (this.isStickerOn) return;
+
+        this.glowMeshHover = addHaloGlow(intersectedObject, 0xffffff, 1, 0.3);
         if (this.glowMeshHover) {
           this.scene.add(this.glowMeshHover);
         }
