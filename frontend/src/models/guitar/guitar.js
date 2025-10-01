@@ -117,9 +117,6 @@ export class Guitar {
     const decalIndex = this.stickersProxy.findIndex(
       (decal) => decal.texture.uuid === uuid
     );
-    const updatedStickers = this.stickersProxy.filter((sticker) => {
-      sticker.texture.uuid === decalIndex;
-    });
 
     this.scene.remove(this.stickersProxy[decalIndex].texture);
 
