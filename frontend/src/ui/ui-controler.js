@@ -93,6 +93,7 @@ export class UiController {
     }
 
     Array.from(stickerContainer.children).forEach((stickerEl) => {
+      fileLoaderSticker.dataset.listenerAdded = "true";
       if (!stickerEl.dataset.listenerAdded) {
         stickerEl.addEventListener("click", (event) => {
           document
@@ -121,6 +122,7 @@ export class UiController {
           }
 
           stickerEl.dataset.listenerAdded = "true";
+          fileLoaderSticker.dataset.listenerAdded = "false";
         });
       }
     });
@@ -133,6 +135,17 @@ export class UiController {
         });
       }
       sticker.dataset.listenerAdded = "true";
+    });
+
+    document.querySelectorAll(".scale-sticker").forEach((input) => {
+      input.addEventListener("input", (event) => {
+        const uuid = event.target
+          .getAttribute("data-value")
+          .replace("size-", "");
+        const scaleValue = parseFloat(event.target.value);
+        this.guitar.scaleDecalByUUID(uuid, scaleValue);
+      });
+      input.dataset.listenerAdded = "true";
     });
 
     if (closeStikcerIcon && !closeStikcerIcon.dataset.listenerAdded) {
