@@ -29,7 +29,7 @@ export class Guitar {
       ${targets
         .map(
           (target) =>
-            `<div class="texture-card" style="background-image: url(${target.textureUrl})"> <span class="remove-sticker" data-value="${target.texture.uuid}"> Remove </span> </div>`
+            `<div class="texture-card" style="background-image: url(${target.textureUrl})"> <span class="remove-sticker" data-value="${target.texture.uuid}"> Remove </span> <span class="rotate-sticker" data-value="${target.texture.uuid}"> Rotate </span> </div>`
         )
         .join("")}
     `;
@@ -126,6 +126,35 @@ export class Guitar {
       document.querySelector("#sticker-config").innerHTML =
         "Please select sticker";
     }
+  }
+
+  rotateDecalByUUID(uuid, deltaDeg = 15) {
+    const entry = this.stickersProxy.find(
+      (decal) => decal.texture.uuid === uuid
+    );
+    if (!entry) return;
+
+    const decalMesh = entry.texture;
+    const ud = decalMesh.userData || {};
+
+    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) {
+      decalMesh.rotation.z = THREE.MathUtils.degToRad(deltaDeg);
+      return;
+    }
+
+    const newEuler = ud.orientation.clone();
+    newEuler.z += THREE.MathUtils.degToRad(deltaDeg);
+
+    const newGeometry = new DecalGeometry(
+      ud.targetObject,
+      ud.position.clone(),
+      newEuler,
+      ud.size.clone()
+    );
+
+    decalMesh.geometry?.dispose?.();
+    decalMesh.geometry = newGeometry;
+    decalMesh.userData.orientation = newEuler;
   }
 
   async updateIntersectedObjectTextureFromFile(file) {
@@ -226,17 +255,33 @@ export class Guitar {
       wireframe: false,
     });
 
-    const stickerSizeInput = document.querySelector("#sticker-size").value;
+    const sizeVal =
+      parseFloat(document.querySelector("#sticker-size")?.value) || 1.0;
+
+    const rotDeg =
+      parseFloat(document.querySelector("#sticker-rotation")?.value) || 0;
+
+    // Set orientation using the helper object (degrees -> radians)
+    this.helper.rotation.set(0, 0, THREE.MathUtils.degToRad(rotDeg));
+
+    const sizeVec = new THREE.Vector3(sizeVal, sizeVal, sizeVal);
 
     const decalGeometry = new DecalGeometry(
       this.intersectedObject,
-      position,
-      this.helper.rotation,
-      new THREE.Vector3(stickerSizeInput, stickerSizeInput, stickerSizeInput)
+      position.clone(),
+      this.helper.rotation.clone(),
+      sizeVec.clone()
     );
     const decalMesh = new THREE.Mesh(decalGeometry, decalMaterial);
 
-    decalMesh.userData.isDecal = true;
+    // Store params to allow future transforms (rotate/scale)
+    decalMesh.userData = {
+      isDecal: true,
+      targetObject: this.intersectedObject,
+      position: position.clone(),
+      orientation: this.helper.rotation.clone(),
+      size: sizeVec.clone(),
+    };
 
     this.stickersProxy.push({
       textureUrl: decalMesh.material.map.image.src,
