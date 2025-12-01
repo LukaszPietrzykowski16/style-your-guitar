@@ -226,11 +226,13 @@ export class Guitar {
       wireframe: false,
     });
 
+    const stickerSizeInput = document.querySelector("#sticker-size").value;
+
     const decalGeometry = new DecalGeometry(
       this.intersectedObject,
       position,
       this.helper.rotation,
-      new THREE.Vector3(0.5, 0.5, 0.5)
+      new THREE.Vector3(stickerSizeInput, stickerSizeInput, stickerSizeInput)
     );
     const decalMesh = new THREE.Mesh(decalGeometry, decalMaterial);
 

@@ -148,6 +148,20 @@ export class UiController {
       input.dataset.listenerAdded = "true";
     });
 
+    const stickerSizeInput = document.querySelector("#sticker-size");
+    if (stickerSizeInput && !stickerSizeInput.dataset.listenerAdded) {
+      stickerSizeInput.addEventListener("input", (event) => {
+        const scaleValue = parseFloat(event.target.value);
+        if (this.guitar && this.guitar.currentDecal) {
+          this.guitar.scaleDecalByUUID(
+            this.guitar.currentDecal.uuid,
+            scaleValue
+          );
+        }
+      });
+      stickerSizeInput.dataset.listenerAdded = "true";
+    }
+
     if (closeStikcerIcon && !closeStikcerIcon.dataset.listenerAdded) {
       closeStikcerIcon.addEventListener("click", () =>
         this.hideStickerControlMenu()
@@ -485,6 +499,10 @@ export class UiController {
       </span>
       
       <div class="close-icon-sticker"><i data-feather="x"></i>X</div>
+
+      <div>
+
+      </div>
       <div class="sticker-container">
         <div class="texture-card">
           <span> Custom <input type="file" id="stickerInput" accept="image/*"></span> </span>
@@ -570,6 +588,10 @@ export class UiController {
         "> Change Sticker </span>
       <div id="sticker-config" class="sticker-container">
         Please select sticker
+      </div>
+      <div style="padding: 16px;">
+        <p>Sticker Size</p>
+        <input type="range" min="0.1" max="3.0" step="0.1" value="1.0" id="sticker-size" />
       </div>
       </div>
     `;
