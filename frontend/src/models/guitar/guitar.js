@@ -29,7 +29,28 @@ export class Guitar {
       ${targets
         .map(
           (target) =>
-            `<div class="texture-card" style="background-image: url(${target.textureUrl})"> <span class="remove-sticker" data-value="${target.texture.uuid}"> Remove </span> <span class="rotate-sticker" data-value="${target.texture.uuid}"> Rotate </span> </div>`
+            `
+          <div class="texture-card-wrapper">
+                <div class="texture-card-actions with-thumb">
+              <div class="texture-card thumb" style="background-image: url(${target.textureUrl});"></div>
+              <div class="action-buttons">
+                <button class="remove-sticker" data-value="${target.texture.uuid}"> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg> </button>
+                <button class="mirror-sticker" data-value="${target.texture.uuid}"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M360-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h160v80H200v560h160v80Zm80 80v-880h80v880h-80Zm160-80v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80q0 33-23.5 56.5T760-120Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80q33 0 56.5 23.5T840-760h-80Z"/></svg> </button>
+              </div>
+            </div>
+            <div class="texture-card-controls">
+              <div class="control-group">
+                <p class="control-label">Sticker Size</p>
+                <input type="range" min="0.1" max="3.0" step="0.1" value="1.0" id="sticker-size" />
+              </div>
+              <div class="control-group">
+                <p class="control-label">Sticker Rotation (deg)</p>
+                <input type="range" min="0" max="360" step="1" value="0" id="sticker-rotation" />
+              </div>
+            </div>
+      
+          </div>
+          `
         )
         .join("")}
     `;

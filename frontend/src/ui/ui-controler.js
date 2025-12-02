@@ -79,6 +79,7 @@ export class UiController {
     const removeSticker = document.querySelectorAll(".remove-sticker");
     const rotateStickerBtns = document.querySelectorAll(".rotate-sticker");
     const rotateSticker = document.querySelectorAll(".rotate-sticker");
+    const mirrorStickerBtns = document.querySelectorAll(".mirror-sticker");
 
     const fileLoaderSticker = document.querySelector("#stickerInput");
 
@@ -144,6 +145,19 @@ export class UiController {
         sticker.addEventListener("click", (event) => {
           const decalUUID = event.target.dataset.value;
           this.guitar.rotateDecalByUUID(decalUUID, 15);
+        });
+      }
+      sticker.dataset.listenerAdded = "true";
+    });
+
+    // Mirror sticker buttons (mirror across local X by default)
+    mirrorStickerBtns.forEach((sticker) => {
+      if (!sticker.dataset.listenerAdded) {
+        sticker.addEventListener("click", (event) => {
+          const decalUUID = event.target.dataset.value;
+          if (this.guitar.mirrorDecalByUUID) {
+            this.guitar.mirrorDecalByUUID(decalUUID, "x");
+          }
         });
       }
       sticker.dataset.listenerAdded = "true";
@@ -601,14 +615,7 @@ export class UiController {
       <div id="sticker-config" class="sticker-container">
         Please select sticker
       </div>
-      <div>
-        <p>Sticker Size</p>
-        <input type="range" min="0.1" max="3.0" step="0.1" value="1.0" id="sticker-size" />
-      </div>
-        <div>
-        <p>Sticker Rotation (deg)</p>
-        <input type="range" min="0" max="360" step="1" value="0" id="sticker-rotation" />
-      </div>
+    
       </div>
     `;
   }
