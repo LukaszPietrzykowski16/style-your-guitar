@@ -59,6 +59,10 @@
   cursor: pointer;
 }
 
+.texture-card-actions button svg {
+  pointer-events: none;
+}
+
 .texture-card-actions button:hover {
   background: rgba(255, 255, 255, 0.12);
 }

@@ -81,10 +81,7 @@ export class Guitar {
       : intersects[1];
 
     const position = selectedGuitarPart.point;
-    this.intersectedObject = {
-      ...this.intersectedObject,
-      ...selectedGuitarPart.object,
-    };
+    this.intersectedObject = selectedGuitarPart.object;
 
     const selectedGuitarPartDOM = document.querySelector(
       "#selected-guitar-part"
@@ -122,10 +119,7 @@ export class Guitar {
   }
 
   updateIntersectedObject(intersectedObject) {
-    this.intersectedObject = {
-      intersectedObject,
-      ...searchedelement,
-    };
+    this.intersectedObject = intersectedObject;
   }
 
   updateIntersectedObjectTexture(texture) {
@@ -139,6 +133,8 @@ export class Guitar {
       (decal) => decal.texture.uuid === uuid
     );
 
+    console.log(uuid);
+
     this.scene.remove(this.stickersProxy[decalIndex].texture);
 
     this.stickersProxy.splice(decalIndex, 1);
@@ -147,6 +143,33 @@ export class Guitar {
       document.querySelector("#sticker-config").innerHTML =
         "Please select sticker";
     }
+  }
+
+  mirrorDecalByUUID(uuid) {
+    const entry = this.stickersProxy.find(
+      (decal) => decal.texture.uuid === uuid
+    );
+    if (!entry) return;
+
+    const decalMesh = entry.texture;
+    const ud = decalMesh.userData || {};
+
+    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) return;
+
+    const newEuler = ud.orientation.clone();
+    newEuler.y += Math.PI;
+
+    const newGeometry = new DecalGeometry(
+      ud.targetObject,
+      ud.position.clone(),
+      newEuler,
+      ud.size.clone()
+    );
+
+    decalMesh.geometry?.dispose?.();
+    decalMesh.geometry = newGeometry;
+
+    decalMesh.userData.orientation = newEuler.clone();
   }
 
   rotateDecalByUUID(uuid, deltaDeg = 15) {

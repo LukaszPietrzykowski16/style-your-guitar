@@ -150,7 +150,6 @@ export class UiController {
       sticker.dataset.listenerAdded = "true";
     });
 
-    // Mirror sticker buttons (mirror across local X by default)
     mirrorStickerBtns.forEach((sticker) => {
       if (!sticker.dataset.listenerAdded) {
         sticker.addEventListener("click", (event) => {
