@@ -381,25 +381,6 @@ canvas {
   margin-right: 8px;
 }
 
-/* #style1 {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 100px;
-  height: 100px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-#style1::-webkit-color-swatch {
-  border-radius: 15px;
-  border: none;
-}
-#style1::-moz-color-swatch {
-  border-radius: 15px;
-  border: none;
-} */
-/*------ Style 2 ------*/
 #color-picker {
   display: flex;
   justify-content: center;
@@ -575,7 +556,6 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 input[type="range"]::-ms-track {
-  /*   width: 100%; */
   height: 8.4px;
   cursor: pointer;
   animate: 0.2s;
@@ -631,8 +611,6 @@ input[type="range"]:focus::-ms-fill-upper {
   top: 0;
   animation: animloader 1.5s linear infinite;
 }
-.loader::after {
-}
 
 @keyframes animloader {
   0% {
@@ -656,7 +634,6 @@ input[type="range"]:focus::-ms-fill-upper {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  /* clip-path: circle(100% at center); */
   will-change: clip-path, opacity;
 }
 
