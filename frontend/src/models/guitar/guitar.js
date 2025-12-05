@@ -45,7 +45,7 @@ export class Guitar {
               </div>
               <div class="control-group">
                 <p class="control-label">Sticker Rotation (deg)</p>
-                <input type="range" min="0" max="360" step="1" value="0" id="sticker-rotation" />
+                <input type="range" min="-180" max="180" step="1" value="0" class="sticker-rotation" data-value="${target.texture.uuid}" />
               </div>
             </div>
       
@@ -172,7 +172,7 @@ export class Guitar {
     decalMesh.userData.orientation = newEuler.clone();
   }
 
-  rotateDecalByUUID(uuid, deltaDeg = 15) {
+  rotateDecalByUUID(uuid, deltaDeg) {
     const entry = this.stickersProxy.find(
       (decal) => decal.texture.uuid === uuid
     );
@@ -186,8 +186,10 @@ export class Guitar {
       return;
     }
 
+    console.log(THREE.MathUtils.degToRad(deltaDeg));
+
     const newEuler = ud.orientation.clone();
-    newEuler.z += THREE.MathUtils.degToRad(deltaDeg);
+    newEuler.z = THREE.MathUtils.degToRad(deltaDeg);
 
     const newGeometry = new DecalGeometry(
       ud.targetObject,

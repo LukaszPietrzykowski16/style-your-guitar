@@ -77,8 +77,7 @@ export class UiController {
     const stickerContainer = document.querySelector(".sticker-container");
     const closeStikcerIcon = document.querySelector(".close-icon-sticker");
     const removeSticker = document.querySelectorAll(".remove-sticker");
-    const rotateStickerBtns = document.querySelectorAll(".rotate-sticker");
-    const rotateSticker = document.querySelectorAll(".rotate-sticker");
+    const rotateSticker = document.querySelectorAll(".sticker-rotation");
     const mirrorStickerBtns = document.querySelectorAll(".mirror-sticker");
 
     const fileLoaderSticker = document.querySelector("#stickerInput");
@@ -142,9 +141,10 @@ export class UiController {
 
     rotateSticker.forEach((sticker) => {
       if (!sticker.dataset.listenerAdded) {
-        sticker.addEventListener("click", (event) => {
+        sticker.addEventListener("input", (event) => {
           const decalUUID = event.target.dataset.value;
-          this.guitar.rotateDecalByUUID(decalUUID, 15);
+          const rotation = event.target.value;
+          this.guitar.rotateDecalByUUID(decalUUID, rotation);
         });
       }
       sticker.dataset.listenerAdded = "true";
