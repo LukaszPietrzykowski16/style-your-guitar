@@ -286,7 +286,7 @@ export class Guitar {
     }
   }
 
-  applySticker(position, normal, object) {
+  applySticker(position) {
     removeSelectedStickerLabel();
 
     const decalMaterial = new THREE.MeshPhongMaterial({
@@ -307,7 +307,6 @@ export class Guitar {
     const rotDeg =
       parseFloat(document.querySelector("#sticker-rotation")?.value) || 0;
 
-    // Set orientation using the helper object (degrees -> radians)
     this.helper.rotation.set(0, 0, THREE.MathUtils.degToRad(rotDeg));
 
     const sizeVec = new THREE.Vector3(sizeVal, sizeVal, sizeVal);
@@ -320,7 +319,6 @@ export class Guitar {
     );
     const decalMesh = new THREE.Mesh(decalGeometry, decalMaterial);
 
-    // Store params to allow future transforms (rotate/scale)
     decalMesh.userData = {
       isDecal: true,
       targetObject: this.intersectedObject,
