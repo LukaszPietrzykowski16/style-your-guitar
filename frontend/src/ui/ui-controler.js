@@ -376,12 +376,17 @@ export class UiController {
     Change Texture
   </span>
   <div class="texture-container">
+      <div class="texture-card custom-sticker-upload">
+      <label for="textureInput" class="custom-sticker-label">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+        <span style="background-color: transparent;">Upload Texture</span>
+      </label>
+      <input type="file" id="textureInput" accept="image/*" style="display: none;"/>
+    </div>
     <div class="texture-card" style="background-image: url('texture-default.png')">
       <span>Default</span>
     </div>
-    <div class="texture-card">
-      <span style="pointer-events: auto;">Custom <input type="file" id="textureInput" accept="image/*"></span>
-    </div>
+
         <div class="texture-card" style="background-image: url('texture14.PNG')">
       <span>Pine</span>
     </div>
@@ -519,8 +524,12 @@ export class UiController {
 
       </div>
       <div class="sticker-container">
-        <div class="texture-card">
-          <span> Custom <input type="file" id="stickerInput" accept="image/*"></span> </span>
+        <div class="texture-card custom-sticker-upload">
+          <label for="stickerInput" class="custom-sticker-label">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+            <span style="background-color: transparent;">Upload Sticker</span>
+          </label>
+          <input type="file" id="stickerInput" accept="image/*" style="display: none;"/>
         </div>
         <div
           class="texture-card"
