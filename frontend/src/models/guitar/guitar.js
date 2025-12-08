@@ -124,6 +124,12 @@ export class Guitar {
 
   updateIntersectedObjectTexture(texture) {
     const clickedTexture = this.textureLoader.load(texture);
+
+    clickedTexture.wrapS = THREE.RepeatWrapping;
+    clickedTexture.wrapT = THREE.RepeatWrapping;
+
+    clickedTexture.repeat.set(1, 1);
+
     this.intersectedObject.material.map = clickedTexture;
     this.intersectedObject.material.color.set(0xffffff);
   }
