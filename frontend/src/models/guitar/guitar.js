@@ -41,7 +41,7 @@ export class Guitar {
             <div class="texture-card-controls">
               <div class="control-group">
                 <p class="control-label">Sticker Size</p>
-                <input type="range" min="0.1" max="3.0" step="0.1" value="1.0" id="sticker-size" />
+                <input type="range" min="0" max="3" step="0.1" value="1" class="sticker-size" data-value="${target.texture.uuid}" />
               </div>
               <div class="control-group">
                 <p class="control-label">Sticker Rotation (deg)</p>
@@ -133,8 +133,6 @@ export class Guitar {
       (decal) => decal.texture.uuid === uuid
     );
 
-    console.log(uuid);
-
     this.scene.remove(this.stickersProxy[decalIndex].texture);
 
     this.stickersProxy.splice(decalIndex, 1);
@@ -186,8 +184,6 @@ export class Guitar {
       return;
     }
 
-    console.log(THREE.MathUtils.degToRad(deltaDeg));
-
     const newEuler = ud.orientation.clone();
     newEuler.z = THREE.MathUtils.degToRad(deltaDeg);
 
@@ -201,6 +197,33 @@ export class Guitar {
     decalMesh.geometry?.dispose?.();
     decalMesh.geometry = newGeometry;
     decalMesh.userData.orientation = newEuler;
+  }
+
+  scaleDecalByUUID(uuid, scaleValue) {
+    const entry = this.stickersProxy.find(
+      (decal) => decal.texture.uuid === uuid
+    );
+
+    if (!entry) return;
+
+    const decalMesh = entry.texture;
+    const ud = decalMesh.userData || {};
+
+    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) return;
+
+    const newSize = new THREE.Vector3(scaleValue, scaleValue, scaleValue);
+
+    const newGeometry = new DecalGeometry(
+      ud.targetObject,
+      ud.position.clone(),
+      ud.orientation.clone(),
+      newSize
+    );
+
+    decalMesh.geometry?.dispose?.();
+    decalMesh.geometry = newGeometry;
+
+    decalMesh.userData.size = newSize.clone();
   }
 
   async updateIntersectedObjectTextureFromFile(file) {

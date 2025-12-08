@@ -162,30 +162,20 @@ export class UiController {
       sticker.dataset.listenerAdded = "true";
     });
 
-    document.querySelectorAll(".scale-sticker").forEach((input) => {
-      input.addEventListener("input", (event) => {
-        const uuid = event.target
-          .getAttribute("data-value")
-          .replace("size-", "");
-        const scaleValue = parseFloat(event.target.value);
-        this.guitar.scaleDecalByUUID(uuid, scaleValue);
-      });
-      input.dataset.listenerAdded = "true";
-    });
+    document.querySelectorAll(".sticker-size").forEach((sticker) => {
+      console.log(sticker);
+      if (!sticker.dataset.listenerAdded) {
+        sticker.addEventListener("input", (event) => {
+          const uuid = event.target
+            .getAttribute("data-value")
+            .replace("size-", "");
+          const scaleValue = parseFloat(event.target.value);
+          this.guitar.scaleDecalByUUID(uuid, scaleValue);
+        });
+      }
 
-    const stickerSizeInput = document.querySelector("#sticker-size");
-    if (stickerSizeInput && !stickerSizeInput.dataset.listenerAdded) {
-      stickerSizeInput.addEventListener("input", (event) => {
-        const scaleValue = parseFloat(event.target.value);
-        if (this.guitar && this.guitar.currentDecal) {
-          this.guitar.scaleDecalByUUID(
-            this.guitar.currentDecal.uuid,
-            scaleValue
-          );
-        }
-      });
-      stickerSizeInput.dataset.listenerAdded = "true";
-    }
+      sticker.dataset.listenerAdded = "true";
+    });
 
     if (closeStikcerIcon && !closeStikcerIcon.dataset.listenerAdded) {
       closeStikcerIcon.addEventListener("click", () =>
