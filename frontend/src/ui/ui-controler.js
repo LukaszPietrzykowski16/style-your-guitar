@@ -163,7 +163,6 @@ export class UiController {
     });
 
     document.querySelectorAll(".sticker-size").forEach((sticker) => {
-      console.log(sticker);
       if (!sticker.dataset.listenerAdded) {
         sticker.addEventListener("input", (event) => {
           const uuid = event.target
