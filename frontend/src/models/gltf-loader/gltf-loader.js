@@ -7,7 +7,7 @@ export function gltfLoader(scene, camera) {
     "./guitar-extra-gltf.gltf",
     (gltf) => {
       const guitar = gltf.scene;
-      const guitarBody = "GUITAR";
+      const guitarBody = "Body";
 
       const textureLoader = new THREE.TextureLoader();
       const defaultTexture = textureLoader.load("texture-default.png");
