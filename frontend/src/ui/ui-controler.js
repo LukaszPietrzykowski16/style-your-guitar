@@ -18,6 +18,7 @@ export class UiController {
   isStickerControlMenuGenerated = false;
   isLoading = true;
   isApperanceControlMenuVisible = false;
+  isSelectAPartOfGuitarVisible = false;
 
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
@@ -38,6 +39,10 @@ export class UiController {
     this.initListningForClickOnModel();
     this.initMouseMove();
     document.addEventListener("guitarPartSelected", (e) => {
+      if (this.isSelectAPartOfGuitarVisible) {
+        this.isSelectAPartOfGuitarVisible = false;
+        this.showApperenaceControlMenuWhenIsEmpty();
+      }
       if (!this.isApperanceControlMenuVisible) {
         if (!this.isApperanceControlMenuGenerated) {
           this.generateApperanceControlMenu();
@@ -342,6 +347,160 @@ export class UiController {
     this.appereanceControlIcon.style.display = "flex";
   }
 
+  showApperenaceControlMenuWhenIsEmpty() {
+    if (this.guitar) {
+      this.selectedPart.name = this.guitar.intersectedObject.name;
+    }
+
+    this.appereanceControl.innerHTML = `
+  <div class="section-header">
+    <span id="selected-guitar-part"> ${this.selectedPart.name}</span> Change Color 
+  </div>
+  <div class="close-icon"><i data-feather="x"></i>X</div>
+  <div class="colors-container">
+    <span class="color-dot-red" data-color="#ff0000"></span>
+    <span class="color-dot-blue" data-color="#0000ff"></span>
+    <span class="color-dot-green" data-color="#008000"></span>
+    <span class="color-dot-yellow" data-color="#ffff00"></span>
+    <span class="color-dot-purple" data-color="#800080"></span>
+    <span class="color-dot-white" data-color="#ffffff"></span>
+    <span class="color-dot-black" data-color="#000000"></span>
+    <input type="color" id="color-picker" name="color-picker" value="" />
+  </div>
+
+  <span style="font-size: 18px; text-align: left; width: 100%; padding-left: 16px;">
+    Change Texture
+  </span>
+  <div class="texture-container">
+      <div class="texture-card custom-sticker-upload">
+      <label for="textureInput" class="custom-sticker-label">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+        <span style="background-color: transparent;">Upload Texture</span>
+      </label>
+      <input type="file" id="textureInput" accept="image/*" style="display: none;"/>
+    </div>
+    <div class="texture-card" style="background-image: url('texture-default.png')">
+      <span>Default</span>
+    </div>
+
+        <div class="texture-card" style="background-image: url('texture14.PNG')">
+      <span>Pine</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture15.PNG')">
+      <span>Nut tree</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture16.PNG')">
+      <span>Oak</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture17.PNG')">
+      <span>Ash</span>
+    </div>
+    <div class="texture-card" style="background-image: url('panther.PNG')">
+      <span>Panther</span>
+    </div>
+    <div class="texture-card" style="background-image: url('zebra.PNG')">
+      <span>Zebra</span>
+    </div>
+        <div class="texture-card" style="background-image: url('texture13.PNG')">
+      <span>Zebra 2</span>
+    </div>
+    <div class="texture-card" style="background-image: url('camo-white.PNG')">
+  <span>Camo White</span>
+</div>
+<div class="texture-card" style="background-image: url('camo.PNG')">
+  <span>Camo</span>
+</div>
+<div class="texture-card" style="background-image: url('vhs.PNG')">
+  <span>VHS</span>
+</div>
+    <div class="texture-card" style="background-image: url('texture1.jpg')">
+      <span>Rusty</span>
+    </div>
+<div class="texture-card" style="background-image: url('crack.PNG')">
+  <span>Crack</span>
+</div>
+<div class="texture-card" style="background-image: url('mineral-oil.jpg')">
+  <span>Mineral Oil</span>
+</div>
+<div class="texture-card" style="background-image: url('pattern.PNG')">
+  <span>Pattern</span>
+</div>
+
+    <div class="texture-card" style="background-image: url('texture0.PNG')">
+      <span>Pastel</span>
+    </div>
+
+    <div class="texture-card" style="background-image: url('texture2.PNG')">
+      <span>Chaotic</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture5.PNG')">
+      <span>Lines</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture6.PNG')">
+      <span>Lines 2</span>
+    </div>
+        <div class="texture-card" style="background-image: url('texture10.PNG')">
+      <span>Lines 3</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture7.PNG')">
+      <span>Brocade</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture8.PNG')">
+      <span>Brocade 2</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture9.PNG')">
+      <span>Brocade 3</span>
+    </div>
+
+    <div class="texture-card" style="background-image: url('texture11.PNG')">
+      <span>Dots</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture12.PNG')">
+      <span>Dots</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture21.PNG')">
+      <span>Flames</span>
+    </div>
+    <div class="texture-card" style="background-image: url('texture20.PNG')">
+      <span>Flames 2</span>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 10px">
+    <div>
+      <p>Roughness</p>
+      <input type="range" min="0" max="2" step="0.01" value="" id="roughness" />
+    </div>
+    <div>
+      <p>Metalness</p>
+      <input type="range" min="0" max="2" step="0.01" value="" id="metalness" />
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 10px">
+    <div>
+      <p> Rotate </p>
+      <input type="range" min="0" max="360" step="1" value="0" id="rotate" />
+    </div>
+    <div>
+      <p> Zoom in / Zoom out</p>
+      <input type="range" min="0.0" max="2.0" step="0.01" value="1.0" id="zoom" />
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 10px">
+    <div>
+      <p> MoveX </p>
+      <input type="range" min="0" max="1" step="0.001" value="0.5" id="moveX" />
+    </div>
+    <div>
+      <p> MoveY </p>
+      <input type="range" min="0" max="1" step="0.001" value="0.5" id="moveY" />
+    </div>
+  </div>
+`;
+  }
+
   generateApperanceControlMenu() {
     this.showAppereanceControlMenuAnimation();
 
@@ -354,6 +513,7 @@ export class UiController {
        <div class="close-icon"><i data-feather="x"></i>X</div>
         <div> Select a part of guitar to customize it! </div>
        `;
+      this.isSelectAPartOfGuitarVisible = true;
     } else {
       this.appereanceControl.innerHTML = `
   <div class="section-header">
