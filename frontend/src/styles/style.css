@@ -1,4 +1,10 @@
 /* Sticker config layout */
+body {
+  font-family: "Bowlby One SC", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .texture-card-wrapper {
   display: flex;
   flex-direction: column;
@@ -405,10 +411,17 @@ canvas {
 
 .settings-container {
   display: flex;
-
   position: absolute;
   right: 20px;
   top: 20px;
+}
+
+.logo-container {
+  display: flex;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  font-size: 1.5rem;
 }
 
 #refresh {
