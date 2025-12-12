@@ -328,7 +328,8 @@ canvas {
   pointer-events: none;
 }
 
-.close-icon {
+.close-icon,
+.close-icon-sticker {
   cursor: pointer;
 }
 
