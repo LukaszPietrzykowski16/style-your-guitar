@@ -627,9 +627,11 @@ input[type="range"]::-ms-thumb {
   background: #ffffff;
   cursor: pointer;
 }
+
 input[type="range"]:focus::-ms-fill-lower {
   background: transparent;
 }
+
 input[type="range"]:focus::-ms-fill-upper {
   background: transparent;
 }
