@@ -328,11 +328,14 @@ canvas {
   pointer-events: none;
 }
 
-.close-icon,
-.close-icon-sticker {
+.close-icon {
+  cursor: pointer;
+}
+
+.close-icon-empty {
   cursor: pointer;
   position: absolute;
-  top: 14px;
+  top: 22px;
   right: 16px;
 }
 
@@ -402,11 +405,14 @@ canvas {
 }
 
 .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 18px;
   text-align: left;
   width: 100%;
   padding-left: 16px;
-  padding-top: 8px;
+  padding-right: 8px;
 }
 
 .settings-container {
@@ -422,10 +428,6 @@ canvas {
   left: 20px;
   top: 20px;
   font-size: 1.5rem;
-}
-
-#refresh {
-  margin-right: 8px;
 }
 
 #color-picker {

@@ -7,7 +7,6 @@ export class UiController {
   appereanceControl = document.querySelector("#appearence-control");
   appereanceControlIcon = document.querySelector(".appearence-control-icon");
   stickerControl = document.querySelector("#sticker-control");
-  refresh = document.querySelector("#refresh");
   loaderContainer = document.querySelector(".loader-container");
   canvas = document.querySelector("canvas");
   closeStickerIcon = document.querySelector(".close-icon-sticker");
@@ -335,10 +334,6 @@ export class UiController {
       }
       this.showStickerControlMenu();
     });
-
-    this.refresh.addEventListener("click", () => {
-      location.reload();
-    });
   }
 
   hideApperenaceControlMenu() {
@@ -354,9 +349,8 @@ export class UiController {
 
     this.appereanceControl.innerHTML = `
   <div class="section-header">
-    <span id="selected-guitar-part"> ${this.selectedPart.name}</span> Change Color 
+    <div><span id="selected-guitar-part"> ${this.selectedPart.name}</span> Change Color </div> <div class="close-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></div>
   </div>
-  <div class="close-icon"><i data-feather="x"></i>X</div>
   <div class="colors-container">
     <span class="color-dot-red" data-color="#ff0000"></span>
     <span class="color-dot-blue" data-color="#0000ff"></span>
@@ -510,16 +504,16 @@ export class UiController {
 
     if (!this.selectedPart.name) {
       this.appereanceControl.innerHTML = `
-       <div class="close-icon"><i data-feather="x"></i>X</div>
+       <div class="close-icon close-icon-empty"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></div>
         <div> Select a part of guitar to customize it! </div>
        `;
       this.isSelectAPartOfGuitarVisible = true;
     } else {
       this.appereanceControl.innerHTML = `
   <div class="section-header">
-    <span id="selected-guitar-part"> ${this.selectedPart.name}</span> Change Color 
+    <div><span id="selected-guitar-part"> ${this.selectedPart.name}</span> Change Color </div>   <div class="close-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></div>
   </div>
-  <div class="close-icon"><i data-feather="x"></i>X</div>
+
   <div class="colors-container">
     <span class="color-dot-red" data-color="#ff0000"></span>
     <span class="color-dot-blue" data-color="#0000ff"></span>
@@ -674,10 +668,11 @@ export class UiController {
        <span
         class="section-header"
       >
-        Add sticker
+        <span> Add sticker </span>
+         <div class="close-icon-sticker"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></div>
       </span>
       
-      <div class="close-icon-sticker"><i data-feather="x"></i>X</div>
+     
 
       <div>
 

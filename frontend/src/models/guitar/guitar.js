@@ -44,7 +44,7 @@ export class Guitar {
                 <input type="range" min="0" max="3" step="0.1" value="1" class="sticker-size" data-value="${target.texture.uuid}" />
               </div>
               <div class="control-group">
-                <p class="control-label">Sticker Rotation (deg)</p>
+                <p class="control-label">Sticker Rotation</p>
                 <input type="range" min="-180" max="180" step="1" value="0" class="sticker-rotation" data-value="${target.texture.uuid}" />
               </div>
             </div>
