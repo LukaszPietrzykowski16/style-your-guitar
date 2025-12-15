@@ -4,6 +4,7 @@ import { Helpers } from "../utils/helpers";
 import { Renderer } from "../core/renderer";
 import { Light } from "../core/light";
 import { Guitar } from "../models/guitar/guitar";
+import { Stickers } from "../models/stickers/stickers";
 import { UiController } from "../ui/ui-controler";
 import { cameraControls } from "../controls/camera-controls";
 import { gsap } from "gsap";
@@ -14,7 +15,8 @@ export class App {
   renderer = Renderer();
   helpers = Helpers(this.camera, this.renderer);
   guitar = new Guitar(this.scene, this.camera);
-  uiControler = new UiController(this.guitar);
+  stickers = new Stickers(this.guitar);
+  uiControler = new UiController(this.guitar, this.stickers);
   isLoading = false;
 
   lightPositions = [

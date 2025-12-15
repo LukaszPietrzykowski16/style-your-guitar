@@ -1,9 +1,8 @@
 import { gltfLoader } from "../gltf-loader/gltf-loader";
 import * as THREE from "three";
-import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
 import { uploadImageToIndexedDb } from "../../utils/upload-image-to-indexed-db";
-import { removeSelectedStickerLabel } from "../../utils/remove-selected-sticker-label";
 import { addHaloGlow, addTemporaryGlow } from "./animations/animations";
+import { Stickers } from "../stickers/stickers";
 
 export class Guitar {
   raycaster = new THREE.Raycaster();
@@ -15,52 +14,16 @@ export class Guitar {
   camera = {};
   scene = {};
   intersectedObject = {};
-  selectedSticker = {};
+  stickers = new Stickers(this);
   isStickerOn = false;
-  stickersProxy = new Proxy([], {
-    set(target, property, value) {
-      target[property] = value;
-      this.updateView(target);
-      return true;
-    },
-
-    updateView(targets) {
-      document.querySelector("#sticker-config").innerHTML = `
-      ${targets
-        .map(
-          (target) =>
-            `
-          <div class="texture-card-wrapper">
-                <div class="texture-card-actions with-thumb">
-              <div class="texture-card thumb" style="background-image: url(${target.textureUrl});"></div>
-              <div class="action-buttons">
-                <button class="remove-sticker" data-value="${target.texture.uuid}"> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg> </button>
-                <button class="mirror-sticker" data-value="${target.texture.uuid}"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M360-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h160v80H200v560h160v80Zm80 80v-880h80v880h-80Zm160-80v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80q0 33-23.5 56.5T760-120Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80q33 0 56.5 23.5T840-760h-80Z"/></svg> </button>
-              </div>
-            </div>
-            <div class="texture-card-controls">
-              <div class="control-group">
-                <p class="control-label">Sticker Size</p>
-                <input type="range" min="0" max="3" step="0.1" value="1" class="sticker-size" data-value="${target.texture.uuid}" />
-              </div>
-              <div class="control-group">
-                <p class="control-label">Sticker Rotation</p>
-                <input type="range" min="-180" max="180" step="1" value="0" class="sticker-rotation" data-value="${target.texture.uuid}" />
-              </div>
-            </div>
-      
-          </div>
-          `
-        )
-        .join("")}
-    `;
-    },
-  });
 
   constructor(scene, camera) {
     this.camera = camera;
     this.scene = scene;
     gltfLoader(scene, camera);
+    document.addEventListener("stickerSelected", (e) => {
+      this.isStickerOn = true;
+    });
   }
 
   changeIntersectedObject(event) {
@@ -92,10 +55,11 @@ export class Guitar {
 
     if (this.isStickerOn) {
       this.isStickerOn = false;
-      this.applySticker(
+      this.stickers.applySticker(
         position,
-        selectedGuitarPart.face.normal,
-        this.intersectedObject
+        this.intersectedObject,
+        this.helper,
+        this.scene
       );
       return;
     }
@@ -134,104 +98,6 @@ export class Guitar {
     this.intersectedObject.material.color.set(0xffffff);
   }
 
-  removeDecalByUUID(uuid) {
-    const decalIndex = this.stickersProxy.findIndex(
-      (decal) => decal.texture.uuid === uuid
-    );
-
-    this.scene.remove(this.stickersProxy[decalIndex].texture);
-
-    this.stickersProxy.splice(decalIndex, 1);
-
-    if (!this.stickersProxy.length) {
-      document.querySelector("#sticker-config").innerHTML =
-        "Please select sticker";
-    }
-  }
-
-  mirrorDecalByUUID(uuid) {
-    const entry = this.stickersProxy.find(
-      (decal) => decal.texture.uuid === uuid
-    );
-    if (!entry) return;
-
-    const decalMesh = entry.texture;
-    const ud = decalMesh.userData || {};
-
-    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) return;
-
-    const newEuler = ud.orientation.clone();
-    newEuler.y += Math.PI;
-
-    const newGeometry = new DecalGeometry(
-      ud.targetObject,
-      ud.position.clone(),
-      newEuler,
-      ud.size.clone()
-    );
-
-    decalMesh.geometry?.dispose?.();
-    decalMesh.geometry = newGeometry;
-
-    decalMesh.userData.orientation = newEuler.clone();
-  }
-
-  rotateDecalByUUID(uuid, deltaDeg) {
-    const entry = this.stickersProxy.find(
-      (decal) => decal.texture.uuid === uuid
-    );
-    if (!entry) return;
-
-    const decalMesh = entry.texture;
-    const ud = decalMesh.userData || {};
-
-    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) {
-      decalMesh.rotation.z = THREE.MathUtils.degToRad(deltaDeg);
-      return;
-    }
-
-    const newEuler = ud.orientation.clone();
-    newEuler.z = THREE.MathUtils.degToRad(deltaDeg);
-
-    const newGeometry = new DecalGeometry(
-      ud.targetObject,
-      ud.position.clone(),
-      newEuler,
-      ud.size.clone()
-    );
-
-    decalMesh.geometry?.dispose?.();
-    decalMesh.geometry = newGeometry;
-    decalMesh.userData.orientation = newEuler;
-  }
-
-  scaleDecalByUUID(uuid, scaleValue) {
-    const entry = this.stickersProxy.find(
-      (decal) => decal.texture.uuid === uuid
-    );
-
-    if (!entry) return;
-
-    const decalMesh = entry.texture;
-    const ud = decalMesh.userData || {};
-
-    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) return;
-
-    const newSize = new THREE.Vector3(scaleValue, scaleValue, scaleValue);
-
-    const newGeometry = new DecalGeometry(
-      ud.targetObject,
-      ud.position.clone(),
-      ud.orientation.clone(),
-      newSize
-    );
-
-    decalMesh.geometry?.dispose?.();
-    decalMesh.geometry = newGeometry;
-
-    decalMesh.userData.size = newSize.clone();
-  }
-
   async updateIntersectedObjectTextureFromFile(file) {
     const textureContainers = document.querySelectorAll(".texture-container");
 
@@ -239,27 +105,6 @@ export class Guitar {
 
     if (textureContainers.length > 0) {
       const container = textureContainers[0];
-      const div = document.createElement("div");
-      div.className = "texture-card";
-      div.style.backgroundImage = `url('${blobUrl}')`;
-
-      if (container.children.length >= 1) {
-        container.insertBefore(div, container.children[1]);
-      } else {
-        container.appendChild(div);
-      }
-    }
-  }
-
-  async updateSelectedStickerFromFile(file) {
-    const stickerContainers = document.querySelectorAll(".sticker-container");
-
-    const blobUrl = await uploadImageToIndexedDb(file);
-
-    if (!blobUrl) return;
-
-    if (stickerContainers.length > 0) {
-      const container = stickerContainers[0];
       const div = document.createElement("div");
       div.className = "texture-card";
       div.style.backgroundImage = `url('${blobUrl}')`;
@@ -313,61 +158,6 @@ export class Guitar {
         .multiplyScalar(zoomValue);
       texture.needsUpdate = true;
     }
-  }
-
-  applySticker(position) {
-    removeSelectedStickerLabel();
-
-    const decalMaterial = new THREE.MeshPhongMaterial({
-      color: 0xffffff,
-      depthWrite: false,
-      depthTest: true,
-      polygonOffset: true,
-      polygonOffsetFactor: -1,
-      transparent: true,
-      map: this.selectedSticker,
-      specular: 0x444444,
-      wireframe: false,
-    });
-
-    const sizeVal =
-      parseFloat(document.querySelector("#sticker-size")?.value) || 1.0;
-
-    const rotDeg =
-      parseFloat(document.querySelector("#sticker-rotation")?.value) || 0;
-
-    this.helper.rotation.set(0, 0, THREE.MathUtils.degToRad(rotDeg));
-
-    const sizeVec = new THREE.Vector3(sizeVal, sizeVal, sizeVal);
-
-    const decalGeometry = new DecalGeometry(
-      this.intersectedObject,
-      position.clone(),
-      this.helper.rotation.clone(),
-      sizeVec.clone()
-    );
-    const decalMesh = new THREE.Mesh(decalGeometry, decalMaterial);
-
-    decalMesh.userData = {
-      isDecal: true,
-      targetObject: this.intersectedObject,
-      position: position.clone(),
-      orientation: this.helper.rotation.clone(),
-      size: sizeVec.clone(),
-    };
-
-    this.stickersProxy.push({
-      textureUrl: decalMesh.material.map.image.src,
-      texture: decalMesh,
-    });
-    this.scene.add(decalMesh);
-    this.selectedSticker = {};
-  }
-
-  putStickerOnTheGuitar(sticker) {
-    const clickedSticker = this.textureLoader.load(sticker);
-    this.selectedSticker = clickedSticker;
-    this.isStickerOn = true;
   }
 
   currentHovered = null;

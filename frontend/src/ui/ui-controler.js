@@ -6,15 +6,11 @@ export class UiController {
   guitarElements = document.querySelectorAll("#guitar-elements");
   appereanceControl = document.querySelector("#appearence-control");
   appereanceControlIcon = document.querySelector(".appearence-control-icon");
-  stickerControl = document.querySelector("#sticker-control");
+
   loaderContainer = document.querySelector(".loader-container");
   canvas = document.querySelector("canvas");
-  closeStickerIcon = document.querySelector(".close-icon-sticker");
-  stickerControlIcon = document.querySelector(".sticker-control-icon");
-  stickerContainer = document.querySelector(".sticker-container");
-
   isApperanceControlMenuGenerated = false;
-  isStickerControlMenuGenerated = false;
+
   isLoading = true;
   isApperanceControlMenuVisible = false;
   isSelectAPartOfGuitarVisible = false;
@@ -34,7 +30,6 @@ export class UiController {
     this.initLoader();
     this.initListingForIcons();
     this.initMutationObserver();
-    this.initMutationObserverSticker();
     this.initListningForClickOnModel();
     this.initMouseMove();
     document.addEventListener("guitarPartSelected", (e) => {
@@ -67,125 +62,6 @@ export class UiController {
       childList: true,
       subtree: true,
     });
-  }
-
-  initMutationObserverSticker() {
-    this.observer = new MutationObserver(() => this.checkElementsSticker());
-    this.observer.observe(this.stickerControl, {
-      childList: true,
-      subtree: true,
-    });
-  }
-
-  checkElementsSticker() {
-    const stickerContainer = document.querySelector(".sticker-container");
-    const closeStikcerIcon = document.querySelector(".close-icon-sticker");
-    const removeSticker = document.querySelectorAll(".remove-sticker");
-    const rotateSticker = document.querySelectorAll(".sticker-rotation");
-    const mirrorStickerBtns = document.querySelectorAll(".mirror-sticker");
-
-    const fileLoaderSticker = document.querySelector("#stickerInput");
-
-    if (!fileLoaderSticker.dataset.listenerAdded) {
-      fileLoaderSticker.addEventListener("change", (event) => {
-        const file = event.target.files[0];
-
-        if (!file) return;
-
-        this.guitar.updateSelectedStickerFromFile(file);
-
-        fileLoaderSticker.dataset.listenerAdded = "true";
-      });
-    }
-
-    Array.from(stickerContainer.children).forEach((stickerEl) => {
-      fileLoaderSticker.dataset.listenerAdded = "true";
-      if (!stickerEl.dataset.listenerAdded) {
-        stickerEl.addEventListener("click", (event) => {
-          document
-            .querySelectorAll(".selected")
-            .forEach((el) => el.classList.remove("selected"));
-          const clickedElement = event.target;
-          this.selectedSticker = clickedElement;
-
-          this.selectedSticker.classList.add("selected");
-
-          const style = window.getComputedStyle(clickedElement);
-          const backgroundImage = style.backgroundImage;
-          const urlMatch = backgroundImage.match(
-            /url\(["']?(https?:\/\/[^\/]+\/)?(?!undefinedblob:)(.*?)["']?\)/
-          );
-
-          if (!urlMatch) {
-            return;
-          }
-          const textureUrl = urlMatch[1]
-            ? `${urlMatch[1]}${urlMatch[2]}`
-            : `${urlMatch[2]}`;
-
-          if (textureUrl && this.guitar) {
-            this.guitar.putStickerOnTheGuitar(textureUrl);
-          }
-
-          stickerEl.dataset.listenerAdded = "true";
-          fileLoaderSticker.dataset.listenerAdded = "false";
-        });
-      }
-    });
-
-    removeSticker.forEach((sticker) => {
-      if (!sticker.dataset.listenerAdded) {
-        sticker.addEventListener("click", (event) => {
-          const decalUUID = event.target.dataset.value;
-          this.guitar.removeDecalByUUID(decalUUID);
-        });
-      }
-      sticker.dataset.listenerAdded = "true";
-    });
-
-    rotateSticker.forEach((sticker) => {
-      if (!sticker.dataset.listenerAdded) {
-        sticker.addEventListener("input", (event) => {
-          const decalUUID = event.target.dataset.value;
-          const rotation = event.target.value;
-          this.guitar.rotateDecalByUUID(decalUUID, rotation);
-        });
-      }
-      sticker.dataset.listenerAdded = "true";
-    });
-
-    mirrorStickerBtns.forEach((sticker) => {
-      if (!sticker.dataset.listenerAdded) {
-        sticker.addEventListener("click", (event) => {
-          const decalUUID = event.target.dataset.value;
-          if (this.guitar.mirrorDecalByUUID) {
-            this.guitar.mirrorDecalByUUID(decalUUID, "x");
-          }
-        });
-      }
-      sticker.dataset.listenerAdded = "true";
-    });
-
-    document.querySelectorAll(".sticker-size").forEach((sticker) => {
-      if (!sticker.dataset.listenerAdded) {
-        sticker.addEventListener("input", (event) => {
-          const uuid = event.target
-            .getAttribute("data-value")
-            .replace("size-", "");
-          const scaleValue = parseFloat(event.target.value);
-          this.guitar.scaleDecalByUUID(uuid, scaleValue);
-        });
-      }
-
-      sticker.dataset.listenerAdded = "true";
-    });
-
-    if (closeStikcerIcon && !closeStikcerIcon.dataset.listenerAdded) {
-      closeStikcerIcon.addEventListener("click", () =>
-        this.hideStickerControlMenu()
-      );
-      closeStikcerIcon.dataset.listenerAdded = "true";
-    }
   }
 
   checkElements() {
@@ -326,13 +202,6 @@ export class UiController {
         this.generateApperanceControlMenu();
       }
       this.showApperenaceControlMenu();
-    });
-
-    this.stickerControlIcon.addEventListener("click", () => {
-      if (!this.isStickerControlMenuGenerated) {
-        this.generateStickerControlMenu();
-      }
-      this.showStickerControlMenu();
     });
   }
 
@@ -659,133 +528,6 @@ export class UiController {
     }
   }
 
-  generateStickerControlMenu() {
-    this.isStickerControlMenuGenerated = true;
-
-    this.showStickerControlMenuAnimation();
-
-    this.stickerControl.innerHTML = `
-       <span
-        class="section-header"
-      >
-        <span> Add sticker </span>
-         <div class="close-icon-sticker"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></div>
-      </span>
-      
-     
-
-      <div>
-
-      </div>
-      <div class="sticker-container">
-        <div class="texture-card custom-sticker-upload">
-          <label for="stickerInput" class="custom-sticker-label">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
-            <span style="background-color: transparent;">Upload Sticker</span>
-          </label>
-          <input type="file" id="stickerInput" accept="image/*" style="display: none;"/>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker0.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker1.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker2.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker3.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker4.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker5.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker6.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker7.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker8.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker10.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker11.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker12.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker13.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker14.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker15.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker16.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker17.png')"
-        ></div>
-      </div>
-      <div class="sticker-config-container">
-      <span      style="
-          font-size: 18px;
-          text-align: left;
-          width: 100%;
-          text-align: left;
-          padding-top: 12px;
-          padding-left: 16px;
-          display: flex;
-        "> Change Sticker </span>
-      <div id="sticker-config" class="sticker-container">
-        Please select sticker
-      </div>
-    
-      </div>
-    `;
-  }
-
-  showStickerControlMenuAnimation() {
-    this.stickerControl.animate(
-      [
-        { clipPath: "circle(0% at left)", opacity: 0 },
-        { clipPath: "circle(110% at left)", opacity: 1, display: "flex" },
-      ],
-      {
-        duration: 500,
-        easing: "ease-in-out",
-        fill: "forwards",
-      }
-    );
-  }
-
   hideApperenaceControlMenuAnimation() {
     this.appereanceControl.animate(
       [
@@ -819,27 +561,6 @@ export class UiController {
     this.showAppereanceControlMenuAnimation();
     this.appereanceControl.style.display = "flex";
     this.appereanceControlIcon.style.display = "none";
-  }
-
-  hideStickerControlMenu() {
-    this.stickerControl.animate(
-      [
-        { clipPath: "circle(110% at left)", opacity: 1 },
-        { clipPath: "circle(0% at left)", opacity: 0, display: "none" },
-      ],
-      {
-        duration: 500,
-        easing: "ease-in-out",
-        fill: "forwards",
-      }
-    );
-    this.stickerControlIcon.style.display = "flex";
-  }
-
-  showStickerControlMenu() {
-    this.showStickerControlMenuAnimation();
-    this.stickerControl.style.display = "flex";
-    this.stickerControlIcon.style.display = "none";
   }
 
   initListningForClickOnModel() {
