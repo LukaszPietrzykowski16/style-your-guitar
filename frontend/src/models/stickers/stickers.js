@@ -4,23 +4,63 @@ import { uploadImageToIndexedDb } from "../../utils/upload-image-to-indexed-db";
 import * as THREE from "three";
 
 export class Stickers {
-  scene = {};
-
-  isStickerOn = false;
-
   closeStickerIcon = document.querySelector(".close-icon-sticker");
   stickerControl = document.querySelector("#sticker-control");
   stickerControlIcon = document.querySelector(".sticker-control-icon");
   stickerContainer = document.querySelector(".sticker-container");
 
+  textureLoader = new THREE.TextureLoader();
+
+  scene = {};
+  isStickerOn = false;
   isStickerControlMenuGenerated = false;
+  selectedSticker = {};
+  isStickerOn = false;
 
   constructor() {
     this.initListingForIcons();
     this.initMutationObserverSticker();
   }
 
-  textureLoader = new THREE.TextureLoader();
+  stickersProxy = new Proxy([], {
+    set(target, property, value) {
+      target[property] = value;
+      this.updateView(target);
+      return true;
+    },
+
+    updateView(targets) {
+      document.querySelector("#sticker-config").innerHTML = `
+	  ${targets
+      .map(
+        (target) =>
+          `
+		  <div class="texture-card-wrapper">
+				<div class="texture-card-actions with-thumb">
+			  <div class="texture-card thumb" style="background-image: url(${target.textureUrl});"></div>
+			  <div class="action-buttons">
+				<button class="remove-sticker" data-value="${target.texture.uuid}"> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg> </button>
+				<button class="mirror-sticker" data-value="${target.texture.uuid}"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M360-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h160v80H200v560h160v80Zm80 80v-880h80v880h-80Zm160-80v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80q0 33-23.5 56.5T760-120Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80q33 0 56.5 23.5T840-760h-80Z"/></svg> </button>
+			  </div>
+			</div>
+			<div class="texture-card-controls">
+			  <div class="control-group">
+				<p class="control-label">Sticker Size</p>
+				<input type="range" min="0" max="3" step="0.1" value="1" class="sticker-size" data-value="${target.texture.uuid}" />
+			  </div>
+			  <div class="control-group">
+				<p class="control-label">Sticker Rotation</p>
+				<input type="range" min="-180" max="180" step="1" value="0" class="sticker-rotation" data-value="${target.texture.uuid}" />
+			  </div>
+			</div>
+	  
+		  </div>
+		  `
+      )
+      .join("")}
+	`;
+    },
+  });
 
   initMutationObserverSticker() {
     this.observer = new MutationObserver(() => this.checkElementsSticker());
@@ -139,131 +179,6 @@ export class Stickers {
       );
       closeStikcerIcon.dataset.listenerAdded = "true";
     }
-  }
-
-  selectedSticker = {};
-  isStickerOn = false;
-  stickersProxy = new Proxy([], {
-    set(target, property, value) {
-      target[property] = value;
-      this.updateView(target);
-      return true;
-    },
-
-    updateView(targets) {
-      document.querySelector("#sticker-config").innerHTML = `
-	  ${targets
-      .map(
-        (target) =>
-          `
-		  <div class="texture-card-wrapper">
-				<div class="texture-card-actions with-thumb">
-			  <div class="texture-card thumb" style="background-image: url(${target.textureUrl});"></div>
-			  <div class="action-buttons">
-				<button class="remove-sticker" data-value="${target.texture.uuid}"> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg> </button>
-				<button class="mirror-sticker" data-value="${target.texture.uuid}"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M360-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h160v80H200v560h160v80Zm80 80v-880h80v880h-80Zm160-80v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80q0 33-23.5 56.5T760-120Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80q33 0 56.5 23.5T840-760h-80Z"/></svg> </button>
-			  </div>
-			</div>
-			<div class="texture-card-controls">
-			  <div class="control-group">
-				<p class="control-label">Sticker Size</p>
-				<input type="range" min="0" max="3" step="0.1" value="1" class="sticker-size" data-value="${target.texture.uuid}" />
-			  </div>
-			  <div class="control-group">
-				<p class="control-label">Sticker Rotation</p>
-				<input type="range" min="-180" max="180" step="1" value="0" class="sticker-rotation" data-value="${target.texture.uuid}" />
-			  </div>
-			</div>
-	  
-		  </div>
-		  `
-      )
-      .join("")}
-	`;
-    },
-  });
-
-  mirrorDecalByUUID(uuid) {
-    const entry = this.stickersProxy.find(
-      (decal) => decal.texture.uuid === uuid
-    );
-    if (!entry) return;
-
-    const decalMesh = entry.texture;
-    const ud = decalMesh.userData || {};
-
-    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) return;
-
-    const newEuler = ud.orientation.clone();
-    newEuler.y += Math.PI;
-
-    const newGeometry = new DecalGeometry(
-      ud.targetObject,
-      ud.position.clone(),
-      newEuler,
-      ud.size.clone()
-    );
-
-    decalMesh.geometry?.dispose?.();
-    decalMesh.geometry = newGeometry;
-
-    decalMesh.userData.orientation = newEuler.clone();
-  }
-
-  rotateDecalByUUID(uuid, deltaDeg) {
-    const entry = this.stickersProxy.find(
-      (decal) => decal.texture.uuid === uuid
-    );
-    if (!entry) return;
-
-    const decalMesh = entry.texture;
-    const ud = decalMesh.userData || {};
-
-    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) {
-      decalMesh.rotation.z = THREE.MathUtils.degToRad(deltaDeg);
-      return;
-    }
-
-    const newEuler = ud.orientation.clone();
-    newEuler.z = THREE.MathUtils.degToRad(deltaDeg);
-
-    const newGeometry = new DecalGeometry(
-      ud.targetObject,
-      ud.position.clone(),
-      newEuler,
-      ud.size.clone()
-    );
-
-    decalMesh.geometry?.dispose?.();
-    decalMesh.geometry = newGeometry;
-    decalMesh.userData.orientation = newEuler;
-  }
-
-  scaleDecalByUUID(uuid, scaleValue) {
-    const entry = this.stickersProxy.find(
-      (decal) => decal.texture.uuid === uuid
-    );
-
-    if (!entry) return;
-
-    const decalMesh = entry.texture;
-    const ud = decalMesh.userData || {};
-
-    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) return;
-
-    const newSize = new THREE.Vector3(scaleValue, scaleValue, scaleValue);
-
-    const newGeometry = new DecalGeometry(
-      ud.targetObject,
-      ud.position.clone(),
-      ud.orientation.clone(),
-      newSize
-    );
-
-    decalMesh.geometry?.dispose?.();
-    decalMesh.geometry = newGeometry;
-
-    decalMesh.userData.size = newSize.clone();
   }
 
   applySticker(position, intersectedObject, helper, scene) {
@@ -501,6 +416,89 @@ export class Stickers {
     this.showStickerControlMenuAnimation();
     this.stickerControl.style.display = "flex";
     this.stickerControlIcon.style.display = "none";
+  }
+
+  mirrorDecalByUUID(uuid) {
+    const entry = this.stickersProxy.find(
+      (decal) => decal.texture.uuid === uuid
+    );
+    if (!entry) return;
+
+    const decalMesh = entry.texture;
+    const ud = decalMesh.userData || {};
+
+    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) return;
+
+    const newEuler = ud.orientation.clone();
+    newEuler.y += Math.PI;
+
+    const newGeometry = new DecalGeometry(
+      ud.targetObject,
+      ud.position.clone(),
+      newEuler,
+      ud.size.clone()
+    );
+
+    decalMesh.geometry?.dispose?.();
+    decalMesh.geometry = newGeometry;
+
+    decalMesh.userData.orientation = newEuler.clone();
+  }
+
+  rotateDecalByUUID(uuid, deltaDeg) {
+    const entry = this.stickersProxy.find(
+      (decal) => decal.texture.uuid === uuid
+    );
+    if (!entry) return;
+
+    const decalMesh = entry.texture;
+    const ud = decalMesh.userData || {};
+
+    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) {
+      decalMesh.rotation.z = THREE.MathUtils.degToRad(deltaDeg);
+      return;
+    }
+
+    const newEuler = ud.orientation.clone();
+    newEuler.z = THREE.MathUtils.degToRad(deltaDeg);
+
+    const newGeometry = new DecalGeometry(
+      ud.targetObject,
+      ud.position.clone(),
+      newEuler,
+      ud.size.clone()
+    );
+
+    decalMesh.geometry?.dispose?.();
+    decalMesh.geometry = newGeometry;
+    decalMesh.userData.orientation = newEuler;
+  }
+
+  scaleDecalByUUID(uuid, scaleValue) {
+    const entry = this.stickersProxy.find(
+      (decal) => decal.texture.uuid === uuid
+    );
+
+    if (!entry) return;
+
+    const decalMesh = entry.texture;
+    const ud = decalMesh.userData || {};
+
+    if (!ud.targetObject || !ud.position || !ud.orientation || !ud.size) return;
+
+    const newSize = new THREE.Vector3(scaleValue, scaleValue, scaleValue);
+
+    const newGeometry = new DecalGeometry(
+      ud.targetObject,
+      ud.position.clone(),
+      ud.orientation.clone(),
+      newSize
+    );
+
+    decalMesh.geometry?.dispose?.();
+    decalMesh.geometry = newGeometry;
+
+    decalMesh.userData.size = newSize.clone();
   }
 
   removeDecalByUUID(uuid) {

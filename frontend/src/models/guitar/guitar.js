@@ -14,8 +14,11 @@ export class Guitar {
   camera = {};
   scene = {};
   intersectedObject = {};
-  stickers = new Stickers(this);
+  stickers = new Stickers();
   isStickerOn = false;
+  lastRotate = 0;
+  currentHovered = null;
+  glowMeshHover = null;
 
   constructor(scene, camera) {
     this.camera = camera;
@@ -98,27 +101,6 @@ export class Guitar {
     this.intersectedObject.material.color.set(0xffffff);
   }
 
-  async updateIntersectedObjectTextureFromFile(file) {
-    const textureContainers = document.querySelectorAll(".texture-container");
-
-    const blobUrl = await uploadImageToIndexedDb(file);
-
-    if (textureContainers.length > 0) {
-      const container = textureContainers[0];
-      const div = document.createElement("div");
-      div.className = "texture-card";
-      div.style.backgroundImage = `url('${blobUrl}')`;
-
-      if (container.children.length >= 1) {
-        container.insertBefore(div, container.children[1]);
-      } else {
-        container.appendChild(div);
-      }
-    }
-  }
-
-  lastRotate = 0;
-
   rotateTexture(newRotate) {
     const texture = this.intersectedObject.material.map;
     if (texture) {
@@ -159,9 +141,6 @@ export class Guitar {
       texture.needsUpdate = true;
     }
   }
-
-  currentHovered = null;
-  glowMeshHover = null;
 
   toggleHoverText(show) {
     const hoverText = document.getElementById("hover-text");
@@ -217,6 +196,25 @@ export class Guitar {
         this.glowMeshHover.material?.dispose?.();
         this.glowMeshHover = null;
         this.currentHovered = null;
+      }
+    }
+  }
+
+  async updateIntersectedObjectTextureFromFile(file) {
+    const textureContainers = document.querySelectorAll(".texture-container");
+
+    const blobUrl = await uploadImageToIndexedDb(file);
+
+    if (textureContainers.length > 0) {
+      const container = textureContainers[0];
+      const div = document.createElement("div");
+      div.className = "texture-card";
+      div.style.backgroundImage = `url('${blobUrl}')`;
+
+      if (container.children.length >= 1) {
+        container.insertBefore(div, container.children[1]);
+      } else {
+        container.appendChild(div);
       }
     }
   }
