@@ -6,17 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Vite App</title>
-    <script type="module" crossorigin src="/style-your-guitar/assets/index-Bszp_oOp.js"></script>
-    <link rel="stylesheet" crossorigin href="/style-your-guitar/assets/index-An4iYBA2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bowlby+One+SC&family=Vina+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/style-your-guitar/assets/index-CHMVKrKZ.js"></script>
+    <link rel="stylesheet" crossorigin href="/style-your-guitar/assets/index-BE-gNZr7.css">
   </head>
   <body>
     <div class="loader-container">
       <span class="loader" id="loader">0%</span>
       <p>Tunning your guitar...</p>
     </div>
+    <div class="logo-container">Style Your Guitar</div>
     <div class="settings-container">
-      <div id="refresh"><i data-feather="refresh-cw"></i></div>
-      <div><i data-feather="settings"></i></div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 -960 960 960"
+        width="24px"
+        fill="#e3e3e3"
+      >
+        <path
+          d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"
+        />
+      </svg>
     </div>
     <div class="camera-control-container" id="guitar-elements">
       <div class="camera-control">
@@ -39,11 +55,31 @@
       </div>
     </div>
     <div class="appearence-control-icon">
-      <i data-feather="pen-tool"></i>
-      <p>CUSTOMIZATION</p>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 -960 960 960"
+        width="24px"
+        fill="#e3e3e3"
+      >
+        <path
+          d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"
+        />
+      </svg>
+      <p>Customization</p>
     </div>
     <div class="sticker-control-icon">
-      <i data-feather="plus-square"></i>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 -960 960 960"
+        width="24px"
+        fill="#e3e3e3"
+      >
+        <path
+          d="M460-360q69 0 120-45t60-113l-320 90q26 32 62 50t78 18ZM294-510l106-30q4-28-14-49t-46-21q-25 0-42.5 17.5T280-550q0 11 4 21t10 19Zm240-70 106-30q5-28-13.5-49T580-680q-25 0-42.5 17.5T520-620q0 11 4 21t10 19Zm-54 100ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h400v80H200v560h400v-80q0-33 23.5-56.5T680-360h80v-240h80v280L640-120H200Zm400-80Zm160-480v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"
+        />
+      </svg>
       <p>ADD STICKER</p>
     </div>
     <div id="sticker-control"></div>
@@ -79,6 +115,6 @@
         <span> </span>
       </div>
     </div>
-    <div id="appearence-control"></div>
+    <div id="appearence-control"></div>
   </body>
 </html>
