@@ -183,10 +183,7 @@ export class UiController {
     document.addEventListener("GLTFobjectLoaded", () => {
       this.isLoading = true;
       this.loaderContainer.animate(
-        [
-          { clipPath: "circle(100% at center)", opacity: 1 },
-          { clipPath: "circle(5% at center)", opacity: 0, display: "none" },
-        ],
+        [{ opacity: 1 }, { opacity: 0, display: "none" }],
         {
           duration: 600,
           easing: "ease-in-out",
@@ -530,10 +527,7 @@ export class UiController {
 
   hideApperenaceControlMenuAnimation() {
     this.appereanceControl.animate(
-      [
-        { clipPath: "circle(110% at right)", opacity: 1 },
-        { clipPath: "circle(0% at right)", opacity: 0, display: "none" },
-      ],
+      [{ opacity: 1 }, { opacity: 0, display: "none" }],
       {
         duration: 500,
         easing: "ease-in-out",
@@ -544,10 +538,7 @@ export class UiController {
 
   showAppereanceControlMenuAnimation() {
     this.appereanceControl.animate(
-      [
-        { clipPath: "circle(0% at right)", opacity: 0 },
-        { clipPath: "circle(110% at right)", opacity: 1, display: "flex" },
-      ],
+      [{ opacity: 0 }, { opacity: 1, display: "flex" }],
       {
         duration: 800,
         easing: "ease-in-out",

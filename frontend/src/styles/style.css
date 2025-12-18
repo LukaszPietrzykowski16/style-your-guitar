@@ -257,14 +257,13 @@ canvas {
 
 .texture-container,
 .sticker-container {
-  width: 21.25rem;
   justify-content: center;
   overflow-x: hidden;
   display: flex;
   flex-wrap: wrap;
   padding: 1rem;
   gap: 0.5rem;
-  height: 18.75rem;
+  min-height: 10rem;
 }
 
 .texture-card {
@@ -688,7 +687,17 @@ input[type="file" i] {
   }
   #appearence-control,
   #sticker-control {
-    height: 80%;
+    width: 21.25rem;
+    justify-content: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 1rem;
+    gap: 0.5rem;
+    height: 18.75rem;
   }
 }
 
@@ -827,4 +836,22 @@ input[type="file" i] {
 }
 #hover-text .click-to-edit-text span:nth-child(28) {
   --i: 27;
+}
+
+@media (max-width: 1000px) {
+  .appearence-control-icon,
+  .sticker-control-icon {
+    top: 85% !important;
+  }
+
+  #appearence-control {
+    top: 74%;
+    width: 100% !important;
+    left: 0 !important;
+    padding: 0.4rem;
+    gap: 0.8rem;
+    overflow-y: scroll;
+    height: 250px;
+    background-color: #222222;
+  }
 }

@@ -8,7 +8,13 @@ export const windowResizeHandler = (renderer) => {
     () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      if (window.innerWidth < 600) {
+        renderer.setSize(window.innerWidth, 500);
+      } else {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
       render();
     },
     false
