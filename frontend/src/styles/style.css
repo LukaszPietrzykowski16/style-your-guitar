@@ -692,7 +692,6 @@ input[type="file" i] {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     padding: 1rem;
