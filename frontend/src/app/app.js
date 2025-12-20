@@ -83,11 +83,7 @@ export class App {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
 
-        if (window.innerWidth < 1000) {
-          this.renderer.setSize(window.innerWidth, 700);
-        } else {
-          this.renderer.setSize(window.innerWidth, window.innerHeight);
-        }
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.render();
       },
       false

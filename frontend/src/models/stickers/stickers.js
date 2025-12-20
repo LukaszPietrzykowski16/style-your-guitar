@@ -385,10 +385,7 @@ export class Stickers {
 
   showStickerControlMenuAnimation() {
     this.stickerControl.animate(
-      [
-        { clipPath: "circle(0% at left)", opacity: 0 },
-        { clipPath: "circle(110% at left)", opacity: 1, display: "flex" },
-      ],
+      [{ opacity: 0 }, { opacity: 1, display: "flex" }],
       {
         duration: 500,
         easing: "ease-in-out",
@@ -399,10 +396,7 @@ export class Stickers {
 
   hideStickerControlMenu() {
     this.stickerControl.animate(
-      [
-        { clipPath: "circle(110% at left)", opacity: 1 },
-        { clipPath: "circle(0% at left)", opacity: 0, display: "none" },
-      ],
+      [{ opacity: 1 }, { opacity: 0, display: "none" }],
       {
         duration: 500,
         easing: "ease-in-out",
