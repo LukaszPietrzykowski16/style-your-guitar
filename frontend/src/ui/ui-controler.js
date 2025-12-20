@@ -47,13 +47,16 @@ export class UiController {
   }
 
   initMouseMove() {
-    window.addEventListener(
-      "mousemove",
-      (event) => {
-        if (this.guitar) this.guitar.addTextOnHover(event);
-      },
-      false
-    );
+    const onPointerMove = (event) => {
+      if (event.pointerType && event.pointerType !== "mouse") return;
+      if (this.guitar) this.guitar.addTextOnHover(event);
+    };
+
+    if (window.PointerEvent) {
+      window.addEventListener("pointermove", onPointerMove, { passive: true });
+    } else {
+      window.addEventListener("mousemove", onPointerMove, { passive: true });
+    }
   }
 
   initMutationObserver() {

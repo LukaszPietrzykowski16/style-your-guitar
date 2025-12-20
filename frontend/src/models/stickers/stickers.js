@@ -376,7 +376,7 @@ export class Stickers {
           display: flex;
         "> Change Sticker </span>
       <div id="sticker-config" class="sticker-container">
-        Please select sticker
+        <p class="select-sticker"> Select sticker </p>
       </div>
     
       </div>
@@ -506,7 +506,7 @@ export class Stickers {
 
     if (!this.stickersProxy.length) {
       document.querySelector("#sticker-config").innerHTML =
-        "Please select sticker";
+        "<p class='select-sticker'> Select sticker </p>";
     }
   }
 }
