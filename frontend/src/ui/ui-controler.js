@@ -1,3 +1,5 @@
+import "../shared/components/card.component.js";
+
 export class UiController {
   guitar = {};
 
@@ -43,6 +45,17 @@ export class UiController {
         }
         this.showApperenaceControlMenu();
       }
+    });
+    const settingsContainer = document.querySelector(".settings-container");
+
+    settingsContainer.addEventListener("click", () => {
+      if (!document.body.querySelector("card-component")) {
+        const card = document.createElement("card-component");
+        card.setAttribute("title", "Settings");
+        document.body.appendChild(card);
+      }
+      const card = document.querySelector("card-component");
+      card.toggle();
     });
   }
 

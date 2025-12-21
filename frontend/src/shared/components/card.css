@@ -1,0 +1,38 @@
+:host {
+  display: block;
+}
+.card {
+  display: none;
+  padding: 0.9rem;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  height: 100px;
+  width: 300px;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(30, 30, 30);
+  color: white;
+  border-radius: 1rem;
+}
+.card.open {
+  display: flex;
+  position: absolute;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.125rem;
+  text-align: left;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 0.5rem;
+}
+.close-icon {
+  cursor: pointer;
+}
+.content {
+  width: 100%;
+  padding: 0.5rem;
+}

@@ -752,7 +752,8 @@ input[type="file" i] {
     gap: 0.7rem;
   }
   #appearence-control,
-  #sticker-control {
+  #sticker-control,
+  #settings-control {
     position: absolute;
     height: 200px;
     top: 73%;
