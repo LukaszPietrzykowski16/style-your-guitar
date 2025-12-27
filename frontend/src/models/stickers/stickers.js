@@ -2,10 +2,12 @@ import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
 import { removeSelectedStickerLabel } from "../../utils/remove-selected-sticker-label";
 import { uploadImageToIndexedDb } from "../../utils/upload-image-to-indexed-db";
 import * as THREE from "three";
+import "../../shared/components/card.component";
+import * as stickersTemplate from "./stickers.html?raw";
 
 export class Stickers {
   closeStickerIcon = document.querySelector(".close-icon-sticker");
-  stickerControl = document.querySelector("#sticker-control");
+  stickerControl = document.querySelector("#sticker-card");
   stickerControlIcon = document.querySelector(".sticker-control-icon");
   stickerContainer = document.querySelector(".sticker-container");
 
@@ -19,7 +21,6 @@ export class Stickers {
 
   constructor() {
     this.initListingForIcons();
-    this.initMutationObserverSticker();
   }
 
   stickersProxy = new Proxy([], {
@@ -242,10 +243,7 @@ export class Stickers {
 
   initListingForIcons() {
     this.stickerControlIcon.addEventListener("click", () => {
-      if (!this.isStickerControlMenuGenerated) {
-        this.generateStickerControlMenu();
-      }
-      this.showStickerControlMenu();
+      this.generateStickerControlMenu();
     });
   }
 
@@ -273,143 +271,20 @@ export class Stickers {
   generateStickerControlMenu() {
     this.isStickerControlMenuGenerated = true;
 
-    this.showStickerControlMenuAnimation();
+    if (!document.body.querySelector("#sticker-card")) {
+      const card = document.createElement("card-component");
+      card.id = "sticker-card";
+      card.setAttribute("title", "Change sticker");
+      card.appendContent(stickersTemplate.default);
+      card.setPosition("20%", "auto", "10px");
+      document.body.appendChild(card);
+      this.stickerCardEl = card;
+    }
+    const card = this.stickerCardEl || document.querySelector("#sticker-card");
+    if (card) card.toggle();
 
-    this.stickerControl.innerHTML = `
-       <span
-        class="section-header"
-      >
-        <span> Add sticker </span>
-         <div class="close-icon-sticker"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></div>
-      </span>
-      
-     
-
-      <div>
-
-      </div>
-      <div class="sticker-container">
-        <div class="texture-card custom-sticker-upload">
-          <label for="stickerInput" class="custom-sticker-label">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
-            <span style="background-color: transparent;">Upload Sticker</span>
-          </label>
-          <input type="file" id="stickerInput" accept="image/*" style="display: none;"/>
-        </div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker0.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker1.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker2.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker3.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker4.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker5.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker6.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker7.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker8.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker10.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker11.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker12.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker13.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker14.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker15.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker16.png')"
-        ></div>
-        <div
-          class="texture-card"
-          style="background-image: url('sticker17.png')"
-        ></div>
-      </div>
-      <div class="sticker-config-container">
-      <span      style="
-          font-size: 18px;
-          text-align: left;
-          width: 100%;
-          text-align: left;
-          padding-top: 12px;
-          padding-left: 16px;
-          display: flex;
-        "> Change Sticker </span>
-      <div id="sticker-config" class="sticker-container">
-        <p class="select-sticker"> Select sticker </p>
-      </div>
-    
-      </div>
-    `;
-  }
-
-  showStickerControlMenuAnimation() {
-    this.stickerControl.animate(
-      [{ opacity: 0 }, { opacity: 1, display: "flex" }],
-      {
-        duration: 500,
-        easing: "ease-in-out",
-        fill: "forwards",
-      }
-    );
-  }
-
-  hideStickerControlMenu() {
-    this.stickerControl.animate(
-      [{ opacity: 1 }, { opacity: 0, display: "none" }],
-      {
-        duration: 500,
-        easing: "ease-in-out",
-        fill: "forwards",
-      }
-    );
-    this.stickerControlIcon.style.display = "flex";
-  }
-
-  showStickerControlMenu() {
-    this.showStickerControlMenuAnimation();
-    this.stickerControl.style.display = "flex";
-    this.stickerControlIcon.style.display = "none";
+    this.checkElementsSticker();
+    card.addEventListener("card-open", () => this.checkElementsSticker());
   }
 
   mirrorDecalByUUID(uuid) {

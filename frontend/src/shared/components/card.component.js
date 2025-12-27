@@ -67,6 +67,12 @@ export class CardComponent extends HTMLElement {
     this.insertAdjacentHTML("beforeend", htmlString);
   }
 
+  setPosition(top = "10px", right = "10px", left = "10px") {
+    this.style.setProperty("--card-top", top);
+    this.style.setProperty("--card-right", right);
+    this.style.setProperty("--card-left", left);
+  }
+
   _show() {
     if (!this._els?.wrapper) return;
     this._els.wrapper.classList.add("open");

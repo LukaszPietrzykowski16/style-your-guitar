@@ -49,14 +49,18 @@ export class UiController {
     const settingsContainer = document.querySelector(".settings-container");
 
     settingsContainer.addEventListener("click", () => {
-      if (!document.body.querySelector("card-component")) {
+      if (!document.body.querySelector("#settings-card")) {
         const card = document.createElement("card-component");
+        card.id = "settings-card";
         card.setAttribute("title", "Settings");
         card.appendContent("<p> Settings content goes here. </p>");
+        card.setPosition("80px", "20px", "fixed");
         document.body.appendChild(card);
+        this.settingsCardEl = card;
       }
-      const card = document.querySelector("card-component");
-      card.toggle();
+      const card =
+        this.settingsCardEl || document.querySelector("#settings-card");
+      if (card) card.toggle();
     });
   }
 
