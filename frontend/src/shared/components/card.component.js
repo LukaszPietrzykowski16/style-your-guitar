@@ -23,6 +23,8 @@ export class CardComponent extends HTMLElement {
       wrapper: shadow.querySelector(".card"),
       title: shadow.querySelector(".title"),
       close: shadow.querySelector(".close-icon"),
+      content: shadow.querySelector(".content"),
+      slot: shadow.querySelector("slot"),
     };
 
     this._els.title.textContent = this._title;
@@ -58,6 +60,11 @@ export class CardComponent extends HTMLElement {
 
   toggle() {
     this._open ? this.close() : this.open();
+  }
+
+  appendContent(htmlString) {
+    if (typeof htmlString !== "string") return;
+    this.insertAdjacentHTML("beforeend", htmlString);
   }
 
   _show() {

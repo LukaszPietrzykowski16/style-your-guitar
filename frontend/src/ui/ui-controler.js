@@ -52,6 +52,7 @@ export class UiController {
       if (!document.body.querySelector("card-component")) {
         const card = document.createElement("card-component");
         card.setAttribute("title", "Settings");
+        card.appendContent("<p> Settings content goes here. </p>");
         document.body.appendChild(card);
       }
       const card = document.querySelector("card-component");
