@@ -1,13 +1,11 @@
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
-import { removeSelectedStickerLabel } from "../../utils/remove-selected-sticker-label";
 import { uploadImageToIndexedDb } from "../../utils/upload-image-to-indexed-db";
 import * as THREE from "three";
 import "../../shared/components/card.component";
 import * as stickersTemplate from "./stickers.html?raw";
+import { removeSelectedStickerLabel } from "../../utils/remove-selected-sticker-label";
 
 export class Stickers {
-  closeStickerIcon = document.querySelector(".close-icon-sticker");
-  stickerControl = document.querySelector("#sticker-card");
   stickerControlIcon = document.querySelector(".sticker-control-icon");
   stickerContainer = document.querySelector(".sticker-container");
 
@@ -15,9 +13,7 @@ export class Stickers {
 
   scene = {};
   isStickerOn = false;
-  isStickerControlMenuGenerated = false;
   selectedSticker = {};
-  isStickerOn = false;
 
   constructor() {
     this.initListingForIcons();
@@ -63,129 +59,101 @@ export class Stickers {
     },
   });
 
-  initMutationObserverSticker() {
-    this.observer = new MutationObserver(() => this.checkElementsSticker());
-    this.observer.observe(this.stickerControl, {
-      childList: true,
-      subtree: true,
+  checkElementsSticker() {
+    this.stickerContainer = document.querySelector(".sticker-container");
+
+    Array.from(this.stickerContainer.children).forEach((stickerEl) => {
+      stickerEl.addEventListener("click", (event) => {
+        const clickedElement = event.target;
+
+        removeSelectedStickerLabel();
+
+        this.selectedSticker = clickedElement;
+
+        clickedElement.classList.add("selected");
+
+        const style = window.getComputedStyle(clickedElement);
+        const backgroundImage = style.backgroundImage;
+        const urlMatch = backgroundImage.match(
+          /url\(["']?(https?:\/\/[^\/]+\/)?(?!undefinedblob:)(.*?)["']?\)/
+        );
+
+        if (!urlMatch) {
+          return;
+        }
+        const textureUrl = urlMatch[1]
+          ? `${urlMatch[1]}${urlMatch[2]}`
+          : `${urlMatch[2]}`;
+
+        if (textureUrl) {
+          this.putStickerOnTheGuitar(textureUrl);
+        }
+      });
     });
   }
 
-  checkElementsSticker() {
-    const stickerContainer = document.querySelector(".sticker-container");
-    const closeStikcerIcon = document.querySelector(".close-icon-sticker");
-    const removeSticker = document.querySelectorAll(".remove-sticker");
-    const rotateSticker = document.querySelectorAll(".sticker-rotation");
-    const mirrorStickerBtns = document.querySelectorAll(".mirror-sticker");
+  initListingForIcons() {
+    this.stickerControlIcon.addEventListener("click", () => {
+      this.generateStickerControlMenu();
+    });
+  }
 
-    const fileLoaderSticker = document.querySelector("#stickerInput");
+  async updateSelectedStickerFromFile(file) {
+    this.stickerContainer = document.querySelector(".sticker-container");
 
-    if (!fileLoaderSticker.dataset.listenerAdded) {
-      fileLoaderSticker.addEventListener("change", (event) => {
-        const file = event.target.files[0];
+    const blobUrl = await uploadImageToIndexedDb(file);
 
-        if (!file) return;
+    if (!blobUrl) return;
 
-        this.updateSelectedStickerFromFile(file);
+    if (this.stickerContainer.children.length > 0) {
+      const container = this.stickerContainer;
+      const div = document.createElement("div");
+      div.className = "texture-card";
+      div.style.backgroundImage = `url('${blobUrl}')`;
 
-        fileLoaderSticker.dataset.listenerAdded = "true";
-      });
+      if (container.children.length >= 1) {
+        container.insertBefore(div, container.children[1]);
+      } else {
+        container.appendChild(div);
+      }
+      this.checkElementsSticker();
     }
+  }
 
-    Array.from(stickerContainer.children).forEach((stickerEl) => {
-      fileLoaderSticker.dataset.listenerAdded = "true";
-      if (!stickerEl.dataset.listenerAdded) {
-        stickerEl.addEventListener("click", (event) => {
-          document
-            .querySelectorAll(".selected")
-            .forEach((el) => el.classList.remove("selected"));
-          const clickedElement = event.target;
-          this.selectedSticker = clickedElement;
-
-          this.selectedSticker.classList.add("selected");
-
-          const style = window.getComputedStyle(clickedElement);
-          const backgroundImage = style.backgroundImage;
-          const urlMatch = backgroundImage.match(
-            /url\(["']?(https?:\/\/[^\/]+\/)?(?!undefinedblob:)(.*?)["']?\)/
-          );
-
-          if (!urlMatch) {
-            return;
-          }
-          const textureUrl = urlMatch[1]
-            ? `${urlMatch[1]}${urlMatch[2]}`
-            : `${urlMatch[2]}`;
-
-          if (textureUrl) {
-            this.putStickerOnTheGuitar(textureUrl);
-          }
-
-          stickerEl.dataset.listenerAdded = "true";
-          fileLoaderSticker.dataset.listenerAdded = "false";
-        });
-      }
-    });
-
-    removeSticker.forEach((sticker) => {
-      if (!sticker.dataset.listenerAdded) {
-        sticker.addEventListener("click", (event) => {
-          const decalUUID = event.target.dataset.value;
-          this.removeDecalByUUID(decalUUID);
-        });
-      }
-      sticker.dataset.listenerAdded = "true";
-    });
-
-    rotateSticker.forEach((sticker) => {
-      if (!sticker.dataset.listenerAdded) {
-        sticker.addEventListener("input", (event) => {
-          const decalUUID = event.target.dataset.value;
-          const rotation = event.target.value;
-          this.rotateDecalByUUID(decalUUID, rotation);
-        });
-      }
-      sticker.dataset.listenerAdded = "true";
-    });
-
-    mirrorStickerBtns.forEach((sticker) => {
-      if (!sticker.dataset.listenerAdded) {
-        sticker.addEventListener("click", (event) => {
-          const decalUUID = event.target.dataset.value;
-          if (this.mirrorDecalByUUID) {
-            this.mirrorDecalByUUID(decalUUID, "x");
-          }
-        });
-      }
-      sticker.dataset.listenerAdded = "true";
-    });
-
-    document.querySelectorAll(".sticker-size").forEach((sticker) => {
-      if (!sticker.dataset.listenerAdded) {
-        sticker.addEventListener("input", (event) => {
-          const uuid = event.target
-            .getAttribute("data-value")
-            .replace("size-", "");
-          const scaleValue = parseFloat(event.target.value);
-          this.scaleDecalByUUID(uuid, scaleValue);
-        });
-      }
-
-      sticker.dataset.listenerAdded = "true";
-    });
-
-    if (closeStikcerIcon && !closeStikcerIcon.dataset.listenerAdded) {
-      closeStikcerIcon.addEventListener("click", () =>
-        this.hideStickerControlMenu()
-      );
-      closeStikcerIcon.dataset.listenerAdded = "true";
+  generateStickerControlMenu() {
+    if (!document.body.querySelector("#sticker-card")) {
+      const card = document.createElement("card-component");
+      card.id = "sticker-card";
+      card.setAttribute("title", "Change sticker");
+      card.appendContent(stickersTemplate.default);
+      card.setPosition("20%", "auto", "10px");
+      document.body.appendChild(card);
+      this.stickerCardEl = card;
     }
+    const card = this.stickerCardEl || document.querySelector("#sticker-card");
+    if (card) card.toggle();
+
+    this.checkElementsSticker();
+
+    card.addEventListener("click", (event) =>
+      this.checkWhichButtonWasClicked(event)
+    );
+
+    card.addEventListener("input", (event) => {
+      this.checkWhichInputWasChanged(event);
+    });
+
+    card.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+
+      if (!file) return;
+
+      this.updateSelectedStickerFromFile(file);
+    });
   }
 
   applySticker(position, intersectedObject, helper, scene) {
     this.scene = scene;
-
-    removeSelectedStickerLabel();
 
     const decalMaterial = new THREE.MeshPhongMaterial({
       color: 0xffffff,
@@ -233,41 +201,6 @@ export class Stickers {
     this.selectedSticker = {};
   }
 
-  putStickerOnTheGuitar(sticker) {
-    const clickedSticker = this.textureLoader.load(sticker);
-    this.selectedSticker = clickedSticker;
-    this.isStickerOn = true;
-    const eventUI = new CustomEvent("stickerSelected");
-    document.dispatchEvent(eventUI);
-  }
-
-  initListingForIcons() {
-    this.stickerControlIcon.addEventListener("click", () => {
-      this.generateStickerControlMenu();
-    });
-  }
-
-  async updateSelectedStickerFromFile(file) {
-    const stickerContainers = document.querySelectorAll(".sticker-container");
-
-    const blobUrl = await uploadImageToIndexedDb(file);
-
-    if (!blobUrl) return;
-
-    if (stickerContainers.length > 0) {
-      const container = stickerContainers[0];
-      const div = document.createElement("div");
-      div.className = "texture-card";
-      div.style.backgroundImage = `url('${blobUrl}')`;
-
-      if (container.children.length >= 1) {
-        container.insertBefore(div, container.children[1]);
-      } else {
-        container.appendChild(div);
-      }
-    }
-  }
-
   checkWhichButtonWasClicked(e) {
     if (e.target.classList.contains("remove-sticker")) {
       this.removeDecalByUUID(e.target.dataset.value);
@@ -286,29 +219,12 @@ export class Stickers {
     }
   }
 
-  generateStickerControlMenu() {
-    this.isStickerControlMenuGenerated = true;
-
-    if (!document.body.querySelector("#sticker-card")) {
-      const card = document.createElement("card-component");
-      card.id = "sticker-card";
-      card.setAttribute("title", "Change sticker");
-      card.appendContent(stickersTemplate.default);
-      card.setPosition("20%", "auto", "10px");
-      document.body.appendChild(card);
-      this.stickerCardEl = card;
-    }
-    const card = this.stickerCardEl || document.querySelector("#sticker-card");
-    if (card) card.toggle();
-
-    this.checkElementsSticker();
-    card.addEventListener("click", (event) =>
-      this.checkWhichButtonWasClicked(event)
-    );
-
-    card.addEventListener("input", (event) => {
-      this.checkWhichInputWasChanged(event);
-    });
+  putStickerOnTheGuitar(sticker) {
+    const clickedSticker = this.textureLoader.load(sticker);
+    this.selectedSticker = clickedSticker;
+    this.isStickerOn = true;
+    const eventUI = new CustomEvent("stickerSelected");
+    document.dispatchEvent(eventUI);
   }
 
   mirrorDecalByUUID(uuid) {
