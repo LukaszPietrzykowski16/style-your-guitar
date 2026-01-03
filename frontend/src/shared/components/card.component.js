@@ -96,6 +96,21 @@ export class CardComponent extends HTMLElement {
       this.dispatchEvent(new CustomEvent("card-close", { bubbles: true }));
     };
   }
+
+  connectedCallback() {
+    this._parent = this.parentNode;
+    this._parent.addEventListener("click", this);
+  }
+
+  disconnectedCallback() {
+    this._parent.removeEventListener("click", this);
+    delete this._parent;
+  }
+
+  handleEvent(e) {
+    // console.log("Card component received click event:", e);
+    // // Run code on click
+  }
 }
 
 if (!customElements.get("card-component")) {

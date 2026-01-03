@@ -268,6 +268,24 @@ export class Stickers {
     }
   }
 
+  checkWhichButtonWasClicked(e) {
+    if (e.target.classList.contains("remove-sticker")) {
+      this.removeDecalByUUID(e.target.dataset.value);
+    }
+    if (e.target.classList.contains("mirror-sticker")) {
+      this.mirrorDecalByUUID(e.target.dataset.value);
+    }
+  }
+
+  checkWhichInputWasChanged(e) {
+    if (e.target.classList.contains("sticker-size")) {
+      this.scaleDecalByUUID(e.target.dataset.value, parseFloat(e.target.value));
+    }
+    if (e.target.classList.contains("sticker-rotation")) {
+      this.rotateDecalByUUID(e.target.dataset.value, e.target.value);
+    }
+  }
+
   generateStickerControlMenu() {
     this.isStickerControlMenuGenerated = true;
 
@@ -284,7 +302,13 @@ export class Stickers {
     if (card) card.toggle();
 
     this.checkElementsSticker();
-    card.addEventListener("card-open", () => this.checkElementsSticker());
+    card.addEventListener("click", (event) =>
+      this.checkWhichButtonWasClicked(event)
+    );
+
+    card.addEventListener("input", (event) => {
+      this.checkWhichInputWasChanged(event);
+    });
   }
 
   mirrorDecalByUUID(uuid) {
