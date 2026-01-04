@@ -34,18 +34,18 @@ export class UiController {
     this.initMutationObserver();
     this.initListningForClickOnModel();
     this.initMouseMove();
-    document.addEventListener("guitarPartSelected", (e) => {
-      if (this.isSelectAPartOfGuitarVisible) {
-        this.isSelectAPartOfGuitarVisible = false;
-        this.showApperenaceControlMenuWhenIsEmpty();
-      }
-      if (!this.isApperanceControlMenuVisible) {
-        if (!this.isApperanceControlMenuGenerated) {
-          this.generateApperanceControlMenu();
-        }
-        this.showApperenaceControlMenu();
-      }
-    });
+    // document.addEventListener("guitarPartSelected", (e) => {
+    //   if (this.isSelectAPartOfGuitarVisible) {
+    //     this.isSelectAPartOfGuitarVisible = false;
+    //     this.showApperenaceControlMenuWhenIsEmpty();
+    //   }
+    //   if (!this.isApperanceControlMenuVisible) {
+    //     if (!this.isApperanceControlMenuGenerated) {
+    //       this.generateApperanceControlMenu();
+    //     }
+    //     this.showApperenaceControlMenu();
+    //   }
+    // });
     const settingsContainer = document.querySelector(".settings-container");
 
     settingsContainer.addEventListener("click", () => {

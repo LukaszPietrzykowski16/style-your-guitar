@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { uploadImageToIndexedDb } from "../../utils/upload-image-to-indexed-db";
 import { addHaloGlow, addTemporaryGlow } from "./animations/animations";
 import { Stickers } from "../stickers/stickers";
+import { Textures } from "../textures/textures";
 
 export class Guitar {
   raycaster = new THREE.Raycaster();
@@ -15,6 +16,7 @@ export class Guitar {
   scene = {};
   intersectedObject = {};
   stickers = new Stickers();
+  textures = new Textures();
   isStickerOn = false;
   lastRotate = 0;
   currentHovered = null;
@@ -69,7 +71,9 @@ export class Guitar {
 
     addTemporaryGlow(this.intersectedObject, this.scene);
 
-    const eventUI = new CustomEvent("guitarPartSelected");
+    const eventUI = new CustomEvent("guitarPartSelected", {
+      detail: this.intersectedObject,
+    });
     document.dispatchEvent(eventUI);
   }
 
