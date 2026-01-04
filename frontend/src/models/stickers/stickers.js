@@ -126,7 +126,7 @@ export class Stickers {
       card.id = "sticker-card";
       card.setAttribute("title", "Change sticker");
       card.appendContent(stickersTemplate.default);
-      card.setPosition("20%", "auto", "10px");
+      card.setPosition("10%", "auto", "10px");
       document.body.appendChild(card);
       this.stickerCardEl = card;
     }

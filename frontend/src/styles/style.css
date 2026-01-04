@@ -66,9 +66,7 @@ body {
   flex-direction: column;
   gap: 0.625rem;
   padding: 0.5rem;
-  border-radius: 1rem;
   margin-bottom: 0.875rem;
-  background-color: var(--texture-card-bg);
 }
 
 .texture-card.thumb {
@@ -82,7 +80,6 @@ body {
 
 .texture-card-controls {
   display: flex;
-  gap: 0.5rem;
 }
 .texture-card-actions.with-thumb {
   align-items: center;
@@ -310,7 +307,7 @@ canvas {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  height: 15rem;
+  height: 14rem;
 }
 
 .texture-card {
