@@ -12,7 +12,8 @@ export class Textures {
   isTextureOn = false;
   isTextureTemplate = false;
 
-  constructor() {
+  constructor(guitar) {
+    this.guitar = guitar;
     this.initListingForIcons();
   }
 
@@ -78,6 +79,31 @@ export class Textures {
         card.appendContent(texturesTemplate.default);
       }
       this.isTextureTemplate = true;
+    }
+    const card = document.body.querySelector("#texture-card");
+    if (card) {
+      card.addEventListener("click", (event) =>
+        this.checkWhichTexturenWasClicked(event)
+      );
+
+      card.addEventListener("input", (event) => {
+        this.checkWhichInputWasChanged(event);
+      });
+    }
+  }
+
+  checkWhichTexturenWasClicked(event) {
+    const element = event.srcElement.style.backgroundImage;
+    const urlMatch = element.match(
+      /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
+    );
+    const textureUrl = `${urlMatch[1] ?? ""}${urlMatch[2]}`;
+
+    if (textureUrl && this.guitar) {
+      const eventUI = new CustomEvent("textureChange", {
+        detail: textureUrl,
+      });
+      document.dispatchEvent(eventUI);
     }
   }
 }

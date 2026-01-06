@@ -15,7 +15,7 @@ export class App {
   renderer = Renderer();
   helpers = Helpers(this.camera, this.renderer);
   guitar = new Guitar(this.scene, this.camera);
-  uiControler = new UiController(this.guitar, this.stickers);
+  uiControler = new UiController(this.guitar);
   isLoading = false;
 
   lightPositions = [

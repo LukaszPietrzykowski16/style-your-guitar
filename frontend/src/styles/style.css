@@ -241,7 +241,7 @@ canvas {
   justify-content: center;
   align-items: center;
   gap: 0.375rem;
-  padding: 1rem;
+  padding-bottom: 0.5rem;
 }
 
 .color-dot-red {

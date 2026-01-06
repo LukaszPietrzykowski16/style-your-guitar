@@ -16,7 +16,7 @@ export class Guitar {
   scene = {};
   intersectedObject = {};
   stickers = new Stickers();
-  textures = new Textures();
+  textures = new Textures(this);
   isStickerOn = false;
   lastRotate = 0;
   currentHovered = null;
@@ -28,6 +28,9 @@ export class Guitar {
     gltfLoader(scene, camera);
     document.addEventListener("stickerSelected", (e) => {
       this.isStickerOn = true;
+    });
+    document.addEventListener("textureChange", (e) => {
+      this.updateIntersectedObjectTexture(e.detail);
     });
   }
 
