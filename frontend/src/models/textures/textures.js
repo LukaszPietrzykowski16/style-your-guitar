@@ -10,15 +10,14 @@ export class Textures {
 
   guitar = {};
   isTextureOn = false;
+  isTextureTemplate = false;
 
   constructor() {
-    console.log("Textures module loaded");
     this.initListingForIcons();
   }
 
   initListingForIcons() {
     this.textureControlIcon.addEventListener("click", () => {
-      console.log(this.guitar);
       if (this.guitar.name) {
         this.generateTextureControlMenu();
       } else {
@@ -37,7 +36,7 @@ export class Textures {
     if (!document.body.querySelector("#texture-card")) {
       const card = document.createElement("card-component");
       card.id = "texture-card";
-      card.setAttribute("title", "Select a part of guitar to customize it!");
+      card.setAttribute("title", "Select a part of guitar");
       card.setPosition("10%", "10px", "auto");
       document.body.appendChild(card);
       this.textureCardEl = card;
@@ -64,6 +63,7 @@ export class Textures {
       const selectedPartName = this.guitar.name;
       card.setAttribute("title", `${selectedPartName} - Change color`);
       card.appendContent(texturesTemplate.default);
+      this.isTextureTemplate = true;
       card.setPosition("10%", "10px", "auto");
       document.body.appendChild(card);
       this.textureCardEl = card;
@@ -74,6 +74,10 @@ export class Textures {
         this.textureCardEl || document.querySelector("#texture-card");
       const selectedPartName = this.guitar.name || "Guitar";
       card.setAttribute("title", `${selectedPartName} - Change color`);
+      if (!this.isTextureTemplate) {
+        card.appendContent(texturesTemplate.default);
+      }
+      this.isTextureTemplate = true;
     }
   }
 }
