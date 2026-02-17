@@ -422,7 +422,6 @@ canvas {
 .section-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   font-size: 1.125rem;
   text-align: left;
   width: 100%;
@@ -738,6 +737,10 @@ input[type="file" i] {
   .texture-container,
   .sticker-container {
     height: auto;
+  }
+
+  .texture-container,
+  .sticker-container {
     min-height: 10rem;
   }
   .appearence-control-icon,
