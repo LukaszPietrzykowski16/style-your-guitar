@@ -128,6 +128,17 @@ body {
 }
 
 .custom-sticker-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 0 calc(50% - 0.3125rem);
+  height: 5.625rem;
+  width: 5.625rem;
+  border-radius: 0.5rem;
+  background-size: cover;
+  background-repeat: repeat;
+  background-position: center;
+  cursor: pointer;
   background: var(--overlay-darker);
   border: 2px dashed var(--muted-border-strong);
   display: flex;

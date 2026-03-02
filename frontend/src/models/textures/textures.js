@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import "../../shared/components/card.component";
 import * as texturesTemplate from "./textures.html?raw";
+import { uploadImageToIndexedDb } from "../../utils/upload-image-to-indexed-db";
 
 export class Textures {
   textureControlIcon = document.querySelector(".appearence-control-icon");
@@ -81,22 +82,39 @@ export class Textures {
       this.isTextureTemplate = true;
     }
     const card = document.body.querySelector("#texture-card");
+
     if (card) {
       card.addEventListener("click", (event) =>
-        this.checkWhichTexturenWasClicked(event)
+        this.checkWhichTexturenWasClicked(event),
       );
 
       card.addEventListener("input", (event) => {
+        // TODO: implemnt checkWhichInputWasChanged to check which input was changed and update the texture accordingly
         this.checkWhichInputWasChanged(event);
+      });
+
+      card.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        this.updateSelectedStickerFromFile(file);
       });
     }
   }
 
   checkWhichTexturenWasClicked(event) {
+    if (event.target.classList.contains("texture-card")) {
+      this.changeTexture(event);
+    }
+  }
+
+  changeTexture(event) {
     const element = event.srcElement.style.backgroundImage;
     const urlMatch = element.match(
-      /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/
+      /url\(["']?(https?:\/\/[^\/]+\/)?(.*?)["']?\)/,
     );
+
     const textureUrl = `${urlMatch[1] ?? ""}${urlMatch[2]}`;
 
     if (textureUrl && this.guitar) {
@@ -104,6 +122,27 @@ export class Textures {
         detail: textureUrl,
       });
       document.dispatchEvent(eventUI);
+    }
+  }
+
+  async updateSelectedStickerFromFile(file) {
+    this.stickerContainer = document.querySelector(".texture-container");
+
+    const blobUrl = await uploadImageToIndexedDb(file);
+
+    if (!blobUrl) return;
+
+    if (this.stickerContainer.children.length > 0) {
+      const container = this.stickerContainer;
+      const div = document.createElement("div");
+      div.className = "texture-card";
+      div.style.backgroundImage = `url('${blobUrl}')`;
+
+      if (container.children.length >= 1) {
+        container.insertBefore(div, container.children[1]);
+      } else {
+        container.appendChild(div);
+      }
     }
   }
 }
