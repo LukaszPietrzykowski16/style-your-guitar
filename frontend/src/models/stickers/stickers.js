@@ -52,7 +52,7 @@ export class Stickers {
 			</div>
 	  
 		  </div>
-		  `
+		  `,
       )
       .join("")}
 	`;
@@ -75,7 +75,7 @@ export class Stickers {
         const style = window.getComputedStyle(clickedElement);
         const backgroundImage = style.backgroundImage;
         const urlMatch = backgroundImage.match(
-          /url\(["']?(https?:\/\/[^\/]+\/)?(?!undefinedblob:)(.*?)["']?\)/
+          /url\(["']?(https?:\/\/[^\/]+\/)?(?!undefinedblob:)(.*?)["']?\)/,
         );
 
         if (!urlMatch) {
@@ -135,20 +135,25 @@ export class Stickers {
 
     this.checkElementsSticker();
 
-    card.addEventListener("click", (event) =>
-      this.checkWhichButtonWasClicked(event)
-    );
+    card.addEventListener("click", (event) => {
+      this.checkWhichButtonWasClicked(event);
+    });
 
     card.addEventListener("input", (event) => {
       this.checkWhichInputWasChanged(event);
     });
 
     card.addEventListener("change", (event) => {
-      const file = event.target.files[0];
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
 
-      if (!file) return;
+      const id = target.id;
 
-      this.updateSelectedStickerFromFile(file);
+      if (id === "stickerInput") {
+        const file = event.target.files[0];
+
+        this.updateSelectedStickerFromFile(file);
+      }
     });
   }
 
@@ -181,7 +186,7 @@ export class Stickers {
       intersectedObject,
       position.clone(),
       helper.rotation.clone(),
-      sizeVec.clone()
+      sizeVec.clone(),
     );
     const decalMesh = new THREE.Mesh(decalGeometry, decalMaterial);
 
@@ -229,7 +234,7 @@ export class Stickers {
 
   mirrorDecalByUUID(uuid) {
     const entry = this.stickersProxy.find(
-      (decal) => decal.texture.uuid === uuid
+      (decal) => decal.texture.uuid === uuid,
     );
     if (!entry) return;
 
@@ -245,7 +250,7 @@ export class Stickers {
       ud.targetObject,
       ud.position.clone(),
       newEuler,
-      ud.size.clone()
+      ud.size.clone(),
     );
 
     decalMesh.geometry?.dispose?.();
@@ -256,7 +261,7 @@ export class Stickers {
 
   rotateDecalByUUID(uuid, deltaDeg) {
     const entry = this.stickersProxy.find(
-      (decal) => decal.texture.uuid === uuid
+      (decal) => decal.texture.uuid === uuid,
     );
     if (!entry) return;
 
@@ -275,7 +280,7 @@ export class Stickers {
       ud.targetObject,
       ud.position.clone(),
       newEuler,
-      ud.size.clone()
+      ud.size.clone(),
     );
 
     decalMesh.geometry?.dispose?.();
@@ -285,7 +290,7 @@ export class Stickers {
 
   scaleDecalByUUID(uuid, scaleValue) {
     const entry = this.stickersProxy.find(
-      (decal) => decal.texture.uuid === uuid
+      (decal) => decal.texture.uuid === uuid,
     );
 
     if (!entry) return;
@@ -301,7 +306,7 @@ export class Stickers {
       ud.targetObject,
       ud.position.clone(),
       ud.orientation.clone(),
-      newSize
+      newSize,
     );
 
     decalMesh.geometry?.dispose?.();
@@ -312,7 +317,7 @@ export class Stickers {
 
   removeDecalByUUID(uuid) {
     const decalIndex = this.stickersProxy.findIndex(
-      (decal) => decal.texture.uuid === uuid
+      (decal) => decal.texture.uuid === uuid,
     );
 
     this.scene.remove(this.stickersProxy[decalIndex].texture);

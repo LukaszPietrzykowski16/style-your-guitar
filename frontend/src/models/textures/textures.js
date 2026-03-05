@@ -90,16 +90,20 @@ export class Textures {
       );
 
       card.addEventListener("input", (event) => {
-        // TODO: implemnt checkWhichInputWasChanged to check which input was changed and update the texture accordingly
         this.checkWhichInputWasChanged(event);
       });
 
       card.addEventListener("change", (event) => {
-        const file = event.target.files[0];
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
 
-        if (!file) return;
+        const id = target.id;
 
-        this.updateSelectedStickerFromFile(file);
+        if (id === "textureInput") {
+          const file = event.target.files[0];
+
+          this.updateSelectedStickerFromFile(file);
+        }
       });
     }
   }
