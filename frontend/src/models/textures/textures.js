@@ -12,6 +12,7 @@ export class Textures {
   guitar = {};
   isTextureOn = false;
   isTextureTemplate = false;
+  lastRotate = 0;
 
   constructor(guitar) {
     this.guitar = guitar;
@@ -103,6 +104,37 @@ export class Textures {
     }
   }
 
+  checkWhichInputWasChanged(event) {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+
+    const id = target.id;
+
+    if (id === "roughness") {
+      this.changeIntersectedObjectMaterialRoughness(target.value);
+    }
+
+    if (id === "metalness") {
+      this.changeIntersectedObjectMaterialMetalness(target.value);
+    }
+
+    if (id === "rotate") {
+      this.rotateTexture(target.value);
+    }
+
+    if (id === "zoom") {
+      this.zoomInOutTexture(target.value);
+    }
+
+    if (id === "moveX") {
+      this.moveX(target.value);
+    }
+
+    if (id === "moveY") {
+      this.moveY(target.value);
+    }
+  }
+
   checkWhichTexturenWasClicked(event) {
     if (event.target.classList.contains("texture-card")) {
       this.changeTexture(event);
@@ -122,6 +154,52 @@ export class Textures {
         detail: textureUrl,
       });
       document.dispatchEvent(eventUI);
+    }
+  }
+
+  changeIntersectedObjectMaterialRoughness(roughness) {
+    this.guitar.material.roughness = roughness;
+  }
+
+  changeIntersectedObjectMaterialMetalness(metalness) {
+    this.guitar.material.metalness = metalness;
+  }
+
+  rotateTexture(newRotate) {
+    const texture = this.guitar.material.map;
+    if (texture) {
+      const delta = newRotate - this.lastRotate;
+      texture.rotation += THREE.MathUtils.degToRad(delta);
+      texture.needsUpdate = true;
+      this.lastRotate = newRotate;
+    }
+  }
+
+  moveX(x) {
+    const texture = this.guitar.material.map;
+    if (texture) {
+      texture.offset.x = x;
+      texture.needsUpdate = true;
+    }
+  }
+
+  moveY(y) {
+    const texture = this.guitar.material.map;
+    if (texture) {
+      texture.offset.y = y;
+      texture.needsUpdate = true;
+    }
+  }
+
+  zoomInOutTexture(zoomValue) {
+    if (!this.guitar.originalRepeat) {
+      this.guitar.originalRepeat = this.guitar.material.map.repeat.clone();
+    }
+
+    const texture = this.guitar.material.map;
+    if (texture) {
+      texture.repeat.copy(this.guitar.originalRepeat).multiplyScalar(zoomValue);
+      texture.needsUpdate = true;
     }
   }
 

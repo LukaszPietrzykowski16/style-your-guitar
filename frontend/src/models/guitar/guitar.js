@@ -42,7 +42,7 @@ export class Guitar {
 
     const intersects = this.raycaster.intersectObjects(
       this.scene.children,
-      true
+      true,
     );
 
     if (intersects.length === 0) return;
@@ -55,7 +55,7 @@ export class Guitar {
     this.intersectedObject = selectedGuitarPart.object;
 
     const selectedGuitarPartDOM = document.querySelector(
-      "#selected-guitar-part"
+      "#selected-guitar-part",
     );
     if (selectedGuitarPartDOM) {
       selectedGuitarPartDOM.textContent = this.intersectedObject.name;
@@ -67,7 +67,7 @@ export class Guitar {
         position,
         this.intersectedObject,
         this.helper,
-        this.scene
+        this.scene,
       );
       return;
     }
@@ -78,18 +78,6 @@ export class Guitar {
       detail: this.intersectedObject,
     });
     document.dispatchEvent(eventUI);
-  }
-
-  changeIntersectedObjectMaterialColor(materialColor) {
-    this.intersectedObject.material.color.set(materialColor);
-  }
-
-  changeIntersectedObjectMaterialRoughness(roughness) {
-    this.intersectedObject.material.roughness = roughness;
-  }
-
-  changeIntersectedObjectMaterialMetalness(metalness) {
-    this.intersectedObject.material.metalness = metalness;
   }
 
   updateIntersectedObject(intersectedObject) {
@@ -106,47 +94,6 @@ export class Guitar {
 
     this.intersectedObject.material.map = clickedTexture;
     this.intersectedObject.material.color.set(0xffffff);
-  }
-
-  rotateTexture(newRotate) {
-    const texture = this.intersectedObject.material.map;
-    if (texture) {
-      const delta = newRotate - this.lastRotate;
-      texture.rotation += THREE.MathUtils.degToRad(delta);
-      texture.needsUpdate = true;
-      this.lastRotate = newRotate;
-    }
-  }
-
-  moveX(x) {
-    const texture = this.intersectedObject.material.map;
-    if (texture) {
-      texture.offset.x = x;
-      texture.needsUpdate = true;
-    }
-  }
-
-  moveY(y) {
-    const texture = this.intersectedObject.material.map;
-    if (texture) {
-      texture.offset.y = y;
-      texture.needsUpdate = true;
-    }
-  }
-
-  zoomInOutTexture(zoomValue) {
-    if (!this.intersectedObject.originalRepeat) {
-      this.intersectedObject.originalRepeat =
-        this.intersectedObject.material.map.repeat.clone();
-    }
-
-    const texture = this.intersectedObject.material.map;
-    if (texture) {
-      texture.repeat
-        .copy(this.intersectedObject.originalRepeat)
-        .multiplyScalar(zoomValue);
-      texture.needsUpdate = true;
-    }
   }
 
   toggleHoverText(show) {
