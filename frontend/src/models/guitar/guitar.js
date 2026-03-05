@@ -1,6 +1,5 @@
 import { gltfLoader } from "../gltf-loader/gltf-loader";
 import * as THREE from "three";
-import { uploadImageToIndexedDb } from "../../utils/upload-image-to-indexed-db";
 import { addHaloGlow, addTemporaryGlow } from "./animations/animations";
 import { Stickers } from "../stickers/stickers";
 import { Textures } from "../textures/textures";
@@ -80,10 +79,6 @@ export class Guitar {
     document.dispatchEvent(eventUI);
   }
 
-  updateIntersectedObject(intersectedObject) {
-    this.intersectedObject = intersectedObject;
-  }
-
   updateIntersectedObjectTexture(texture) {
     const clickedTexture = this.textureLoader.load(texture);
 
@@ -150,25 +145,6 @@ export class Guitar {
         this.glowMeshHover.material?.dispose?.();
         this.glowMeshHover = null;
         this.currentHovered = null;
-      }
-    }
-  }
-
-  async updateIntersectedObjectTextureFromFile(file) {
-    const textureContainers = document.querySelectorAll(".texture-container");
-
-    const blobUrl = await uploadImageToIndexedDb(file);
-
-    if (textureContainers.length > 0) {
-      const container = textureContainers[0];
-      const div = document.createElement("div");
-      div.className = "texture-card";
-      div.style.backgroundImage = `url('${blobUrl}')`;
-
-      if (container.children.length >= 1) {
-        container.insertBefore(div, container.children[1]);
-      } else {
-        container.appendChild(div);
       }
     }
   }

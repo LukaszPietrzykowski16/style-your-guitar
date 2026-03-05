@@ -133,12 +133,25 @@ export class Textures {
     if (id === "moveY") {
       this.moveY(target.value);
     }
+
+    if (id === "color-picker") {
+      this.changeIntersectedObjectMaterialColor(target.value);
+    }
   }
 
   checkWhichTexturenWasClicked(event) {
     if (event.target.classList.contains("texture-card")) {
       this.changeTexture(event);
     }
+    if (event.target.classList.contains("color")) {
+      const color = event.target.dataset.color;
+      if (!color) return;
+      this.changeIntersectedObjectMaterialColor(color);
+    }
+  }
+
+  changeIntersectedObjectMaterialColor(materialColor) {
+    this.guitar.material.color.set(materialColor);
   }
 
   changeTexture(event) {
